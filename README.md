@@ -4,7 +4,7 @@
 ### Installation
 1. Download PyCharm Professional Edition
 2. Get educational license: https://www.jetbrains.com/community/education/#students
-3. I recommend installing Miniconda as your Python interpreter: https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html 
+3. I recommend installing Miniconda to be your Python interpreter and virtual environment: [install Miniconda](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html) 
 4. Clone this repository in PyCharm and create your own branch for development
 5. Open a terminal in PyCharm and execute the following
    1. pip install django
@@ -12,17 +12,13 @@
 6. (Optional) insert Google API key near bottom of django_transit/settings.py
 
 
-### Run the Server
-In a PyCharm terminal execute the following.
-<li>python manage.py runserver
-
 ***
 
-### Debugging
+### Running/Debugging
 (The following images don't appear on GitHub, but they will in PyCharm)
 <br><br>
 
-#### Debug Python code
+#### Setup Run/Debug Configuration and Python Interpreter
 Click 'Add Configuration...' at top of PyCharm window.
 
 ![alt-text](readme-guide-images/Screen Shot 2022-05-16 at 11.01.11 AM.png "optional-title")
@@ -33,7 +29,10 @@ Click the "+" symbol at the top left. Select 'Python'.
 ![](readme-guide-images/Screen Shot 2022-05-17 at 11.23.07 AM.png)
 
 <br><br>
-Setup the configuration as shown. Set 'Script path' to your project's manage.py script.
+Setup the configuration as shown below. Set 'Script path' to your project's manage.py script.
+<ul>Python Interpreter: If you've installed Miniconda or Anaconda and haven't yet configured a 'Conda virtual environment' in your project, see the following instructions.
+
+[Configure a Conda Virtual Environment](https://www.jetbrains.com/help/pycharm/conda-support-creating-conda-virtual-environment.html)
 
 ![](readme-guide-images/Screen Shot 2022-05-17 at 10.57.29 AM.png)
 
