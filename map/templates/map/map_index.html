@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <title>Add Map</title>
+      {#   I don't think the following script is needed. Map still loads.   #}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+      /* Always set the mapindex height explicitly to define the size of the div
+       * element that contains the mapindex. */
+        #map {
+            height: 80vh;  /* Google's suggested height of 100% may prevent map from displaying */
+        }
+    </style>
+
+    <script type="text/javascript">
+        const marker_coords = {lat: {{ lat_coord }}, lng: {{ lng_coord }} }
+    </script>
+
+    <script type="module" src="{% static 'map/js/map_index.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the mapindex -->
+    <div id="map"></div>
+
+    <!--
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+
+     DO NOT use the `async` attribute that is shown in some example html in Google's tutorials, the map may not
+     load.
+    -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer>
+    </script>
+
+{% endblock %}

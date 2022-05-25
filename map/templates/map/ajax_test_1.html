@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    {% csrf_token %}
+    <script type="text/javascript" charset="utf-8">
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            let target_element = document.querySelector('#add-html-here');
+
+            jQuery.ajax({
+                url: "{% url 'map:ajax-hidden' %}",
+                headers: {'X-CSRFToken': csrftoken},
+                data: {'some_attribute': 4567 },
+                type: "POST",
+                //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                success: callbackFunc,
+            });
+
+            function callbackFunc(data) {
+                if (data) {
+                    console.log("SUCCESS!");
+                    // call function to do something with data
+                    target_element.innerHTML = data;
+                } else {
+                    console.log("FAILURE!");
+                }
+            }
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h4>AJAX test:</h4>
+        <div id="add-html-here">
+            <!-- This is where we want to render new html -->
+        </div>
+    </div>
+
+{% endblock %}

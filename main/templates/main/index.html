@@ -1,0 +1,36 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.querySelector('#red').onclick = function() {
+                document.querySelector('#hello').style.color = 'red';
+            };
+
+            document.querySelector('#green').onclick = function() {
+                document.querySelector('#hello').style.color = 'green';
+            };
+
+            document.querySelector('#blue').onclick = function() {
+                document.querySelector('#hello').style.color = 'blue';
+            };
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h1 id="hello">Javascript Demo.</h1>
+        <button id="red">Red</button>
+        <button id="green">Green</button>
+        <button id="blue">Blue</button>
+    </div>
+
+{% endblock %}

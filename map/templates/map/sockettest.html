@@ -1,0 +1,63 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', () => {
+            // Connect to websocket
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+            // When connected, configure buttons
+            socket.on('connect', () => {
+                // Each button should emit a "submit vote" event
+                document.querySelectorAll('button').forEach(button => {
+                    button.onclick = () => {
+                        const selection = button.dataset.vote;
+                        socket.emit('submit_vote', selection); // submit_vote is the server-side socket event handler
+                        // function defined in map/views.py
+                    };
+                });
+            });
+
+            socket.on('vote totals', data => {
+                document.querySelector('#yes').innerHTML = data.yes;
+                document.querySelector('#no').innerHTML = data.no;
+                document.querySelector('#maybe').innerHTML = data.maybe;
+            });
+
+            socket.on('display location', data => {
+                document.querySelector('#user-lat').innerHTML = data.user_lat;
+                document.querySelector('#user-lng').innerHTML = data.user_lng;
+            });
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h6>
+            Open current URL in another window (even in a different browser) and you will see that the votes are
+            immediately broadcast to every window.
+        </h6>
+        <div>Yes Votes: <span id="yes">{{ votes.yes }}</span></div>
+        <div>No Votes: <span id="no">{{ votes.no }}</span></div>
+        <div>Maybe Votes: <span id="maybe">{{ votes.maybe }}</span></div>
+        <br>
+        <button data-vote="yes">Yes</button>
+        <button data-vote="no">No</button>
+        <button data-vote="maybe">Maybe</button>
+
+    </div>
+    <br><br>
+   <div class="container">
+        <h5>Location Socket test:</h5>
+        <div>User latitude: <span id="user-lat">{{ user_location.user_lat }}</span></div>
+        <div>User longitude: <span id="user-lng">{{ user_location.user_lng }}</span></div>
+    </div>
+
+{% endblock %}

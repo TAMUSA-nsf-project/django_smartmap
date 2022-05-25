@@ -1,0 +1,55 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', () => {
+            // Connect to websocket
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            let iteration = 0;
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 60000,
+            };
+
+            function error(err) {
+              console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            // When connected, configure buttons
+            socket.on('connect', () => {
+
+                const id = navigator.geolocation.watchPosition(posChangeCallback, error, options);
+
+                function posChangeCallback(pos) {
+                    iteration += 1;
+                    console.log(`watchLocation success callback has been called ${iteration} times`)
+                    const crd = pos.coords;
+                    socket.emit('broadcast_location', {'user_lat': crd.latitude, 'user_lng': crd.longitude })
+                }
+
+            });
+
+            socket.on('display location', data => {
+                document.querySelector('#user-lat').innerHTML = data.user_lat;
+                document.querySelector('#user-lng').innerHTML = data.user_lng;
+            });
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+   <div class="container">
+        <h5>Location Socket test:</h5>
+        <div>User latitude: <span id="user-lat">{{ user_location.user_lat }}</span></div>
+        <div>User longitude: <span id="user-lng">{{ user_location.user_lng }}</span></div>
+    </div>
+
+{% endblock %}

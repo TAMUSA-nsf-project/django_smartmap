@@ -1,0 +1,65 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <script type="text/javascript" charset="utf-8">
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            let iteration = 0;
+            let target_element = document.querySelector('#add-html-here');
+
+            const target = {
+                latitude: 0,
+                longitude: 0
+            };
+
+            const options = {
+                enableHighAccuracy: true,
+                //timeout: 5000,
+                maximumAge: 60000,
+            };
+
+            const id = navigator.geolocation.watchPosition(posChangeCallback, error, options);
+
+            function posChangeCallback(pos) {
+                iteration += 1;
+                console.log(`watchLocation success callback has been called ${iteration} times`)
+                const crd = pos.coords;
+
+                jQuery.ajax({
+                    url: "{% url 'map:location-ajax' %}",
+                    data: {'user_lat': crd.latitude, 'user_lng': crd.longitude },
+                    type: "GET",
+                    //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                    dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                    success: ajaxCallback,
+                });
+
+            }
+
+            function error(err) {
+              console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            function ajaxCallback(data) {
+                target_element.innerHTML = data;
+            }
+
+        });
+
+    </script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h4>Location AJAX test:</h4>
+        <div id="add-html-here">
+            <!-- This is where we want to render new html -->
+        </div>
+    </div>
+
+{% endblock %}
