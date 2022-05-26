@@ -1,6 +1,8 @@
 
 let map;
 
+var map_markers = [];
+
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.
@@ -89,7 +91,7 @@ function RouteDropdown() {
         li_button.innerHTML = arr[i]
 
         li_button.onclick = () => {
-            alert(`You selected ${li_button.innerHTML}`);
+            removeAllMarkers();
         }
 
         li.appendChild(li_button);
@@ -99,6 +101,16 @@ function RouteDropdown() {
     return routeDropdown;
 }
 
+
+function removeAllMarkers() {
+    /**
+     * Removes all google.maps.Map markers contained in array map_markers, but does not delete them.
+     */
+    for (let i=0; i < map_markers.length; i++) {
+        const marker = map_markers[i];
+        marker.setMap(null);
+    }
+}
 
 
 function initMap() {
@@ -113,6 +125,8 @@ function initMap() {
         position: marker_coords,
         map: map,
     });
+
+    map_markers.push(marker);
 
     // Create the DIV to hold the control and call the CenterControl()
     // constructor passing in this DIV.
