@@ -88,6 +88,10 @@ function RouteDropdown() {
         li_button.setAttribute("class", 'dropdown-item')
         li_button.innerHTML = arr[i]
 
+        li_button.onclick = () => {
+            alert(`You selected ${li_button.innerHTML}`);
+        }
+
         li.appendChild(li_button);
         listItems.appendChild(li);     // append li to ul.
     }
