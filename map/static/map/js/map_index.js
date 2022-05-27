@@ -36,7 +36,8 @@ function CenterControl(controlDiv, map) {
   controlUI.appendChild(controlText);
   // Setup the click event listeners: simply set the map to marker_coords.
   controlUI.addEventListener("click", () => {
-    map.setCenter(marker_coords);
+    map.setCenter(MAP_CENTER);
+
   });
 }
 
@@ -82,16 +83,18 @@ function RouteDropdown() {
 
     const arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
 
-    for (let i = 0; i <= arr.length - 1; i++) {
+    for (let key in JSON_ROUTES) {
+
         const li = document.createElement('li');     // create li element.
 
         const li_button = document.createElement("button")
         li_button.type = "button"
         li_button.setAttribute("class", 'dropdown-item')
-        li_button.innerHTML = arr[i]
+        li_button.innerHTML = key
 
         li_button.onclick = () => {
             removeAllMarkers();
+            createRouteMarkers(key);
         }
 
         li.appendChild(li_button);
@@ -103,8 +106,17 @@ function RouteDropdown() {
 
 
 function removeAllMarkers() {
+/**
+ * Removes all google.maps.Map markers contained in map_markers array but does not delete them.
+ */
+    hideAllMarkers()
+    // reset map_markers array
+    map_markers = []
+}
+
+function hideAllMarkers() {
     /**
-     * Removes all google.maps.Map markers contained in array map_markers, but does not delete them.
+     * Hides all markers in map_markers by setting their map property to null.
      */
     for (let i=0; i < map_markers.length; i++) {
         const marker = map_markers[i];
@@ -112,21 +124,40 @@ function removeAllMarkers() {
     }
 }
 
+function showAllMarkers() {
+    /**
+     * Iterates over markers in map_markers and displays them by setting their map property.
+     */
+    for (let i=0; i < map_markers.length; i++) {
+        const marker = map_markers[i];
+        marker.setMap(map);
+    }
+}
+
+
+function createRouteMarkers(route /*string*/) {
+    /**
+     * Fetches the route stops for the selected route from JSON_ROUTES. Creates markers and adds them to map_markers.
+     */
+    const route_stops = JSON_ROUTES[route];
+    for (const key in route_stops) {
+        const stop = route_stops[key]
+        const marker = new google.maps.Marker({
+            position: {lat: stop.Lat, lng: stop.Lng },
+            map: map
+        })
+        map_markers.push(marker)
+    }
+}
 
 function initMap() {
     // marker_coords is defined in map_index.html using values passed in via django template engine
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: marker_coords
+        center: MAP_CENTER
     });
 
-    const marker = new google.maps.Marker({
-        position: marker_coords,
-        map: map,
-    });
-
-    map_markers.push(marker);
 
     // Create the DIV to hold the control and call the CenterControl()
     // constructor passing in this DIV.
