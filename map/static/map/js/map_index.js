@@ -73,7 +73,7 @@ function RouteDropdown() {
     button.id = "dropdownMenuButton1"
     button.setAttribute("data-bs-toggle", "dropdown")
     button.setAttribute("aria-expanded", "false")
-    button.innerHTML = "Dropdown button"
+    button.innerHTML = "Select Route"
     routeDropdown.appendChild(button)
 
     const listItems = document.createElement("ul")
