@@ -1,7 +1,9 @@
 
-let map;
 
-var map_markers = [];
+// the following are variables accessible anywhere in the script (script vars)
+let map;
+let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
+let displayedRoute = ""  // ID of currently displayed route
 
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
@@ -92,9 +94,10 @@ function RouteDropdown() {
         li_button.setAttribute("class", 'dropdown-item')
         li_button.innerHTML = key
 
+        // define the button's onclick behavior
         li_button.onclick = () => {
-            removeAllMarkers();
-            createRouteMarkers(key);
+            hideDisplayedMarkers()
+            showRouteMarkers(key);
         }
 
         li.appendChild(li_button);
@@ -105,48 +108,55 @@ function RouteDropdown() {
 }
 
 
-function removeAllMarkers() {
-/**
- * Removes all google.maps.Map markers contained in map_markers array but does not delete them.
- */
-    hideAllMarkers()
-    // reset map_markers array
-    map_markers = []
+function showRouteMarkers(route /*string*/) {
+    /**
+     * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
+     */
+    mapRouteMarkers[route].forEach(marker => {
+        marker.setMap(map);  // shows the marker
+    })
+
+    // set the script var to current route
+    displayedRoute = route;
 }
 
-function hideAllMarkers() {
+function hideDisplayedMarkers() {
     /**
-     * Hides all markers in map_markers by setting their map property to null.
+     * Hides currently displayed markers by setting their map property to null.
+     * Uses script variable displayedRoute, which contains the name of the currently displayed route. This could be
+     * turned into an array to hold the IDs of several routes if we allow that.
      */
-    for (let i=0; i < map_markers.length; i++) {
-        const marker = map_markers[i];
-        marker.setMap(null);
-    }
-}
-
-function showAllMarkers() {
-    /**
-     * Iterates over markers in map_markers and displays them by setting their map property.
-     */
-    for (let i=0; i < map_markers.length; i++) {
-        const marker = map_markers[i];
-        marker.setMap(map);
-    }
-}
-
-
-function createRouteMarkers(route /*string*/) {
-    /**
-     * Fetches the route stops for the selected route from JSON_ROUTES. Creates markers and adds them to map_markers.
-     */
-    const route_stops = JSON_ROUTES[route];
-    for (const key in route_stops) {
-        const stop = route_stops[key]
-        const marker = new google.maps.Marker({
-            position: {lat: stop.Lat, lng: stop.Lng },
-            map: map
+    if (displayedRoute) {
+        mapRouteMarkers[displayedRoute].forEach((marker) => {
+            marker.setMap(null);
         })
-        map_markers.push(marker)
+
+        // reset script var
+        displayedRoute = ""
+    }
+}
+
+
+
+
+function createRouteMarker(stop) {
+    return new google.maps.Marker({
+        position: {lat: stop.Lat, lng: stop.Lng},
+        map: null,
+        title: stop["Stop Name"]
+    })
+}
+
+function initAllRouteMarkers() {
+    /**
+     * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
+     */
+    for(var key in JSON_ROUTES) {
+        mapRouteMarkers[key] = [];
+        for (var key1 in JSON_ROUTES[key]){
+            // console.log(JSON_ROUTES[key][key1])
+            mapRouteMarkers[key][key1] = createRouteMarker(JSON_ROUTES[key][key1])
+        }
     }
 }
 
@@ -158,6 +168,8 @@ function initMap() {
         center: MAP_CENTER
     });
 
+    // Initialize object of route markers
+    initAllRouteMarkers();
 
     // Create the DIV to hold the control and call the CenterControl()
     // constructor passing in this DIV.
