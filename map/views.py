@@ -27,7 +27,7 @@ def map_hello_world(request):
     """
 
     context = {
-        "google_api_key": settings.GOOGLE_API_KEY,
+        "google_api_key": settings.GOOGLE_MAP_API_KEY,
         "lat_coord": 29.4190,
         "lng_coord": -98.4836,
         "route_json": json_routes
