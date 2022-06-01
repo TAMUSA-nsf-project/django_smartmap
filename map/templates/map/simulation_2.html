@@ -11,8 +11,24 @@
         var myInterval;
         var pos_data = []
 
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 60000,
+        };
+
+
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        function posChangeCallback(pos) {
+            const crd = pos.coords;
+            pos_data.push({'Lat': crd.latitude, 'Lng': crd.longitude })
+        }
+
         function updatePosData() {
-            pos_data.push(Date.now().toString())
+            navigator.geolocation.getCurrentPosition(posChangeCallback, error, options);
         }
 
         $('#toggle-event').change(function() {
@@ -23,9 +39,13 @@
             if (toggle_tf) {
                 // If recording
                 myInterval = setInterval(updatePosData, 3000)
+                $('#console-event').html('recording position')
 
                 } else {
                     clearInterval(myInterval);  // looks like this is unnecessary
+
+                    $('#console-event').html('')
+
 
                     const timenow = Date.now().toString()
                     const data_out = {'file_name': timenow, 'pos_data': pos_data}
@@ -57,9 +77,11 @@
 
 
 {% block content %}
-    <div class="container mt-5">
+    <div class="mb-3">
+        <h5>Generate Position Simulation File</h5>
         <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Recording" data-off="">
-        <div id="console-event"></div>
+    </div>
+    <div class="mb-3" id="console-event">
     </div>
 
 
