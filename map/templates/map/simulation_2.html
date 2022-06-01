@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <script>
+      $(function() {
+        $('#toggle-event').change(function() {
+          $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+        })
+      })
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mt-5">
+        <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Recording" data-off="">
+        <div id="console-event"></div>
+    </div>
+
+
+{% endblock %}

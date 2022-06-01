@@ -95,3 +95,11 @@ def broadcast_location(sid, data):
     user_location["user_lat"] = data.get('user_lat')
     user_location["user_lng"] = data.get('user_lng')
     sio.emit("display location", user_location)
+
+
+"""
+Simulation File Page
+"""
+
+def simulation_view(request):
+    return render(request, "map/simulation_2.html")
