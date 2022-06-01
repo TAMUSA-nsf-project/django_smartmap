@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const routeSelect = document.querySelector("#routeSelect");
+            const statusMessageDiv = document.querySelector("#statusMessage")
+
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 60000,
+            };
+
+            function error(err) {
+              console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+
+            socket.on('connect', () => {
+                routeSelect.addEventListener("input", () => {
+                    statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
+                    setInterval(() => {
+                        navigator.geolocation.getCurrentPosition(pos => {
+                            const crd = pos.coords;
+                            socket.emit('broadcast_bus', {'selected_route': routeSelect.value, 'bus_lat': crd.latitude, 'bus_lng': crd.longitude })
+                        }, error, options);
+                    }, 5000)
+
+                })
+            })
+        })
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="mb-3">
+        <select class="form-select" id="routeSelect">
+            <option selected disabled value="">Select route...</option>
+            {% for route in route_json %}
+                <option value="{{ route }}">{{ route }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3" id="statusMessage"></div>
+
+
+
+{% endblock %}

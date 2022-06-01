@@ -1,5 +1,7 @@
 import os
 
+from collections import defaultdict
+
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
@@ -105,3 +107,27 @@ def broadcast_location(sid, data):
     user_location["user_lat"] = data.get('user_lat')
     user_location["user_lng"] = data.get('user_lng')
     sio.emit("display location", user_location)
+
+
+"""
+Bus Driver page
+"""
+
+# dictionary of busses where key is the socket ID (sid)
+busses = defaultdict(dict)
+
+
+def busdriver_view(request):
+    context = {
+        "route_json": json_data.keys(),
+    }
+    return render(request, "map/busdriver_2.html", context)
+
+
+@sio.event
+def broadcast_bus(sid, data):
+    # current assumptions: sid does not change for a unique client even when selected route changes (so far I've observed
+    # this to be true)
+    busses[sid] = data
+    sio.emit("display busses", busses)
+
