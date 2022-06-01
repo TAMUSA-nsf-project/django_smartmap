@@ -9,7 +9,38 @@
     <script>
       $(function() {
         $('#toggle-event').change(function() {
+            var toggle_tf = $(this).prop('checked')
           $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+            var myInterval;
+            if (toggle_tf) {
+                const timenow = Date.now().toString()
+
+                const fruits = ["Banana", "Orange", "Apple"]
+
+                const data_out = {'file_name': timenow, 'pos_data': fruits}
+
+                jQuery.ajax({
+                    url: "{% url 'map:simulation-ajax' %}",
+                    //data: {'file_name': timenow, 'pos_data': JSON.stringify(fruits)},
+                    data: {'data': JSON.stringify(data_out) },
+                    type: "GET",
+                    //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                    dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                    success: callbackFunc,
+                });
+
+                function callbackFunc(data) {
+                    if (data) {
+                        console.log("SUCCESS!");
+                    } else {
+                        console.log("FAILURE!");
+                    }
+                }
+
+                } else {
+                    clearInterval(myInterval);
+                }
+
         })
       })
     </script>

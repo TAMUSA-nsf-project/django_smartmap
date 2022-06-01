@@ -1,3 +1,4 @@
+import os
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
@@ -103,3 +104,15 @@ Simulation File Page
 
 def simulation_view(request):
     return render(request, "map/simulation_2.html")
+
+import json
+import ast
+def simulation_ajax(request):
+    if request.method == 'GET':
+        data = ast.literal_eval(request.GET.get('data'))
+        with open(os.path.join(settings.BASE_DIR, "sim_files", data['file_name'] + ".json"), "w") as f:
+            json.dump(data, f)
+
+        return HttpResponse(f"success")
+    else:
+        return HttpResponse("Error: Didn't receive data.")
