@@ -191,3 +191,74 @@ function initMap() {
 }
 
 window.initMap = initMap;
+
+
+
+/**
+ * Socket.IO Stuff
+ */
+
+// setup socket var
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+// objects to track different busses which are identified by socket ID (sid) and organized by route or sid
+var busMarkersByRoute = {}
+var busMarkersBySid = {}
+
+
+/**
+ * Updates the google map markers in the busMarkersBySid object
+ */
+function updateBusMarkersBySid(data) {
+
+    for (const sid in data) {
+        const sidData = data[sid]
+
+        var newLatLng = new google.maps.LatLng(sidData.bus_lat, sidData.bus_lng)
+
+        var sidMarker;
+
+        if (sid in busMarkersBySid) {
+            sidMarker = busMarkersBySid[sid]
+            if (sidMarker != undefined) {
+                sidMarker.setPosition(newLatLng)
+            } else {
+                //todo, shouldn't happen
+            }
+        } else {
+            // create a marker for sid
+            sidMarker = new google.maps.Marker({
+                position: newLatLng,
+                map: map,
+                title: sid,
+                icon: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
+            })
+            busMarkersBySid[sid] = sidMarker
+        }
+    }
+}
+
+
+/**
+ * Updates the google map markers in the busMarkersByRoute object by using the updated markers from busMarkersBySid
+ */
+function updateBusMarkersByRoute(data) {
+    for (const sid in data) {
+
+        const busRoute = data[sid].selected_route
+
+        if (busRoute in busMarkersByRoute) {
+            busMarkersByRoute[busRoute][sid] = busMarkersBySid[sid]
+        } else {
+            busMarkersByRoute[busRoute] = {[sid]: busMarkersBySid[sid]}  // must enclose first sid in brackets to force use of its string value
+        }
+
+    }
+}
+
+
+// socket event listener for updated bus position
+socket.on("display busses", data => {
+    updateBusMarkersBySid(data);  // must be called first
+    updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
+});
