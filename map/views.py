@@ -1,14 +1,11 @@
 import os
-
-from collections import defaultdict
-
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
 import json
 
-import socketio
-sio = socketio.Server(async_mode='threading')
+# Socket IO
+sio = settings.SIO
 
 # Read json file with all the route data (bus stops and their lat, lng, etc)
 with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
@@ -109,25 +106,5 @@ def broadcast_location(sid, data):
     sio.emit("display location", user_location)
 
 
-"""
-Bus Driver page
-"""
 
-# dictionary of busses where key is the socket ID (sid)
-busses = defaultdict(dict)
-
-
-def busdriver_view(request):
-    context = {
-        "route_json": json_data.keys(),
-    }
-    return render(request, "map/busdriver_2.html", context)
-
-
-@sio.event
-def broadcast_bus(sid, data):
-    # current assumptions: sid does not change for a unique client even when selected route changes (so far I've observed
-    # this to be true)
-    busses[sid] = data
-    sio.emit("display busses", busses)
 

@@ -22,8 +22,4 @@ urlpatterns = [
     # Location Socket Test:
     path('location-socket-test/', views.location_socket_view, name='location-socket-page'),
 
-
-    # Bus driver
-    path('busdriver/', views.busdriver_view, name='busdriver-page'),
-
 ]

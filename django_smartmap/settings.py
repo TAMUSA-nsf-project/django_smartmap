@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # My apps
     'main',
     'map',
+    'bus',
 
     # Django default apps
     'django.contrib.admin',
@@ -128,6 +129,15 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+"""
+Socket.IO
+"""
+# Note: every variable created in this file must be capitalized (must be SIO not sio)
+import socketio
+SIO = socketio.Server(async_mode='threading')
+
 
 
 """
