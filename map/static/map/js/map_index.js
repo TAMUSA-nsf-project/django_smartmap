@@ -117,27 +117,30 @@ function RouteDropdown(map) {
 }
 
 
+/**
+ * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
+ */
 function showRouteMarkers(route /*string*/) {
-    /**
-     * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
-     */
-    mapRouteMarkers[route].forEach(marker => {
-        marker.setMap(map);  // shows the marker
+    // bus_stop is a BusStop instance
+    mapRouteMarkers[route].forEach(bus_stop => {
+        bus_stop.marker.setMap(map);  // shows the marker
     })
 
     // set the script var to current route
     displayedRoute = route;
 }
 
+
+/**
+ * Hides currently displayed markers by setting their map property to null.
+ * Uses script variable displayedRoute, which contains the name of the currently displayed route. This could be
+ * turned into an array to hold the IDs of several routes if we allow that.
+ */
 function hideDisplayedMarkers() {
-    /**
-     * Hides currently displayed markers by setting their map property to null.
-     * Uses script variable displayedRoute, which contains the name of the currently displayed route. This could be
-     * turned into an array to hold the IDs of several routes if we allow that.
-     */
     if (displayedRoute) {
-        mapRouteMarkers[displayedRoute].forEach((marker) => {
-            marker.setMap(null);
+        // bus_stop is a BusStop instance
+        mapRouteMarkers[displayedRoute].forEach(bus_stop => {
+            bus_stop.marker.setMap(null);
         })
 
         // reset script var
@@ -194,23 +197,33 @@ class BusStop {
 }
 
 
+
+/**
+ * Replaced with BusStop class. Delete.
+ */
 function createRouteMarker(stop) {
-    return new google.maps.Marker({
+
+    const stopName = stop["Stop Name"]
+
+    marker = new google.maps.Marker({
         position: {lat: stop.Lat, lng: stop.Lng},
         map: null,
-        title: stop["Stop Name"]
+        title: stopName
     })
+
+    return marker
 }
 
+
+/**
+ * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
+ */
 function initAllRouteMarkers() {
-    /**
-     * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
-     */
     for(var key in JSON_ROUTES) {
         mapRouteMarkers[key] = [];
         for (var key1 in JSON_ROUTES[key]){
             // console.log(JSON_ROUTES[key][key1])
-            mapRouteMarkers[key][key1] = createRouteMarker(JSON_ROUTES[key][key1])
+            mapRouteMarkers[key][key1] = new BusStop(JSON_ROUTES[key][key1])
         }
     }
 }
