@@ -165,9 +165,6 @@ class BusStop {
 
     updateEstArrival(new_est_str) {
         this.est_arrival = new_est_str
-        // the following forces the info window content to be replaced so the arrival time is updated while the
-        // info window is open
-        markerInfoWindow.setContent(this.getInfoWindowContent())
     }
 
 
