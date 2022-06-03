@@ -146,6 +146,52 @@ function hideDisplayedMarkers() {
 }
 
 
+/**
+ * Class to represent a bus stop. One of its properties is a google.maps.Marker instance.
+ */
+class BusStop {
+    constructor(json_data) {
+        this.name = json_data["Stop Name"]
+        this.number = json_data["Stop Number"]
+        this.route = json_data["route"]
+        this.Lat = json_data.Lat
+        this.Lng = json_data.Lng
+        this.est_arrival = "TBD"
+        this.#initMapMarker();
+    }
+
+    updateEstArrival(new_est_str) {
+        this.est_arrival = new_est_str
+    }
+
+
+    getInfoWindowContent() {
+        return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
+        `Stop #: ${this.number}<br>` +
+        `Route: ${this.route}<br>` +
+        `Next Arrival in ${this.est_arrival}`;
+    }
+
+    // '#' prefix makes it a private method
+    #initMapMarker() {
+        let marker = new google.maps.Marker({
+            position: {lat: this.Lat, lng: this.Lng},
+            map: null,
+            title: this.name
+        })
+
+        // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
+        marker.addListener("click", () => {
+            markerInfoWindow.close();
+            markerInfoWindow.setContent(this.getInfoWindowContent())
+            markerInfoWindow.open(marker.getMap(), marker)
+            // stopInfoWindow.open(map, marker)
+        })
+
+        this.marker = marker;
+    }
+
+}
 
 
 function createRouteMarker(stop) {
