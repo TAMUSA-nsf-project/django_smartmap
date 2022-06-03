@@ -228,6 +228,10 @@ function initAllRouteMarkers() {
     }
 }
 
+
+/**
+ * Initializes embedded google map. Passed to google maps API via script tag in map_index.html.
+ */
 function initMap() {
     // marker_coords is defined in map_index.html using values passed in via django template engine
 
