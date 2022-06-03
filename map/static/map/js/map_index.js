@@ -5,6 +5,8 @@ let map;
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
 let displayedRoute = ""  // ID of currently displayed route
 
+let markerInfoWindow;   // marker info window
+
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.
@@ -175,7 +177,10 @@ function initMap() {
         center: MAP_CENTER
     });
 
-    // Initialize object of route markers
+    // Initialize InfoWindow instance for the markers (all markers will use this instance)
+    markerInfoWindow = new google.maps.InfoWindow();
+
+    // Initialize BuStop instances that contain google.maps.Marker instances
     initAllRouteMarkers();
 
     // Create the DIV to hold the control by calling CenterControl()
