@@ -324,9 +324,27 @@ function updateBusMarkersByRoute(data) {
     }
 }
 
+function updateBusStopArrivalTimes(data) {
+    for(const route in data) {
+        let updatedStopData = data[route]
+        let routeBusStops = mapRouteMarkers[route]
+
+        for (let i=0; i < routeBusStops.length; i++) {
+            routeBusStops[i].updateEstArrival(updatedStopData[i].est_arrival)
+        }
+
+    }
+}
+
 
 // socket event listener for updated bus position
 socket.on("display busses", data => {
     updateBusMarkersBySid(data);  // must be called first
     updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
+});
+
+
+// socket event listener for updated estimated arrival times
+socket.on("update arrival times", data => {
+    updateBusStopArrivalTimes(data)
 });
