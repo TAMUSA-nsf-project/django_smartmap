@@ -7,6 +7,8 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let markerInfoWindow;   // marker info window
 
+var busIcon;  // icon for bus
+
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.
@@ -243,6 +245,12 @@ function initMap() {
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
     markerInfoWindow = new google.maps.InfoWindow();
 
+    // Initialize bus icon using google.maps.Size method to resize image at specified url
+    busIcon = {
+        url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
+        scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
+    };
+
     // Initialize BuStop instances that contain google.maps.Marker instances
     initAllRouteMarkers();
 
@@ -299,7 +307,7 @@ function updateBusMarkersBySid(data) {
                 position: newLatLng,
                 map: map,
                 title: sid,
-                icon: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
+                icon: busIcon,
             })
             busMarkersBySid[sid] = sidMarker
         }
