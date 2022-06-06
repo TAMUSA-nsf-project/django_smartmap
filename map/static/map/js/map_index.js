@@ -165,10 +165,13 @@ class BusStop {
         this.#initMapMarker();
     }
 
+    /**
+     * Updates the string property "est_arrival" with string input "new_est_str".
+     * @param new_est_str: a string representing the new estimated arrival time
+     */
     updateEstArrival(new_est_str) {
         this.est_arrival = new_est_str
     }
-
 
     getInfoWindowContent() {
         return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
@@ -187,7 +190,7 @@ class BusStop {
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
         marker.addListener("click", () => {
-            markerInfoWindow.close();
+            markerInfoWindow.close();  // closes any currently open info window
             markerInfoWindow.setContent(this.getInfoWindowContent())
             markerInfoWindow.open(marker.getMap(), marker)
             // stopInfoWindow.open(map, marker)
@@ -356,3 +359,5 @@ socket.on("display busses", data => {
 socket.on("update arrival times", data => {
     updateBusStopArrivalTimes(data)
 });
+
+

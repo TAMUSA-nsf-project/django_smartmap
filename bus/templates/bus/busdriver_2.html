@@ -22,16 +22,23 @@
             }
 
             socket.on('connect', () => {
+
                 routeSelect.addEventListener("input", () => {
+
                     statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
+
                     var getPosition = function () {
+
                         navigator.geolocation.getCurrentPosition(pos => {
                             const crd = pos.coords;
                             socket.emit('broadcast_bus', {'selected_route': routeSelect.value, 'bus_lat': crd.latitude, 'bus_lng': crd.longitude })
                         }, error, options);
+
                         setTimeout(getPosition, 5000)
                     };
-                    getPosition();
+
+                    getPosition();  // execute immediately
+
                 })
             })
         })
