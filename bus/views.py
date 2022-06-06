@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from collections import defaultdict
 from django.conf import settings
 import json
@@ -43,3 +43,25 @@ def broadcast_bus(sid, socket_data):
     sio.emit("display busses", busses)
     res = calc_est_arrival_times(socket_data, json_data)
     sio.emit("update arrival times", res)
+
+
+
+"""
+Simulation File Page
+"""
+
+def simulation_view(request):
+    return render(request, "bus/simulation_2.html")
+
+
+import ast
+def simulation_ajax(request):
+    if request.method == 'GET':
+        data = ast.literal_eval(request.GET.get('data'))
+        formatted = {data['file_name']: data['pos_data']}
+        with open(os.path.join(settings.BASE_DIR, "sim_files", data['file_name'] + ".json"), "w") as f:
+            json.dump(formatted, f)
+
+        return HttpResponse(f"success")
+    else:
+        return HttpResponse("Error: Didn't receive data.")

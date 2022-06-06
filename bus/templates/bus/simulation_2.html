@@ -51,7 +51,7 @@
                     const data_out = {'file_name': timenow, 'pos_data': pos_data}
 
                     jQuery.ajax({
-                        url: "{% url 'map:simulation-ajax' %}",
+                        url: "{% url 'bus:simulation-ajax' %}",
                         //data: {'file_name': timenow, 'pos_data': JSON.stringify(fruits)},
                         data: {'data': JSON.stringify(data_out) },
                         type: "GET",
