@@ -21,17 +21,17 @@
               console.warn('ERROR(' + err.code + '): ' + err.message);
             }
 
-
             socket.on('connect', () => {
                 routeSelect.addEventListener("input", () => {
                     statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
-                    setInterval(() => {
+                    var getPosition = function () {
                         navigator.geolocation.getCurrentPosition(pos => {
                             const crd = pos.coords;
                             socket.emit('broadcast_bus', {'selected_route': routeSelect.value, 'bus_lat': crd.latitude, 'bus_lng': crd.longitude })
                         }, error, options);
-                    }, 5000)
-
+                        setTimeout(getPosition, 5000)
+                    };
+                    getPosition();
                 })
             })
         })
