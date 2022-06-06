@@ -106,5 +106,22 @@ def broadcast_location(sid, data):
     sio.emit("display location", user_location)
 
 
+"""
+Simulation File Page
+"""
 
+def simulation_view(request):
+    return render(request, "map/simulation_2.html")
 
+import json
+import ast
+def simulation_ajax(request):
+    if request.method == 'GET':
+        data = ast.literal_eval(request.GET.get('data'))
+        formatted = {data['file_name']: data['pos_data']}
+        with open(os.path.join(settings.BASE_DIR, "sim_files", data['file_name'] + ".json"), "w") as f:
+            json.dump(formatted, f)
+
+        return HttpResponse(f"success")
+    else:
+        return HttpResponse("Error: Didn't receive data.")

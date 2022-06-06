@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+    <script>
+      $(function() {
+        var myInterval;
+        var pos_data = []
+
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 60000,
+        };
+
+
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        function posChangeCallback(pos) {
+            const crd = pos.coords;
+            pos_data.push({'Lat': crd.latitude, 'Lng': crd.longitude })
+        }
+
+        function updatePosData() {
+            navigator.geolocation.getCurrentPosition(posChangeCallback, error, options);
+        }
+
+        $('#toggle-event').change(function() {
+            var toggle_tf = $(this).prop('checked')
+          //$('#console-event').html('Toggle: ' + $(this).prop('checked'))
+
+
+            if (toggle_tf) {
+                // If recording
+                myInterval = setInterval(updatePosData, 3000)
+                $('#console-event').html('recording position')
+
+                } else {
+                    clearInterval(myInterval);  // looks like this is unnecessary
+
+                    $('#console-event').html('')
+
+
+                    const timenow = Date.now().toString()
+                    const data_out = {'file_name': timenow, 'pos_data': pos_data}
+
+                    jQuery.ajax({
+                        url: "{% url 'map:simulation-ajax' %}",
+                        //data: {'file_name': timenow, 'pos_data': JSON.stringify(fruits)},
+                        data: {'data': JSON.stringify(data_out) },
+                        type: "GET",
+                        //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                        dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                        success: callbackFunc,
+                    });
+
+                    function callbackFunc(data) {
+                        if (data) {
+                        console.log("SUCCESS!");
+                        } else {
+                        console.log("FAILURE!");
+                        }
+                    }
+
+                }
+        })
+      })
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="mb-3">
+        <h5>Generate Position Simulation File</h5>
+        <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Recording" data-off="">
+    </div>
+    <div class="mb-3" id="console-event">
+    </div>
+
+
+{% endblock %}
