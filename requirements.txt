@@ -1,12 +1,15 @@
 asgiref==3.5.2
 bidict==0.22.0
 certifi==2022.5.18.1
-Django==3.2.13
+charset-normalizer==2.0.12
+Django==4.0.5
+googlemaps==4.6.0
+idna==3.3
+psycopg2==2.9.3
 python-engineio==4.3.2
 python-socketio==5.6.0
-pytz==2022.1
-six @ file:///tmp/build/80754af9/six_1644875935023/work
+requests==2.27.1
 sqlparse==0.4.2
-typing_extensions==4.2.0
-zope.event==4.5.0
-zope.interface @ file:///opt/concourse/worker/volumes/live/e2e9977a-a3b7-4323-6e48-b61fb3ed115b/volume/zope.interface_1625036168072/work
+tzdata==2022.1
+urllib3==1.26.9
+wincertstore==0.2
