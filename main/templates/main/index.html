@@ -26,11 +26,20 @@
 
 
 {% block content %}
-    <div class="container">
-        <h1 id="hello">Javascript Demo.</h1>
-        <button id="red">Red</button>
-        <button id="green">Green</button>
-        <button id="blue">Blue</button>
+
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-1">
+        <h1 class="display-5 fw-bold" id="hello">Hello.</h1>
+        <p class="col-md-8 fs-4">This site is under construction.</p>
+        <button class="btn btn-secondary btn-md" id="red">Red</button>
+        <button class="btn btn-secondary btn-md" id="green">Green</button>
+        <button class="btn btn-secondary btn-md" id="blue">Blue</button>
+      </div>
     </div>
+
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+      © 2022
+    </footer>
 
 {% endblock %}
