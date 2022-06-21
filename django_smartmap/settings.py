@@ -41,9 +41,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# If true, server runs locally using sqlite and does not use Google Cloud services
-LOCALHOST_RUN = True
-
 # [START cloudrun_django_secret_config]
 # SECURITY WARNING: don't run with debug turned on in production!
 # Change this to "False" when you are ready for production
@@ -56,14 +53,7 @@ try:
 except google.auth.exceptions.DefaultCredentialsError:
     pass
 
-if LOCALHOST_RUN:
-    placeholder = (
-        f"SECRET_KEY=a\n"
-        "GS_BUCKET_NAME=None\n"
-        f"DATABASE_URL=sqlite://"
-    )
-    env.read_env(io.StringIO(placeholder))
-elif os.path.isfile(env_file):
+if os.path.isfile(env_file):
     # Use a local secret file, if provided
 
     env.read_env(env_file)
@@ -213,10 +203,7 @@ USE_TZ = True
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 STATIC_URL = "/static/"
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-
-if not LOCALHOST_RUN:
-    STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 GS_DEFAULT_ACL = "publicRead"
 # [END cloudrun_django_static_config]
 
