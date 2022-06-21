@@ -7,8 +7,9 @@
 3. I recommend installing Miniconda to be your Python interpreter and virtual environment: [install Miniconda](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html) 
 4. Clone this repository in PyCharm and create your own branch for development
 5. Open a terminal in PyCharm and execute the following
-   1. pip install django
-   2. pip install python-socketio
+   1. pip install -r requirements.txt
+
+If you have trouble with any of these steps, message me on discord.
 
 
 ***
