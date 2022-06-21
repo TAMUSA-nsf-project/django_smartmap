@@ -3,6 +3,7 @@ from collections import defaultdict
 from django.conf import settings
 import json
 import os
+from pathlib import Path
 
 # Socket IO
 sio = settings.SIO
@@ -49,8 +50,11 @@ def broadcast_bus(sid, socket_data):
 """
 Simulation File Page
 """
+SIM_DIR = os.path.join(settings.BASE_DIR, "sim_files")
 
 def simulation_view(request):
+    # safely make the directory where sim files shall be stored
+    Path(SIM_DIR).mkdir(exist_ok=True)
     return render(request, "bus/simulation_2.html")
 
 
@@ -59,7 +63,7 @@ def simulation_ajax(request):
     if request.method == 'GET':
         data = ast.literal_eval(request.GET.get('data'))
         formatted = {data['file_name']: data['pos_data']}
-        with open(os.path.join(settings.BASE_DIR, "sim_files", data['file_name'] + ".json"), "w") as f:
+        with open(os.path.join(SIM_DIR, data['file_name'] + ".json"), "w") as f:
             json.dump(formatted, f)
 
         return HttpResponse(f"success")
