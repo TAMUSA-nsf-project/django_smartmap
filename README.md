@@ -9,7 +9,6 @@
 5. Open a terminal in PyCharm and execute the following
    1. pip install django
    2. pip install python-socketio
-6. (Optional) insert Google API key near bottom of django_transit/settings.py
 
 
 ***
