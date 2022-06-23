@@ -9,17 +9,19 @@
             const routeSelect = document.querySelector("#routeSelect");
             const statusMessageDiv = document.querySelector("#statusMessage")
             const latlngMessageDiv = document.querySelector("#latlngMessage")
+            const broadcaseFrequncy = 2000;
 
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            let prevTime = Date.now();
 
-            const options = {
+            const watchPositionOptions = {
                 enableHighAccuracy: true,
-                timeout: 3000,
+                timeout: broadcaseFrequncy,
                 //maximumAge: 60000,
             };
 
-            function error(err) {
-              console.warn('ERROR(' + err.code + '): ' + err.message);
+            function geolocationPositionError (positionError) {
+              console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
             }
 
             socket.on('connect', () => {
@@ -28,20 +30,34 @@
 
                     statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
 
-                    var getPosition = function () {
+                    const watchPositionSuccess = function (geolocationPosition) {
 
-                        navigator.geolocation.getCurrentPosition(pos => {
-                            const crd = pos.coords;
+                        if(geolocationPosition.timestamp - prevTime > broadcaseFrequncy)
+                        {
+                            prevTime = geolocationPosition.timestamp
+                            const geolocationCoordinates = geolocationPosition.coords;
 
-                            latlngMessageDiv.innerHTML = `lat: ${crd.latitude}, lng: ${crd.longitude}`
-
-                            socket.emit('broadcast_bus', {'selected_route': routeSelect.value, 'bus_lat': crd.latitude, 'bus_lng': crd.longitude })
-                        }, error, options);
-
-                        setTimeout(getPosition, 5000)
+                            //console.log(`Function called with ${geolocationCoordinates}`)
+                            latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
+                                                          Longitude :${geolocationCoordinates.longitude}
+                                                          Accuracy  :${geolocationCoordinates.accuracy}
+                                                          Speed     :${geolocationCoordinates.speed}`
+                            // Send the location information to the server
+                            socket.emit('broadcast_bus', {
+                            'selected_route': routeSelect.value,
+                            'bus_lat': geolocationCoordinates.latitude,
+                            'bus_lng': geolocationCoordinates.longitude,
+                            'bus_dir': geolocationCoordinates.heading
+                        })
+                        }
+                        else
+                        {
+                            // We don't want to make frequent commits to server.
+                            console.log(geolocationPosition.timestamp - prevTime)
+                        }
                     };
 
-                    getPosition();  // execute immediately
+                    navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError,watchPositionOptions)
 
                 })
             })
