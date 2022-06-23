@@ -5,7 +5,8 @@ let map;
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
 let displayedRoute = ""  // ID of currently displayed route
 
-let markerInfoWindow;   // marker info window
+let activeMarkerInfoWindow;   // marker info window
+let activeMarkerObj = null;   // marker info window
 
 var busIcon;  // icon for bus
 
@@ -151,6 +152,7 @@ function hideDisplayedMarkers() {
 }
 
 
+
 /**
  * Class to represent a bus stop. One of its properties is a google.maps.Marker instance.
  */
@@ -179,6 +181,9 @@ class BusStop {
         `Route: ${this.route}<br>` +
         `Next Arrival in ${this.est_arrival}`;
     }
+    refreshInfoWindow() {
+        activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
+    }
 
     // '#' prefix makes it a private method
     #initMapMarker() {
@@ -190,10 +195,11 @@ class BusStop {
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
         marker.addListener("click", () => {
-            markerInfoWindow.close();  // closes any currently open info window
-            markerInfoWindow.setContent(this.getInfoWindowContent())
-            markerInfoWindow.open(marker.getMap(), marker)
-            // stopInfoWindow.open(map, marker)
+            activeMarkerInfoWindow.close();  // closes any currently open info window
+            activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
+            activeMarkerInfoWindow.open(marker.getMap(), marker)
+            // Set the current object as the active marker object
+            activeMarkerObj = this
         })
 
         this.marker = marker;
@@ -206,12 +212,12 @@ class BusStop {
 /**
  * Replaced with BusStop class. Delete.
  */
-function createRouteMarker(stop) {
+function createRouteMarker(busStop) {
 
-    const stopName = stop["Stop Name"]
+    const stopName = busStop["Stop Name"]
 
-    marker = new google.maps.Marker({
-        position: {lat: stop.Lat, lng: stop.Lng},
+    let marker = new google.maps.Marker({
+        position: {lat: busStop.Lat, lng: busStop.Lng},
         map: null,
         title: stopName
     })
@@ -224,11 +230,10 @@ function createRouteMarker(stop) {
  * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
  */
 function initAllRouteMarkers() {
-    for(var key in JSON_ROUTES) {
-        mapRouteMarkers[key] = [];
-        for (var key1 in JSON_ROUTES[key]){
-            // console.log(JSON_ROUTES[key][key1])
-            mapRouteMarkers[key][key1] = new BusStop(JSON_ROUTES[key][key1])
+    for(const route in JSON_ROUTES) {
+        mapRouteMarkers[route] = [];
+        for (const busStop in JSON_ROUTES[route]){
+            mapRouteMarkers[route][busStop] = new BusStop(JSON_ROUTES[route][busStop])
         }
     }
 }
@@ -246,12 +251,13 @@ function initMap() {
     });
 
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
-    markerInfoWindow = new google.maps.InfoWindow();
+    activeMarkerInfoWindow = new google.maps.InfoWindow();
 
     // Initialize bus icon using google.maps.Size method to resize image at specified url
     busIcon = {
         url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
         scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
+       // rotationAngle: 0
     };
 
     // Initialize BuStop instances that contain google.maps.Marker instances
@@ -299,13 +305,21 @@ function updateBusMarkersBySid(data) {
 
         if (sid in busMarkersBySid) {
             sidMarker = busMarkersBySid[sid]
-            if (sidMarker != undefined) {
+            if (sidMarker !== undefined) {
+
+                //  Using this option will force center the map to the current location of teh bus.
+                // This may be annoying. So commenting it for now.
+               /* const moveCamaraOptions = {
+                    center:newLatLng,
+                    heading:sidData.bus_dir
+                }*/
+
                 sidMarker.setPosition(newLatLng)
+                //sidMarker.map.moveCamera(moveCamaraOptions);
             } else {
                 //todo, shouldn't happen
             }
         } else {
-            // create a marker for sid
             sidMarker = new google.maps.Marker({
                 position: newLatLng,
                 map: map,
@@ -358,6 +372,8 @@ socket.on("display busses", data => {
 // socket event listener for updated estimated arrival times
 socket.on("update arrival times", data => {
     updateBusStopArrivalTimes(data)
+    if(activeMarkerObj !== null)
+        activeMarkerObj.refreshInfoWindow()
 });
 
 
