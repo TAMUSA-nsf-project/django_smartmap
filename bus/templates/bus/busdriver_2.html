@@ -9,14 +9,14 @@
             const routeSelect = document.querySelector("#routeSelect");
             const statusMessageDiv = document.querySelector("#statusMessage")
             const latlngMessageDiv = document.querySelector("#latlngMessage")
-            const broadcaseFrequncy = 2000;
+            const broadcastFrequency = 2000;
 
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
             let prevTime = Date.now();
 
             const watchPositionOptions = {
                 enableHighAccuracy: true,
-                timeout: broadcaseFrequncy,
+                timeout: broadcastFrequency,
                 //maximumAge: 60000,
             };
 
@@ -32,7 +32,7 @@
 
                     const watchPositionSuccess = function (geolocationPosition) {
 
-                        if(geolocationPosition.timestamp - prevTime > broadcaseFrequncy)
+                        if(geolocationPosition.timestamp - prevTime > broadcastFrequency)
                         {
                             prevTime = geolocationPosition.timestamp
                             const geolocationCoordinates = geolocationPosition.coords;
