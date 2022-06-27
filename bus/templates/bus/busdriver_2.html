@@ -11,7 +11,6 @@
             const latlngMessageDiv = document.querySelector("#latlngMessage")
             const broadcastFrequency = 2000;
 
-            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
             let prevTime = Date.now();
 
             const watchPositionOptions = {
@@ -24,42 +23,57 @@
               console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
             }
 
-            socket.on('connect', () => {
+            function ajaxSuccess(data) {
+                // nothing
+            }
 
-                routeSelect.addEventListener("input", () => {
 
-                    statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
+            routeSelect.addEventListener("input", () => {
 
-                    const watchPositionSuccess = function (geolocationPosition) {
+                statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
 
-                        if(geolocationPosition.timestamp - prevTime > broadcastFrequency)
-                        {
-                            prevTime = geolocationPosition.timestamp
-                            const geolocationCoordinates = geolocationPosition.coords;
+                const watchPositionSuccess = function (geolocationPosition) {
 
-                            //console.log(`Function called with ${geolocationCoordinates}`)
-                            latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
-                                                          Longitude :${geolocationCoordinates.longitude}
-                                                          Accuracy  :${geolocationCoordinates.accuracy}
-                                                          Speed     :${geolocationCoordinates.speed}`
-                            // Send the location information to the server
-                            socket.emit('broadcast_bus', {
+                    if(geolocationPosition.timestamp - prevTime > broadcastFrequency)
+                    {
+                        prevTime = geolocationPosition.timestamp
+                        const geolocationCoordinates = geolocationPosition.coords;
+
+                        //console.log(`Function called with ${geolocationCoordinates}`)
+                        latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
+                                                      Longitude :${geolocationCoordinates.longitude}
+                                                      Accuracy  :${geolocationCoordinates.accuracy}
+                                                      Speed     :${geolocationCoordinates.speed}`
+
+                        // Send the location information to the server
+                        const posData = {
                             'selected_route': routeSelect.value,
                             'bus_lat': geolocationCoordinates.latitude,
                             'bus_lng': geolocationCoordinates.longitude,
-                            'bus_dir': geolocationCoordinates.heading
-                        })
+                            //'bus_dir': geolocationCoordinates.heading  // commented to not break map_index.js
                         }
-                        else
-                        {
-                            // We don't want to make frequent commits to server.
-                            console.log(geolocationPosition.timestamp - prevTime)
-                        }
-                    };
 
-                    navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError,watchPositionOptions)
+                        jQuery.ajax({
+                            url: "{% url 'bus:busposition-ajax' %}",
+                            data: {'posData': JSON.stringify(posData)},
+                            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                            // server-side, hence the object defined here
+                            type: "GET",
+                            //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                            success: ajaxSuccess,
+                        });
 
-                })
+                    }
+                    else
+                    {
+                        // We don't want to make frequent commits to server.
+                        console.log(geolocationPosition.timestamp - prevTime)
+                    }
+                };
+
+                navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
+
             })
         })
 
