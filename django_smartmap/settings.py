@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'main',
     'map',
     'bus',
+    'users',
 
     # Development tools/apps
     'sslserver',
@@ -151,3 +152,9 @@ GOOGLE_MAP_API_KEY = "AIzaSyC0AlkYbHeB3sRmac5oTnYpxUIZOh1JFC0"
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
 GOOGLE_PYTHON_API_KEY = "AIzaSyCbO-kPvkYJsTZ93ujs0gsC7eymgj2iE3c"
+
+
+"""
+Logins
+"""
+LOGIN_URL = 'users:login'
