@@ -9,7 +9,15 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="{% url 'map:map'%}">Map</a>
-        <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+        {% if perms.bus.access_busdriver_pages %}
+            <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        Hello, {{ user.username }}.
+            <a href="{% url 'users:logout' %}">Log out</a>
+        {% else %}
+            <a class="nav-link" href="{% url 'users:login' %}">Login</a>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ import json
 import os
 import ast
 
+from django.contrib.auth.decorators import login_required, permission_required
 
 # Socket IO
 sio = settings.SIO
@@ -26,6 +27,8 @@ Bus Driver page
 busses = defaultdict(dict)
 
 
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
     context = {
         "route_json": json_data.keys(),
