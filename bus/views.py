@@ -27,8 +27,8 @@ Bus Driver page
 busses = defaultdict(dict)
 
 
-@login_required
-@permission_required('bus.access_busdriver_pages', raise_exception=True)
+# @login_required
+# @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
     context = {
         "route_json": json_data.keys(),
