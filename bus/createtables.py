@@ -1,0 +1,66 @@
+import json, os
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django_smartmap.settings'
+
+import django
+django.setup()
+
+from django.conf import settings
+
+
+from bus.models import BusStop, BusRoute, BusRouteStop
+
+# Read json file with all the route data (bus stops and their lat, lng, etc)
+with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
+    json_data = json.load(f)
+
+Stop_Name_KEY = "Stop Name"
+
+# BusStop instances
+for route, bus_stop_list in json_data.items():
+    for stop in bus_stop_list:
+        stop_name = stop[Stop_Name_KEY]
+        try:
+            busStop = BusStop.objects.get(name=stop_name)
+        except BusStop.DoesNotExist:
+            busStop = BusStop()
+            busStop.name = stop_name
+            busStop.stop_id = stop["Stop Number"]
+            busStop.latitude = stop["Lat"]
+            busStop.longitude = stop["Lng"]
+            busStop.save()
+
+
+
+# BusRoute instances
+for route, bus_stop_list in json_data.items():
+    first_stop_name = bus_stop_list[0][Stop_Name_KEY]
+    last_stop_name = bus_stop_list[-1][Stop_Name_KEY]
+    try:
+        busRoute = BusRoute.objects.get(name=route)
+    except BusRoute.DoesNotExist:
+        busRoute = BusRoute()
+        busRoute.name = route
+        busRoute.first_stop = BusStop.objects.get(name=first_stop_name)
+        busRoute.last_stop = BusStop.objects.get(name=last_stop_name)
+        busRoute.save()
+
+
+# BusRouteStop instances
+for route, bus_stop_list in json_data.items():
+    parentRoute = BusRoute.objects.get(name=route)
+    for stop in bus_stop_list:
+        busStop = BusStop.objects.get(name=stop[Stop_Name_KEY])
+        route_index = stop["Order on Route"]
+        try:
+            busRouteStop = BusRouteStop.objects.get(bus_stop__name=stop[Stop_Name_KEY])
+        except BusRouteStop.DoesNotExist:
+            busRouteStop = BusRouteStop()
+            busRouteStop.parent_route = parentRoute
+            busRouteStop.bus_stop = busStop
+            busRouteStop.route_index = route_index
+            busRouteStop.save()
+
+
+
+
