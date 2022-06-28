@@ -8,7 +8,7 @@ django.setup()
 from django.conf import settings
 
 
-from bus.models import BusStop, BusRoute, BusRouteStop
+from bus.models import BusStop, BusRoute, BusRouteDetails
 
 # Read json file with all the route data (bus stops and their lat, lng, etc)
 with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
@@ -53,9 +53,9 @@ for route, bus_stop_list in json_data.items():
         busStop = BusStop.objects.get(name=stop_dict[Stop_Name_KEY])
         route_index = stop_dict["Order on Route"]
         try:
-            busRouteStop = BusRouteStop.objects.get(parent_route__name=route, bus_stop__name=stop_dict[Stop_Name_KEY])
-        except BusRouteStop.DoesNotExist:
-            busRouteStop = BusRouteStop()
+            busRouteStop = BusRouteDetails.objects.get(parent_route__name=route, bus_stop__name=stop_dict[Stop_Name_KEY])
+        except BusRouteDetails.DoesNotExist:
+            busRouteStop = BusRouteDetails()
             busRouteStop.parent_route = parentRoute
             busRouteStop.bus_stop = busStop
             busRouteStop.route_index = route_index

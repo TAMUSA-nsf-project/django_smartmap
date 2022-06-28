@@ -24,10 +24,15 @@ class BusRoute(models.Model):
         return self.name
 
 
-class BusRouteStop(models.Model):
+class BusRouteDetails(models.Model):
     parent_route = models.ForeignKey("BusRoute", on_delete=models.CASCADE)
     bus_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE)
     route_index = models.PositiveSmallIntegerField()
 
+    class Meta:
+        verbose_name_plural = "Bus Route Details"
+
     def __str__(self):
         return f"{self.parent_route.name}::{self.bus_stop.name}"
+
+
