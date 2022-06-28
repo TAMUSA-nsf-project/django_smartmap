@@ -18,16 +18,16 @@ Stop_Name_KEY = "Stop Name"
 
 # BusStop instances
 for route, bus_stop_list in json_data.items():
-    for stop in bus_stop_list:
-        stop_name = stop[Stop_Name_KEY]
+    for stop_dict in bus_stop_list:
+        stop_name = stop_dict[Stop_Name_KEY]
         try:
             busStop = BusStop.objects.get(name=stop_name)
         except BusStop.DoesNotExist:
             busStop = BusStop()
             busStop.name = stop_name
-            busStop.stop_id = stop["Stop Number"]
-            busStop.latitude = stop["Lat"]
-            busStop.longitude = stop["Lng"]
+            busStop.stop_id = stop_dict["Stop Number"]
+            busStop.latitude = stop_dict["Lat"]
+            busStop.longitude = stop_dict["Lng"]
             busStop.save()
 
 
@@ -49,11 +49,11 @@ for route, bus_stop_list in json_data.items():
 # BusRouteStop instances
 for route, bus_stop_list in json_data.items():
     parentRoute = BusRoute.objects.get(name=route)
-    for stop in bus_stop_list:
-        busStop = BusStop.objects.get(name=stop[Stop_Name_KEY])
-        route_index = stop["Order on Route"]
+    for stop_dict in bus_stop_list:
+        busStop = BusStop.objects.get(name=stop_dict[Stop_Name_KEY])
+        route_index = stop_dict["Order on Route"]
         try:
-            busRouteStop = BusRouteStop.objects.get(bus_stop__name=stop[Stop_Name_KEY])
+            busRouteStop = BusRouteStop.objects.get(parent_route__name=route, bus_stop__name=stop_dict[Stop_Name_KEY])
         except BusRouteStop.DoesNotExist:
             busRouteStop = BusRouteStop()
             busRouteStop.parent_route = parentRoute
