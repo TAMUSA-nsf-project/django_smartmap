@@ -38,7 +38,6 @@ class BusRouteDetails(models.Model):
         return f"{self.parent_route.name}::{self.bus_stop.name}"
 
 
-
 class BusDriver(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -49,3 +48,17 @@ class BusDriver(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class TransitLog(models.Model):
+    bus_driver = models.ForeignKey("BusDriver", on_delete=models.CASCADE)
+    bus_route = models.ForeignKey("BusRoute", on_delete=models.CASCADE)
+    last_known_lat = models.FloatField()
+    last_known_lng = models.FloatField()
+    last_bus_stop = models.CharField(max_length=200)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
+    # therefore it does not need to be updated explicitly
+
+    def __str__(self):
+        return f"{self.start_time}::{self.bus_driver.user.username}::{self.bus_route.name}"
