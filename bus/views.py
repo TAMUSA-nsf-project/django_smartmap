@@ -5,6 +5,8 @@ import json
 import os
 import ast
 
+from .models import Bus, BusDriver, BusStop
+
 from django.contrib.auth.decorators import login_required, permission_required
 
 # Socket IO
@@ -36,14 +38,36 @@ def busdriver_view(request):
     return render(request, "bus/busdriver_2.html", context)
 
 
+
+@login_required
+# @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
     """
     data format: {'selected_route': str, 'bus_lat': float, 'bus_lng': float }
     """
     if request.method == 'GET':
+        # extract bus position out of request
         pos_data = ast.literal_eval(request.GET.get('posData'))
-        busses[str(request.user)] = pos_data  # TODO the driver's username is used as the key
-        sio.emit("display busses", busses)
+        selected_route = pos_data['selected_route']
+        bus_lat = pos_data['bus_lat']
+        bus_lng = pos_data['bus_lng']
+
+        # update bus pos in db (todo: push this task to async queue)
+        try:
+            bus = Bus.objects.get(driver=request.user.username)
+        except Bus.DoesNotExist:
+            bus = Bus(driver=request.user.username)
+
+        bus.latitude = bus_lat
+        bus.longitude = bus_lng
+        bus.route = selected_route
+        bus.save()
+
+
+        # emit bus pos
+        # sio.emit(pos_data['selected_route'], pos_data)
+        # busses[str(request.user)] = pos_data  # TODO the driver's username is used as the key
+        # sio.emit("display busses", {'bus_lat': bus_lat, })
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
