@@ -3,6 +3,17 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class Bus(models.Model):
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    # driver = models.OneToOneField("BusDriver", on_delete=models.CASCADE)
+    driver = models.CharField(max_length=100)
+    route = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"Bus {self.id}"
+
+
 
 
 class BusStop(models.Model):
