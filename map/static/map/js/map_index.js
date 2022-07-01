@@ -167,15 +167,38 @@ class BusStop {
         this.#initMapMarker();
     }
 
-    /**
-     * Updates the string property "est_arrival" with string input "new_est_str".
-     * @param new_est_str: a string representing the new estimated arrival time
-     */
-    updateEstArrival(new_est_str) {
-        this.est_arrival = new_est_str
+    set setEstArrival(new_est_arrival) {
+        this.est_arrival = new_est_arrival;
+    }
+
+    updateEstArrival() {
+
+        const toSend = {'route': this.route, 'bus_stop_id': this.number}
+
+        jQuery.ajax({
+            url: AJAX_EST_ARRIVAL_URL, //TODO setup url
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            //dataType: 'json', // dataType specifies the type of data expected back from the server,
+            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+            success: (data) => {
+                if (data)
+                    this.est_arrival = data;
+                else
+                    this.est_arrival = "TBD"
+            },
+        });
+
+
+
+
     }
 
     getInfoWindowContent() {
+        this.updateEstArrival()
+
         return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
         `Stop #: ${this.number}<br>` +
         `Route: ${this.route}<br>` +
