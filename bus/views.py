@@ -37,6 +37,39 @@ def busdriver_view(request):
     }
     return render(request, "bus/busdriver_2.html", context)
 
+from .distancematrixcalcs import calc_duration
+from datetime import datetime
+
+def getEstimatedArrivalAJAX(request):
+    """
+    Called by BusStop js class method. User is requesting position of bus(es) for a route.
+    :param request:
+    :return:
+    """
+    # extract data from request,  route and bus_stop ID
+    user_data = ast.literal_eval(request.GET.get('data'))
+    user_selected_route = user_data.get('route')
+    user_selected_bus_stop = user_data.get('bus_stop_id')
+
+    # TODO filter BusRoute models
+
+    # filter Bus models by route (for now)
+    try:
+        # assumptions:  only one bus at anytime per route
+        bus = Bus.objects.get(route=user_selected_route)  # TODO filter for multiple busses
+    except Bus.DoesNotExist:
+        return HttpResponse("")
+
+    busCoord = (bus.latitude, bus.longitude)
+
+    # get BusStop instance
+    busStop = BusStop.objects.get(stop_id=int(user_selected_bus_stop))
+    busStopCoord = (busStop.latitude, busStop.longitude)
+
+    # send bus lat and lng to dist matrix calc
+    res = calc_duration(busCoord, busStopCoord, datetime.now())
+    return HttpResponse(res)
+
 
 
 @login_required
