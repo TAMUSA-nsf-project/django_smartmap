@@ -152,7 +152,7 @@ GOOGLE API KEYS GO HERE:
 GOOGLE_MAP_API_KEY = "AIzaSyC0AlkYbHeB3sRmac5oTnYpxUIZOh1JFC0"
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
-GOOGLE_PYTHON_API_KEY = "AIzaSyCbO-kPvkYJsTZ93ujs0gsC7eymgj2iE3c"
+GOOGLE_PYTHON_API_KEY = "AIzaSyDAi3Sh-C1AMImlHzjlBa56jE6LSbCtULQ"
 
 
 """
