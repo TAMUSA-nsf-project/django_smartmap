@@ -7,6 +7,7 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
+var intervalHandle;
 
 var busIcon;  // icon for bus
 
@@ -164,40 +165,61 @@ class BusStop {
         this.Lat = json_data.Lat
         this.Lng = json_data.Lng
         this.est_arrival = "TBD"
+        // this.active = false;
         this.#initMapMarker();
+        // this.intervalHandle = null;
     }
 
     set setEstArrival(new_est_arrival) {
         this.est_arrival = new_est_arrival;
     }
 
+    setUpCallBack() {
+        console.log(activeMarkerObj.name);
+        activeMarkerObj.active = true
+        console.log(this);
+        activeMarkerObj.intervalHandle = setInterval(activeMarkerObj.callBackMethod(), 1000);
+    }
+
+
+
+    callBackMethod()
+        {
+            // console.log(this);
+            // if(!this.active){
+            //     console.log("Returning");
+            //     return
+            // }
+            console.log("Calling");
+            // console.log("infoWindow is bound to map: "+(activeMarkerInfoWindow.getMap() ? true : false));
+            const toSend = {'route': this.route, 'bus_stop_id': this.number}
+            jQuery.ajax({
+                url: AJAX_EST_ARRIVAL_URL, //TODO setup url
+                data: {'data': JSON.stringify(toSend)},
+                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                // server-side, hence the object defined here
+                type: "GET",
+                //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                success: (data) => {
+                    if (data) {
+                        console.log(data)
+                        this.est_arrival = data;
+                    }
+                    else
+                        this.est_arrival = "TBD"
+                    this.refreshInfoWindow();
+                },
+            });
+
+        }
+
     updateEstArrival() {
-
-        const toSend = {'route': this.route, 'bus_stop_id': this.number}
-
-        jQuery.ajax({
-            url: AJAX_EST_ARRIVAL_URL, //TODO setup url
-            data: {'data': JSON.stringify(toSend)},
-            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-            // server-side, hence the object defined here
-            type: "GET",
-            //dataType: 'json', // dataType specifies the type of data expected back from the server,
-            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
-            success: (data) => {
-                if (data)
-                    this.est_arrival = data;
-                else
-                    this.est_arrival = "TBD"
-            },
-        });
-
-
-
 
     }
 
     getInfoWindowContent() {
-        this.updateEstArrival()
+        // this.updateEstArrival()
 
         return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
         `Stop #: ${this.number}<br>` +
@@ -219,16 +241,37 @@ class BusStop {
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
         marker.addListener("click", () => {
             activeMarkerInfoWindow.close();  // closes any currently open info window
+            activeMarkerInfoWindow.addListener("closeclick", () =>{
+                console.log("Window Closed")
+                activeMarkerObj = null;
+                // this.active = false;
+                // clearInterval(this.intervalHandle);
+            });
             activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
             activeMarkerInfoWindow.open(marker.getMap(), marker)
+
             // Set the current object as the active marker object
             activeMarkerObj = this
+            // this.setUpCallBack();
         })
 
         this.marker = marker;
     }
 
 }
+
+
+
+setInterval(function ()
+{
+    console.log("infoWindow is bound to map: "+(activeMarkerInfoWindow.getMap() ? true : false));
+    if(activeMarkerObj)
+    {
+        activeMarkerObj.callBackMethod();
+    }
+
+
+}, 5000);
 
 
 
@@ -385,18 +428,18 @@ function updateBusStopArrivalTimes(data) {
 }
 
 
-// socket event listener for updated bus position
-socket.on("display busses", data => {
-    updateBusMarkersBySid(data);  // must be called first
-    updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
-});
-
-
-// socket event listener for updated estimated arrival times
-socket.on("update arrival times", data => {
-    updateBusStopArrivalTimes(data)
-    if(activeMarkerObj !== null)
-        activeMarkerObj.refreshInfoWindow()
-});
+// // socket event listener for updated bus position
+// socket.on("display busses", data => {
+//     updateBusMarkersBySid(data);  // must be called first
+//     updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
+// });
+//
+//
+// // socket event listener for updated estimated arrival times
+// socket.on("update arrival times", data => {
+//     updateBusStopArrivalTimes(data)
+//     if(activeMarkerObj !== null)
+//         activeMarkerObj.refreshInfoWindow()
+// });
 
 
