@@ -37,8 +37,10 @@ def busdriver_view(request):
     }
     return render(request, "bus/busdriver_2.html", context)
 
+
 from .distancematrixcalcs import calc_duration
 from datetime import datetime
+
 
 def getEstimatedArrivalAJAX(request):
     """
@@ -96,13 +98,10 @@ def bus_position_ajax(request):
         bus.route = selected_route
         bus.save()
 
-
         # emit bus pos
         # sio.emit(pos_data['selected_route'], pos_data)
         # busses[str(request.user)] = pos_data  # TODO the driver's username is used as the key
-        # sio.emit("display busses", {'bus_lat': bus_lat, })
+        sio.emit("display busses", {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude}})
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
-
-
