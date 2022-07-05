@@ -1,0 +1,55 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <style>
+        #content-main {
+            height: 80vh;
+            color: black;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+ <div id="content-main" class="container d-flex justify-content-center">
+        <div class="row">
+
+            <div class="col-md-5 align-self-center">
+                <img src="{% static 'main/img/shutterstock_627370652.jpg' %}" alt="shutterstock_627370652.jpg" style="max-width: 100%;">
+            </div>
+            <div class="col-md-7 align-self-center">
+
+                <article class="container d-flex flex-column align-items-start justify-content-md-start"
+                    style="margin-bottom: 5%; margin-top: 5%;">
+                    <h3 style="text-align: center; ">Goals and Objectives</h3>
+                    <!-- <article class="text-white mb-0"> -->
+                        <!-- <article class="text-white mb-0" style="background-color: rgba(51, 46, 112, 0.02);"> -->
+
+                        <p> MySmartSA utilizes a multipronged approach to conduct quantitative and qualitative research
+                                using secure intelligent technology, build intra- and inter-disciplinary research capacity
+                                at A&M-SA, build research partnerships between A&M-SA and SA VIA Metropolitan Transit (VIA
+                                Transit) to facilitate data driven transit planning decisions, and increase the competitiveness of
+                        A&M-SA faculty-student research for future CISE grants. The MySmartSA app will be customizable and
+                        will include real-time bus arrival information, notices when seating is limited, instant alert
+                        messages for schedule changes and other important information, and interactive features to
+                        directly collect data from riders about their commute experience. All services will be available in both English and Spanish. Researchers and students from
+                        diverse disciplines (sociology, computer science, cyber security, & information science)
+                        will work collaboratively to achieve project success. </p>
+
+                        <p>The objectives of the MySmartSA are to:</p>
+                        <p>(1) improve the accuracy of bus arrival time reporting     </p>
+                        <p>(2) provide up-to-date information about seating availability and important transit alerts</p>
+                        <p> (3) collect data that will be used to improve rider satisfaction and inclusivity of VIA transit </p>
+
+                </article>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    {% include 'main/nsf_footer.html' %}
+{% endblock %}
