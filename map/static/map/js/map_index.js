@@ -410,18 +410,18 @@ function updateBusStopArrivalTimes(data) {
 }
 
 
-// // socket event listener for updated bus position
-// socket.on("display busses", data => {
-//     updateBusMarkersBySid(data);  // must be called first
-//     updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
-// });
-//
-//
-// // socket event listener for updated estimated arrival times
-// socket.on("update arrival times", data => {
-//     updateBusStopArrivalTimes(data)
-//     if(activeMarkerObj !== null)
-//         activeMarkerObj.refreshInfoWindow()
-// });
+// socket event listener for updated bus position
+socket.on("display busses", data => {
+    updateBusMarkersBySid(data);  // must be called first
+    // updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
+});
+
+
+// socket event listener for updated estimated arrival times
+socket.on("update arrival times", data => {
+    updateBusStopArrivalTimes(data)
+    if(activeMarkerObj !== null)
+        activeMarkerObj.refreshInfoWindow()
+});
 
 
