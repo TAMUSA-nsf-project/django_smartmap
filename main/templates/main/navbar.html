@@ -10,6 +10,14 @@
       <div class="navbar-nav">
         <a class="nav-link" href="{% url 'map:map'%}">Map</a>
         <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Project
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="{% url 'main:goals-objectives' %}">Goals & Objectives</a></li>
+          </ul>
+        </li>
       </div>
     </div>
   </div>
