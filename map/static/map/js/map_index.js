@@ -274,24 +274,6 @@ setInterval(function ()
 }, 5000);
 
 
-
-/**
- * Replaced with BusStop class. Delete.
- */
-function createRouteMarker(busStop) {
-
-    const stopName = busStop["Stop Name"]
-
-    let marker = new google.maps.Marker({
-        position: {lat: busStop.Lat, lng: busStop.Lng},
-        map: null,
-        title: stopName
-    })
-
-    return marker
-}
-
-
 /**
  * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
  */
