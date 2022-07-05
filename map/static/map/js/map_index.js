@@ -190,6 +190,7 @@ class BusStop {
                 else
                     this.est_arrival = "TBD"
 
+                // Refresh the info window
                 this.refreshInfoWindow();
             },
         });
@@ -221,10 +222,10 @@ class BusStop {
             activeMarkerInfoWindow.close();  // closes any currently open info window
             activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
             activeMarkerInfoWindow.open(marker.getMap(), marker)
+            this.callBackMethod();
 
             // Set the current object as the active marker object
             activeMarkerObj = this
-            // this.setUpCallBack();
         })
 
         this.marker = marker;
