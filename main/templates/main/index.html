@@ -3,43 +3,55 @@
 
 {% block extend_head %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+   <style>
+        #intro {
+            height: 100vh;  /* div height */
 
-            document.querySelector('#red').onclick = function() {
-                document.querySelector('#hello').style.color = 'red';
-            };
-
-            document.querySelector('#green').onclick = function() {
-                document.querySelector('#hello').style.color = 'green';
-            };
-
-            document.querySelector('#blue').onclick = function() {
-                document.querySelector('#hello').style.color = 'blue';
-            };
-
-        });
-
-    </script>
+            background-image: url("{% static 'main/img/39584_white-bus-on-road-near-in-high-rise-building.jpeg' %}");
+            background-size: cover;  /* background image size, 'cover' forces image to cover entire container */
+            background-position: center;
+        }
+    </style>
 
 {% endblock %}
 
 
 {% block content %}
 
-    <div class="p-5 mb-4 bg-light rounded-3">
-      <div class="container-fluid py-1">
-        <h1 class="display-5 fw-bold" id="hello">Hello.</h1>
-        <p class="col-md-8 fs-4">This site is under construction.</p>
-        <button class="btn btn-secondary btn-md" id="red">Red</button>
-        <button class="btn btn-secondary btn-md" id="green">Green</button>
-        <button class="btn btn-secondary btn-md" id="blue">Blue</button>
-      </div>
+    <div id="intro" class="container-fluid">
+        <div class="container py-4">
+            <br><br>
+            <h3 class="text-white mb-0" style="text-align: center;">
+                Building a Smart Mobility Network for the San Antonio Transit to Improve Transit Service and
+                Social Impact (SmartSA)
+            </h3>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/map" title="Go to Map">
+                        <img src="{% static 'main/img/MapButton.png' %}" alt="MAP"
+                            style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
+                            object-fit: scale-down;">
+                    </a>
+                    <a href="https://tamusa.co1.qualtrics.com/jfe/form/SV_7WF9vwgK7BUyoxE"
+                        title="Take the Survey">
+                        <img src="{% static 'main/img/SurveyButton.png' %}" alt="Survey"
+                        style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
+                        object-fit: scale-down;">
+                    </a>
+                </div>
+                <div class="col-md-9">
+                    <a href="https://tamusa.co1.qualtrics.com/jfe/form/SV_7WF9vwgK7BUyoxE"
+                        title="Take the Survey">
+                        <img src="{% static 'main/img/flyer.png' %}" class="img-fluid" alt="Survey"
+                        style="margin-top: 1.5%; object-fit: cover;">
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
+    {% include 'main/nsf_footer.html' %}
 
-    <footer class="pt-3 mt-4 text-muted border-top">
-      © 2022
-    </footer>
 
 {% endblock %}
