@@ -4,6 +4,7 @@ from django.conf import settings
 import json
 import os
 import ast
+from django.utils.timezone import utc
 
 from .models import Bus, BusDriver, BusStop
 
@@ -57,6 +58,12 @@ def getEstimatedArrivalAJAX(request):
         # assumptions:  only one bus at anytime per route
         bus = Bus.objects.get(route=user_selected_route)  # TODO filter for multiple busses
     except Bus.DoesNotExist:
+        return HttpResponse("")
+
+    # check age of bus's data
+    now = datetime.utcnow().replace(tzinfo=utc)
+    timediff = now - bus.end_time
+    if timediff.total_seconds() > 30:
         return HttpResponse("")
 
     busCoord = (bus.latitude, bus.longitude)
