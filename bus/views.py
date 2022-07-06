@@ -25,9 +25,6 @@ json_routes = json.dumps(json_data)
 Bus Driver page
 """
 
-# dictionary of busses where key is the socket ID (sid)
-busses = defaultdict(dict)
-
 
 @login_required
 # @permission_required('bus.access_busdriver_pages', raise_exception=True)
@@ -68,10 +65,11 @@ def getEstimatedArrivalAJAX(request):
     busStop = BusStop.objects.get(stop_id=int(user_selected_bus_stop))
     busStopCoord = (busStop.latitude, busStop.longitude)
 
-    # send bus lat and lng to dist matrix calc
+    # send Bus obj coords and BusStop obj coords to dist matrix calc
     res = calc_duration(busCoord, busStopCoord, datetime.now())
-    return HttpResponse(res)
 
+    # return estimated arrival time result to user
+    return HttpResponse(res)
 
 
 @login_required
@@ -98,10 +96,10 @@ def bus_position_ajax(request):
         bus.route = selected_route
         bus.save()
 
-        # emit bus pos
-        # sio.emit(pos_data['selected_route'], pos_data)
-        # busses[str(request.user)] = pos_data  # TODO the driver's username is used as the key
-        sio.emit("display busses", {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude}})
+        # Broadcast the bus's position
+        sio.emit("display busses",
+                 {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude}})
+
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
