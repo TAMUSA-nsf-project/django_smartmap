@@ -83,16 +83,18 @@
 
 
 {% block content %}
-    <div class="mb-3">
-        <select class="form-select" id="routeSelect">
-            <option selected disabled value="">Select route...</option>
-            {% for route in route_json %}
-                <option value="{{ route }}">{{ route }}</option>
-            {% endfor %}
-        </select>
+    <div class="container py-4">
+        <div class="mb-3">
+            <select class="form-select" id="routeSelect">
+                <option selected disabled value="">Select route...</option>
+                {% for route in route_json %}
+                    <option value="{{ route }}">{{ route }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3" id="statusMessage"></div>
+        <div class="mb-3" id="latlngMessage"></div>
     </div>
-    <div class="mb-3" id="statusMessage"></div>
-    <div class="mb-3" id="latlngMessage"></div>
 
 
 
