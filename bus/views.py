@@ -64,7 +64,7 @@ def getEstimatedArrivalAJAX(request):
     now = datetime.utcnow().replace(tzinfo=utc)
     timediff = now - bus.end_time
     if timediff.total_seconds() > 30:
-        return HttpResponse("")
+        return HttpResponse("Data older than 30 sec!")
 
     busCoord = (bus.latitude, bus.longitude)
 
