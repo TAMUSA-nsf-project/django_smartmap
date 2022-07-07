@@ -8,4 +8,7 @@ urlpatterns = [
     path('busdriver/', views.busdriver_view, name='busdriver-page'),
     path('busposition-ajax/', views.bus_position_ajax, name='busposition-ajax'),
 
+    # User-requested bus info
+    path('busestarrival-ajax/', views.getEstimatedArrivalAJAX, name='busestarrival-ajax'),
+
 ]

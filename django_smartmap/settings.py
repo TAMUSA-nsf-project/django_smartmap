@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y11zz=s=-sr+(9y@e!ejde1o=m7j(o1t=l020k1i+n6=ep5bi=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 if 'ALLOWED_HOSTS_ENV' in os.environ:
     ALLOWED_HOSTS.extend(os.environ['ALLOWED_HOSTS_ENV'].split(','))
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'main',
     'map',
     'bus',
+    'users',
 
     # Development tools/apps
     'sslserver',
@@ -151,4 +152,10 @@ GOOGLE API KEYS GO HERE:
 GOOGLE_MAP_API_KEY = "AIzaSyC0AlkYbHeB3sRmac5oTnYpxUIZOh1JFC0"
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
-GOOGLE_PYTHON_API_KEY = "AIzaSyCbO-kPvkYJsTZ93ujs0gsC7eymgj2iE3c"
+GOOGLE_PYTHON_API_KEY = "AIzaSyDAi3Sh-C1AMImlHzjlBa56jE6LSbCtULQ"
+
+
+"""
+Logins
+"""
+LOGIN_URL = 'users:login'

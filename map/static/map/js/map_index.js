@@ -7,6 +7,7 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
+var intervalHandle;
 
 var busIcon;  // icon for bus
 
@@ -164,15 +165,36 @@ class BusStop {
         this.Lat = json_data.Lat
         this.Lng = json_data.Lng
         this.est_arrival = "TBD"
+        // this.active = false;
         this.#initMapMarker();
+        // this.intervalHandle = null;
     }
 
-    /**
-     * Updates the string property "est_arrival" with string input "new_est_str".
-     * @param new_est_str: a string representing the new estimated arrival time
-     */
-    updateEstArrival(new_est_str) {
-        this.est_arrival = new_est_str
+    callBackMethod()
+    {
+
+        const toSend = {'route': this.route, 'bus_stop_id': this.number}
+        jQuery.ajax({
+            url: AJAX_EST_ARRIVAL_URL, //TODO setup url
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            //dataType: 'json', // dataType specifies the type of data expected back from the server,
+            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+            success: (data) => {
+                if (data) {
+                    console.log(data)
+                    this.est_arrival = data;
+                }
+                else
+                    this.est_arrival = "TBD"
+
+                // Refresh the info window
+                this.refreshInfoWindow();
+            },
+        });
+
     }
 
     getInfoWindowContent() {
@@ -181,6 +203,8 @@ class BusStop {
         `Route: ${this.route}<br>` +
         `Next Arrival in ${this.est_arrival}`;
     }
+
+
     refreshInfoWindow() {
         activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
     }
@@ -198,6 +222,8 @@ class BusStop {
             activeMarkerInfoWindow.close();  // closes any currently open info window
             activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
             activeMarkerInfoWindow.open(marker.getMap(), marker)
+            this.callBackMethod();
+
             // Set the current object as the active marker object
             activeMarkerObj = this
         })
@@ -209,21 +235,17 @@ class BusStop {
 
 
 
-/**
- * Replaced with BusStop class. Delete.
- */
-function createRouteMarker(busStop) {
+setInterval(function ()
+{
+    console.log("infoWindow is bound to map: "+(activeMarkerInfoWindow.getMap() ? true : false));
+    if (activeMarkerInfoWindow.getMap() && activeMarkerObj){
+        activeMarkerObj.callBackMethod();
+    } else {
+        activeMarkerObj = null;
+    }
 
-    const stopName = busStop["Stop Name"]
 
-    let marker = new google.maps.Marker({
-        position: {lat: busStop.Lat, lng: busStop.Lng},
-        map: null,
-        title: stopName
-    })
-
-    return marker
-}
+}, 5000);
 
 
 /**
@@ -365,7 +387,7 @@ function updateBusStopArrivalTimes(data) {
 // socket event listener for updated bus position
 socket.on("display busses", data => {
     updateBusMarkersBySid(data);  // must be called first
-    updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
+    // updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
 });
 
 
