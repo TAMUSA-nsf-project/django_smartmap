@@ -1,6 +1,6 @@
 
 
-<nav class="navbar navbar-expand-lg bg-light">
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
       <div class="navbar-nav">
         <a class="nav-link" href="{% url 'map:map'%}">Map</a>
 {#        {% if perms.bus.access_busdriver_pages %}#}
-          <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+        <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
           {#        {% endif %}#}
           {#        {% if user.is_authenticated %}#}
           {#        Hello, {{ user.username }}.#}
@@ -18,7 +18,12 @@
           {#        {% else %}#}
           {#            <a class="nav-link" href="{% url 'users:login' %}">Login</a>#}
           {#        {% endif %}#}
-          <a class="nav-link" href="/admin">Admin</a>
+        <a class="nav-link" href="/admin">Admin</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Project</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          </ul>
+        </li>
       </div>
     </div>
   </div>
