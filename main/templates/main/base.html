@@ -18,11 +18,20 @@
     {% endblock %}
 
   </head>
-  <body>
-    {% include 'main/navbar.html' %}
+  <body class="d-flex flex-column h-100">
+{#    <header>#}
+        {% include 'main/navbar.html' %}
 
+{#    </header>#}
+
+{#    <main style="height: 100vh;">#}
     {% block content %}
     {% endblock %}
+
+{#    </main>#}
+
+    {% include 'main/nsf_footer.html' %}
+
 
 
       <!-- Bootstrap5 JS (navbar collapse won't work without it; docs say to but before closing body tag) -->
