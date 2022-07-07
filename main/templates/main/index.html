@@ -5,12 +5,16 @@
 
    <style>
         #intro {
-            height: 80vh;  /* div height */
+            height: 100%;  /* div height */
 
             background-image: url("{% static 'main/img/39584_white-bus-on-road-near-in-high-rise-building.jpeg' %}");
             background-size: cover;  /* background image size, 'cover' forces image to cover entire container */
             background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
+
     </style>
 
 {% endblock %}
@@ -20,12 +24,12 @@
 
     <div id="intro" class="container-fluid">
         <div class="container">
-            <br><br>
-            <h3 class="text-white mb-0" style="text-align: center;">
-                Building a Smart Mobility Network for the San Antonio Transit to Improve Transit Service and
-                Social Impact (SmartSA)
-            </h3>
-            <br>
+            <div class="row">
+                <h3 class="text-white mb-0" style="text-align: center;">
+                    Building a Smart Mobility Network for the San Antonio Transit to Improve Transit Service and
+                    Social Impact (SmartSA)
+                </h3>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <a href="{% url 'map:map'%}" title="Go to Map">
@@ -50,8 +54,5 @@
             </div>
         </div>
     </div>
-
-    {% include 'main/nsf_footer.html' %}
-
 
 {% endblock %}
