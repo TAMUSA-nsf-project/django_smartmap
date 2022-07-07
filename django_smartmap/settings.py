@@ -159,3 +159,4 @@ GOOGLE_PYTHON_API_KEY = "AIzaSyDAi3Sh-C1AMImlHzjlBa56jE6LSbCtULQ"
 Logins
 """
 LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'main:index'  # needed to get the currently used login page to work

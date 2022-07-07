@@ -1,16 +1,68 @@
 {%  extends "main/base.html" %}
 
+{% block extend_head %}
+    <style>
+        #wrapper{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .row{
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
 
 {% block content %}
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
+    <div id="wrapper" class="container">
+        <div class="container">
 
-    <form method="post" action="{% url 'users:login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Log in</button>
-        <input type="hidden" name="next"
-               value="{% url 'main:index' %}"/>
-    </form>
+            <div class="row">
+                {% if form.errors %}
+                    <p>Your username and password didn't match. Please try again.</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+                    {% else %}
+                    <p>Please login to see this page.</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <form method="post" action="{% url 'users:login' %}">
+                    {% csrf_token %}
+                    <table>
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                    </table>
+
+                    <input type="submit" value="login">
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-auto">
+                    <p><a href="{% url 'users:register' %}">Register</a></p>
+                </div>
+                <div class="col">
+                    {# Assumes you set up the password_reset view in your URLconf #}
+                    <p><a href="{% url 'users:password_reset' %}">Lost password?</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 {% endblock content %}

@@ -1,5 +1,19 @@
-{% extends "main/base.html" %}
+{%  extends "main/base.html" %}
+
+{% block extend_head %}
+    <style>
+        #wrapper{
+            height: 100%;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
 
 {% block content %}
-    <p>You have been logged out.</p>
+    <div id="wrapper" class="container">
+        You have been logged out.
+   </div>
 {% endblock content %}
