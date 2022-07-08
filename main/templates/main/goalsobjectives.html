@@ -4,22 +4,21 @@
 {% block extend_head %}
     <style>
         #content-main {
-            height: 80vh;
+            height: 100%;
             color: black;
+            justify-content: center;
         }
     </style>
 {% endblock %}
 
 
 {% block content %}
- <div id="content-main" class="container d-flex justify-content-center">
+ <div id="content-main" class="container">
         <div class="row">
-
             <div class="col-md-5 align-self-center">
                 <img src="{% static 'main/img/shutterstock_627370652.jpg' %}" alt="shutterstock_627370652.jpg" style="max-width: 100%;">
             </div>
             <div class="col-md-7 align-self-center">
-
                 <article class="container d-flex flex-column align-items-start justify-content-md-start"
                     style="margin-bottom: 5%; margin-top: 5%;">
                     <h3 style="text-align: center; ">Goals and Objectives</h3>
