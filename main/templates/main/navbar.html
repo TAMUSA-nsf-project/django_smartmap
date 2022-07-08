@@ -1,31 +1,47 @@
 
 
 <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Home</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="{% url 'map:map'%}">Map</a>
-        <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Project
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="{% url 'main:goals-objectives' %}">Goals & Objectives</a></li>
-            <li><a class="dropdown-item" href="{% url 'main:mobile-architecture' %}">Mobile Web App Architecture</a></li>
-          </ul>
-        </li>
-        {% if user.is_authenticated %}
-          <a class="nav-link disabled" style="color: whitesmoke;">Hello {{ user.username }}</a>
-          <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
-        {% else %}
-          <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-        {% endif %}
-      </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+            <div class="navbar-nav">
+                <a class="nav-link" href="{% url 'map:map'%}">Map</a>
+                <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Project
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="{% url 'main:goals-objectives' %}">Goals & Objectives</a></li>
+                <li><a class="dropdown-item" href="{% url 'main:mobile-architecture' %}">Mobile Web App Architecture</a></li>
+                </ul>
+                </li>
+                {% if user.is_authenticated %}
+                <a class="nav-link disabled" style="color: whitesmoke;">Hello {{ user.username }}</a>
+                <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'users:login' %}">Login</a>
+                {% endif %}
+            </div>
+
+            <div class="navbar-nav ms-auto">
+                {# TODO create page for feedback submission #}
+                <a class="nav-link" href="/" title="Send us your Feedback">
+                    <i class="fa fa-envelope" style="color: white;"></i>
+                </a>
+                <a class="nav-link" href="https://www.linkedin.com">
+                    <i class="fa fa-linkedin" style="color: white;"></i>
+                </a>
+                <a class="nav-link" href="https://github.com/" rel="nofollow" target="_blank">
+                    <i class="fa fa-github" style="color: white;"></i>
+                </a>
+            </div>
+
+        </div>
     </div>
-  </div>
 </nav>
