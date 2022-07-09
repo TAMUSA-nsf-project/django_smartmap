@@ -135,7 +135,10 @@ WSGI_APPLICATION = 'django_smartmap.wsgi.application'
 # }
 # Use django-environ to parse the connection string
 DATABASES = {"default": env.db()}
-
+# If the flag as been set, configure to use proxy
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+    DATABASES["default"]["HOST"] = "cloudsql-proxy"
+    DATABASES["default"]["PORT"] = 5432
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -200,10 +203,10 @@ SIO = socketio.Server(async_mode='threading')
 GOOGLE API KEYS GO HERE:
 """
 # For the map (restricted to our server's addresses)
-GOOGLE_MAP_API_KEY = "AIzaSyC0AlkYbHeB3sRmac5oTnYpxUIZOh1JFC0"
+GOOGLE_MAP_API_KEY = os.getenv("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
-GOOGLE_PYTHON_API_KEY = "AIzaSyDAi3Sh-C1AMImlHzjlBa56jE6LSbCtULQ"
+GOOGLE_PYTHON_API_KEY = os.getenv("GOOGLE_PYTHON_API_KEY")
 
 
 """
