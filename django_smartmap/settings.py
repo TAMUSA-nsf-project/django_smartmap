@@ -20,12 +20,12 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG", default="False") == "True"
 
 env = environ.Env(
     SECRET_KEY=(str, os.getenv("SECRET_KEY")),
     DATABASE_URL=(str, os.getenv("DATABASE_URL")),
-    GS_BUCKET_NAME=(str, os.getenv("GS_BUCKET_NAME")),
+    GS_BUCKET_NAME=(str, os.getenv("GS_BUCKET_NAME", default=None)),
 )
 
 # Attempt to load the Project ID into the environment, safely failing on error.
@@ -34,12 +34,8 @@ try:
 except google.auth.exceptions.DefaultCredentialsError:
     pass
 
-# Use local .env file in dev mode
-if os.getenv("PYTHON_ENV") == "dev":
-    DEBUG = True
-
 # Use GCP secret manager in prod mode
-elif os.getenv("GOOGLE_CLOUD_PROJECT", None):
+if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
 
     client = secretmanager.SecretManagerServiceClient()
@@ -50,7 +46,7 @@ elif os.getenv("GOOGLE_CLOUD_PROJECT", None):
     )
 
     env.read_env(io.StringIO(payload))
-else:
+elif not DEBUG:
     raise Exception(
         "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found."
     )
@@ -61,8 +57,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: It's recommended that you use this when
 # running in production. The URL will be known once you first deploy
 # to Cloud Run. This code takes the URL and converts it to both these settings formats.
+
 CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
-if CLOUDRUN_SERVICE_URL:
+if not DEBUG and CLOUDRUN_SERVICE_URL:
     ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
     CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
     SECURE_SSL_REDIRECT = True
@@ -79,9 +76,6 @@ INSTALLED_APPS = [
     'map',
     'bus',
     'users',
-
-    # Development tools/apps
-    'sslserver',
 
     # Django default apps
     'django.contrib.admin',
@@ -123,20 +117,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_smartmap.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 # Use django-environ to parse the connection string
+# DATABASE_URL=psql://<username>:<password>@<host>:<port>/<database_name>
 DATABASES = {"default": env.db()}
+
 # If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", "False") == "True":
     DATABASES["default"]["HOST"] = "cloudsql-proxy"
     DATABASES["default"]["PORT"] = 5432
 
@@ -158,7 +145,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -172,32 +158,36 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 STATICFILES_DIRS = []
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-GS_DEFAULT_ACL = "publicRead"
+if os.getenv("GS_BUCKET_NAME", None):
+    GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    GS_DEFAULT_ACL = "publicRead"
+else:
+    STATICFILES_FINDERS = [
+        "django.contrib.staticfiles.finders.FileSystemFinder",
+        "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    ]
+    STATIC_ROOT = str(BASE_DIR / "static")
+
+STATIC_URL = "/static/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 """
 Socket.IO
 """
 # Note: every variable created in this file must be capitalized (must be SIO not sio)
 import socketio
+
 SIO = socketio.Server(async_mode='threading')
-
-
 
 """
 GOOGLE API KEYS GO HERE:
@@ -207,7 +197,6 @@ GOOGLE_MAP_API_KEY = os.getenv("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
 GOOGLE_PYTHON_API_KEY = os.getenv("GOOGLE_PYTHON_API_KEY")
-
 
 """
 Logins
