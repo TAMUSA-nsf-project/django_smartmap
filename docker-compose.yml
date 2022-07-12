@@ -6,7 +6,7 @@ services:
       - database
     profiles:
       - dev
-    container_name: django-app
+    container_name: django-app-dev
     build:
       context: .
     ports:
@@ -18,9 +18,11 @@ services:
     restart: always
 
   smart_map_cloud:
+    depends_on:
+      - cloudsqlproxy
     profiles:
       - prod
-    container_name: django-app
+    container_name: django-app-prod
     build:
       context: .
     ports:
