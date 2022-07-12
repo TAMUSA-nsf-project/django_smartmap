@@ -109,6 +109,7 @@ function RouteDropdown(map) {
 
         // define the button's onclick behavior
         li_button.onclick = () => {
+            button.innerHTML = key;
             hideDisplayedMarkers()
             showRouteMarkers(key);
         }
