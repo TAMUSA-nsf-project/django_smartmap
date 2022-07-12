@@ -212,10 +212,21 @@ class BusStop {
 
     // '#' prefix makes it a private method
     #initMapMarker() {
+        // Google's recommended collection of icons: http://kml4earth.appspot.com/icons.html
+        // Also see https://mapicons.mapsmarker.com/category/markers/transportation/?style=simple
+
+        const icon_size = 30;  // dimension in pixels
+
+        const busStopIcon = {
+            url: "https://maps.google.com/mapfiles/kml/pal5/icon57.png",
+            scaledSize: new google.maps.Size(icon_size, icon_size),  // resize to X by X pixels
+        };
+
         let marker = new google.maps.Marker({
             position: {lat: this.Lat, lng: this.Lng},
             map: null,
-            title: this.name
+            title: this.name,
+            icon: busStopIcon,
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
