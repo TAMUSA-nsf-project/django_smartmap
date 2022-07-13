@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 # Create your views here.
 
 def index(request):
@@ -13,5 +14,3 @@ def goals_objectives_view(request):
 
 def mobile_architecture_view(request):
     return render(request, "main/mobilearchitecture.html")
-
-

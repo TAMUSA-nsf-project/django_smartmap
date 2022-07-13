@@ -9,6 +9,7 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_compl
 
 def timeit(func):
     """Decorator function used to time the execution of functions."""
+
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         ret = func(*args, **kwargs)
@@ -16,6 +17,7 @@ def timeit(func):
         runtime = round(finish - start)
         print(f"{func.__name__} took {runtime} second(s)")
         return ret
+
     return wrapper
 
 
@@ -70,10 +72,9 @@ def calc_est_arrival_times(socket_data, json_data):
     return {bus_route: stop_data}
 
 
-
-
 def main():
     pass
+
 
 # The following prevents RuntimeError for 'spawn' and 'forkserver' start_methods:
 if __name__ == "__main__":

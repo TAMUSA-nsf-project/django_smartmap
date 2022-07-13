@@ -1,4 +1,3 @@
-
 steps:
   # 0. Docker Build
   - name: gcr.io/cloud-builders/docker

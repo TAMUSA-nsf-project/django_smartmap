@@ -73,7 +73,6 @@ def getEstimatedArrivalAJAX(request):
     return HttpResponse(res)
 
 
-
 def getActiveBussesOnRouteAJAX(request):
     # extract the data from the request
     user_data = ast.literal_eval(request.GET.get('data'))
@@ -83,11 +82,10 @@ def getActiveBussesOnRouteAJAX(request):
     busObjs = Bus.objects.filter(route=user_selected_route)
 
     # bus data to send back to client
-    bus_data = {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in busObjs}
+    bus_data = {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
+                busObjs}
 
     return HttpResponse(json.dumps(bus_data))
-
-
 
 
 @login_required

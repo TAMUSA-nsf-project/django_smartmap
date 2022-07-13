@@ -1,5 +1,3 @@
-
-
 // the following are variables accessible anywhere in the script (script vars)
 let map;
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
@@ -82,8 +80,8 @@ function RouteDropdown(map) {
     routeDropdown.style.marginTop = "10px";
 
     const button = document.createElement("button")
-    button.className="btn btn-secondary dropdown-toggle"
-    button.type="button"
+    button.className = "btn btn-secondary dropdown-toggle"
+    button.type = "button"
     button.id = "dropdownMenuButton1"
     button.setAttribute("data-bs-toggle", "dropdown")
     button.setAttribute("aria-expanded", "false")
@@ -91,7 +89,7 @@ function RouteDropdown(map) {
     routeDropdown.appendChild(button)
 
     const listItems = document.createElement("ul")
-    listItems.className="dropdown-menu"
+    listItems.className = "dropdown-menu"
     listItems.setAttribute("aria-labelledby", "dropdownMenuButton1")
     // listItems.innerHTML = '<li><a className="dropdown-item" href="#">Action</a></li>'
 
@@ -155,7 +153,7 @@ function hideDisplayedMarkers() {
 
 
 function getActiveBussesOnSelectedRoute() {
-    if (displayedRoute){
+    if (displayedRoute) {
         const toSend = {'route': displayedRoute}
         jQuery.ajax({
             url: AJAX_URL_ACTIVE_BUSSES_ON_ROUTE,
@@ -171,7 +169,6 @@ function getActiveBussesOnSelectedRoute() {
 
     }
 }
-
 
 
 /**
@@ -190,8 +187,7 @@ class BusStop {
         // this.intervalHandle = null;
     }
 
-    callBackMethod()
-    {
+    callBackMethod() {
 
         const toSend = {'route': this.route, 'bus_stop_id': this.number}
         jQuery.ajax({
@@ -206,8 +202,7 @@ class BusStop {
                 if (data) {
                     console.log(data)
                     this.est_arrival = data;
-                }
-                else
+                } else
                     this.est_arrival = "TBD"
 
                 // Refresh the info window
@@ -219,9 +214,9 @@ class BusStop {
 
     getInfoWindowContent() {
         return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
-        `Stop #: ${this.number}<br>` +
-        `Route: ${this.route}<br>` +
-        `Next Arrival in ${this.est_arrival}`;
+            `Stop #: ${this.number}<br>` +
+            `Route: ${this.route}<br>` +
+            `Next Arrival in ${this.est_arrival}`;
     }
 
 
@@ -265,11 +260,9 @@ class BusStop {
 }
 
 
-
-setInterval(function ()
-{
-    console.log("infoWindow is bound to map: "+(activeMarkerInfoWindow.getMap() ? true : false));
-    if (activeMarkerInfoWindow.getMap() && activeMarkerObj){
+setInterval(function () {
+    console.log("infoWindow is bound to map: " + (activeMarkerInfoWindow.getMap() ? true : false));
+    if (activeMarkerInfoWindow.getMap() && activeMarkerObj) {
         activeMarkerObj.callBackMethod();
     } else {
         activeMarkerObj = null;
@@ -283,9 +276,9 @@ setInterval(function ()
  * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
  */
 function initAllRouteMarkers() {
-    for(const route in JSON_ROUTES) {
+    for (const route in JSON_ROUTES) {
         mapRouteMarkers[route] = [];
-        for (const busStop in JSON_ROUTES[route]){
+        for (const busStop in JSON_ROUTES[route]) {
             mapRouteMarkers[route][busStop] = new BusStop(JSON_ROUTES[route][busStop])
         }
     }
@@ -310,7 +303,7 @@ function initMap() {
     busIcon = {
         url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
         scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
-       // rotationAngle: 0
+        // rotationAngle: 0
     };
 
     // Initialize BuStop instances that contain google.maps.Marker instances

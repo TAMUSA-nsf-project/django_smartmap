@@ -3,12 +3,12 @@
 
 {% block extend_head %}
 
-   <style>
+    <style>
         #intro {
-            height: 100%;  /* div height */
+            height: 100%; /* div height */
 
             background-image: url("{% static 'main/img/39584_white-bus-on-road-near-in-high-rise-building.jpeg' %}");
-            background-size: cover;  /* background image size, 'cover' forces image to cover entire container */
+            background-size: cover; /* background image size, 'cover' forces image to cover entire container */
             background-position: center;
             display: flex;
             flex-direction: column;
@@ -32,23 +32,23 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <a href="{% url 'map:map'%}" title="Go to Map">
+                    <a href="{% url 'map:map' %}" title="Go to Map">
                         <img src="{% static 'main/img/MapButton.png' %}" alt="MAP"
-                            style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
+                             style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
                             object-fit: scale-down;">
                     </a>
                     <a href="https://tamusa.co1.qualtrics.com/jfe/form/SV_7WF9vwgK7BUyoxE"
-                        title="Take the Survey">
+                       title="Take the Survey">
                         <img src="{% static 'main/img/SurveyButton.png' %}" alt="Survey"
-                        style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
+                             style="margin-left: 12.5%; margin-top: 5%; min-width: 75%; margin-bottom: 5%;
                         object-fit: scale-down;">
                     </a>
                 </div>
                 <div class="col-md-9">
                     <a href="https://tamusa.co1.qualtrics.com/jfe/form/SV_7WF9vwgK7BUyoxE"
-                        title="Take the Survey">
+                       title="Take the Survey">
                         <img src="{% static 'main/img/flyer.png' %}" class="img-fluid" alt="Survey"
-                        style="margin-top: 1.5%; object-fit: cover;">
+                             style="margin-top: 1.5%; object-fit: cover;">
                     </a>
                 </div>
             </div>

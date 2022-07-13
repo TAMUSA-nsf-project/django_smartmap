@@ -19,8 +19,8 @@
                 //maximumAge: 60000,
             };
 
-            function geolocationPositionError (positionError) {
-              console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
+            function geolocationPositionError(positionError) {
+                console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
             }
 
             function ajaxSuccess(data) {
@@ -34,8 +34,7 @@
 
                 const watchPositionSuccess = function (geolocationPosition) {
 
-                    if(geolocationPosition.timestamp - prevTime > broadcastFrequency)
-                    {
+                    if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
                         prevTime = geolocationPosition.timestamp
                         const geolocationCoordinates = geolocationPosition.coords;
 
@@ -64,9 +63,7 @@
                             success: ajaxSuccess,
                         });
 
-                    }
-                    else
-                    {
+                    } else {
                         // We don't want to make frequent commits to server.
                         console.log(geolocationPosition.timestamp - prevTime)
                     }
