@@ -15,7 +15,7 @@ Stop_Name_KEY = "Stop Name"
 
 
 def addStopIfNotExist(bus_stop: dict):
-    if not BusStop.objects.filter(name=bus_stop[Stop_Name_KEY]).exists():
+    if not BusStop.objects.filter(stop_id=bus_stop["Stop Number"]).exists():
         new_stop = BusStop()
         new_stop.name = bus_stop[Stop_Name_KEY]
         new_stop.stop_id = bus_stop["Stop Number"]
@@ -28,17 +28,17 @@ def addRouteIfNotExist(bus_route: dict):
     if not BusRoute.objects.filter(name=bus_route["name"]).exists():
         busRoute = BusRoute()
         busRoute.name = bus_route["name"]
-        busRoute.first_stop = BusStop.objects.get(name=bus_route["first_stop"])
-        busRoute.last_stop = BusStop.objects.get(name=bus_route["last_stop"])
+        busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
+        busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
         busRoute.save()
 
 
 def addRoteDetailsIfNotExist(bus_stop: dict):
     if not BusRouteDetails.objects.filter(parent_route__name=bus_stop["route"],
-                                          bus_stop__name=bus_stop[Stop_Name_KEY]).exists():
+                                          bus_stop__stop_id=bus_stop["Stop Number"]).exists():
         new_bus_route_details = BusRouteDetails()
         new_bus_route_details.parent_route = BusRoute.objects.get(name=bus_stop["route"])
-        new_bus_route_details.bus_stop = BusStop.objects.get(name=bus_stop[Stop_Name_KEY])
+        new_bus_route_details.bus_stop = BusStop.objects.get(stop_id=bus_stop["Stop Number"])
         new_bus_route_details.route_index = bus_stop["Order on Route"]
         new_bus_route_details.save()
 
@@ -59,8 +59,8 @@ def populatedata(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> None:
 
         bus_route = {
             "name": route,
-            "first_stop": bus_stops[0][Stop_Name_KEY],
-            "last_stop": bus_stops[-1][Stop_Name_KEY]
+            "first_stop": bus_stops[0]["Stop Number"],
+            "last_stop": bus_stops[-1]["Stop Number"]
         }
         # Add this route if not already exist
         addRouteIfNotExist(bus_route)
