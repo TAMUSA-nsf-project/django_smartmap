@@ -112,6 +112,7 @@ function RouteDropdown(map) {
             button.innerHTML = key;
             hideDisplayedMarkers()
             showRouteMarkers(key);
+            getActiveBussesOnSelectedRoute();
         }
 
         li.appendChild(li_button);
@@ -331,6 +332,7 @@ var socket = io.connect(location.protocol + '//' + document.domain + ':' + locat
 // objects to track different busses which are identified by socket ID (sid) and organized by route or sid
 var busMarkersByRoute = {}
 var busMarkersBySid = {}
+var busMarkers = []
 
 
 /**
@@ -338,38 +340,26 @@ var busMarkersBySid = {}
  */
 function updateBusMarkersBySid(data) {
 
+    for (let i = 0; i < busMarkers.length; i++) {
+        busMarkers[i].setMap(null);
+    }
+
+    busMarkers = [];
+
     for (const sid in data) {
         const sidData = data[sid]
 
         var newLatLng = new google.maps.LatLng(sidData.bus_lat, sidData.bus_lng)
 
-        var sidMarker;
+        let sidMarker = new google.maps.Marker({
+            position: newLatLng,
+            map: map,
+            title: sid,
+            icon: busIcon,
+        })
 
-        if (sid in busMarkersBySid) {
-            sidMarker = busMarkersBySid[sid]
-            if (sidMarker !== undefined) {
+        busMarkers.push(sidMarker);
 
-                //  Using this option will force center the map to the current location of teh bus.
-                // This may be annoying. So commenting it for now.
-               /* const moveCamaraOptions = {
-                    center:newLatLng,
-                    heading:sidData.bus_dir
-                }*/
-
-                sidMarker.setPosition(newLatLng)
-                //sidMarker.map.moveCamera(moveCamaraOptions);
-            } else {
-                //todo, shouldn't happen
-            }
-        } else {
-            sidMarker = new google.maps.Marker({
-                position: newLatLng,
-                map: map,
-                title: sid,
-                icon: busIcon,
-            })
-            busMarkersBySid[sid] = sidMarker
-        }
     }
 }
 
