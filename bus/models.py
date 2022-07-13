@@ -23,7 +23,7 @@ class Bus(models.Model):
 
 
 class BusStop(models.Model):
-    stop_id = models.IntegerField()
+    stop_id = models.PositiveIntegerField()
     name = models.CharField(max_length=200)
     latitude = models.FloatField()
     longitude = models.FloatField()
