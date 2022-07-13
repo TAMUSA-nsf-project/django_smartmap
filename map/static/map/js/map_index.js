@@ -7,7 +7,6 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
-var intervalHandle;
 
 var busIcon;  // icon for bus
 
