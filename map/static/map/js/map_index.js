@@ -7,7 +7,6 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
-var intervalHandle;
 
 var busIcon;  // icon for bus
 
@@ -112,6 +111,7 @@ function RouteDropdown(map) {
             button.innerHTML = key;
             hideDisplayedMarkers()
             showRouteMarkers(key);
+            getActiveBussesOnSelectedRoute();
         }
 
         li.appendChild(li_button);
@@ -150,6 +150,25 @@ function hideDisplayedMarkers() {
 
         // reset script var
         displayedRoute = ""
+    }
+}
+
+
+function getActiveBussesOnSelectedRoute() {
+    if (displayedRoute){
+        const toSend = {'route': displayedRoute}
+        jQuery.ajax({
+            url: AJAX_URL_ACTIVE_BUSSES_ON_ROUTE,
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                updateBusMarkersBySid(data);
+            },
+        });
+
     }
 }
 
@@ -312,17 +331,10 @@ function initMap() {
 window.initMap = initMap;
 
 
-
 /**
- * Socket.IO Stuff
+ * Updates from server
  */
-
-// setup socket var
-var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-// objects to track different busses which are identified by socket ID (sid) and organized by route or sid
-var busMarkersByRoute = {}
-var busMarkersBySid = {}
+let busMarkers = [];
 
 
 /**
@@ -330,84 +342,27 @@ var busMarkersBySid = {}
  */
 function updateBusMarkersBySid(data) {
 
+    for (let i = 0; i < busMarkers.length; i++) {
+        busMarkers[i].setMap(null);
+    }
+
+    busMarkers = [];
+
     for (const sid in data) {
         const sidData = data[sid]
 
         var newLatLng = new google.maps.LatLng(sidData.bus_lat, sidData.bus_lng)
 
-        var sidMarker;
+        let sidMarker = new google.maps.Marker({
+            position: newLatLng,
+            map: map,
+            title: sid,
+            icon: busIcon,
+        })
 
-        if (sid in busMarkersBySid) {
-            sidMarker = busMarkersBySid[sid]
-            if (sidMarker !== undefined) {
-
-                //  Using this option will force center the map to the current location of teh bus.
-                // This may be annoying. So commenting it for now.
-               /* const moveCamaraOptions = {
-                    center:newLatLng,
-                    heading:sidData.bus_dir
-                }*/
-
-                sidMarker.setPosition(newLatLng)
-                //sidMarker.map.moveCamera(moveCamaraOptions);
-            } else {
-                //todo, shouldn't happen
-            }
-        } else {
-            sidMarker = new google.maps.Marker({
-                position: newLatLng,
-                map: map,
-                title: sid,
-                icon: busIcon,
-            })
-            busMarkersBySid[sid] = sidMarker
-        }
-    }
-}
-
-
-/**
- * Updates the google map markers in the busMarkersByRoute object by using the updated markers from busMarkersBySid
- */
-function updateBusMarkersByRoute(data) {
-    for (const sid in data) {
-
-        const busRoute = data[sid].selected_route
-
-        if (busRoute in busMarkersByRoute) {
-            busMarkersByRoute[busRoute][sid] = busMarkersBySid[sid]
-        } else {
-            busMarkersByRoute[busRoute] = {[sid]: busMarkersBySid[sid]}  // must enclose first sid in brackets to force use of its string value
-        }
+        busMarkers.push(sidMarker);
 
     }
 }
-
-function updateBusStopArrivalTimes(data) {
-    for(const route in data) {
-        let updatedStopData = data[route]
-        let routeBusStops = mapRouteMarkers[route]
-
-        for (let i=0; i < routeBusStops.length; i++) {
-            routeBusStops[i].updateEstArrival(updatedStopData[i].est_arrival)
-        }
-
-    }
-}
-
-
-// socket event listener for updated bus position
-socket.on("display busses", data => {
-    updateBusMarkersBySid(data);  // must be called first
-    // updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
-});
-
-
-// socket event listener for updated estimated arrival times
-socket.on("update arrival times", data => {
-    updateBusStopArrivalTimes(data)
-    if(activeMarkerObj !== null)
-        activeMarkerObj.refreshInfoWindow()
-});
 
 

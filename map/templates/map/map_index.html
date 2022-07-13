@@ -18,6 +18,7 @@
         const MAP_CENTER = {lat: {{ lat_coord }}, lng: {{ lng_coord }} }
         const JSON_ROUTES = JSON.parse('{{ route_json | escapejs }}');
         const AJAX_EST_ARRIVAL_URL = "{% url 'bus:busestarrival-ajax' %}"
+        const AJAX_URL_ACTIVE_BUSSES_ON_ROUTE = "{% url 'bus:activebussesonroute-ajax' %}"
     </script>
 
     <script type="text/javascript" src="{% static 'map/js/map_index.js' %}"></script>
