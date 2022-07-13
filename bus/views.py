@@ -60,12 +60,6 @@ def getEstimatedArrivalAJAX(request):
     except Bus.DoesNotExist:
         return HttpResponse("")
 
-    # check age of bus's data
-    now = datetime.utcnow().replace(tzinfo=utc)
-    timediff = now - bus.end_time
-    if timediff.total_seconds() > 30:
-        return HttpResponse("Data older than 30 sec!")
-
     busCoord = (bus.latitude, bus.longitude)
 
     # get BusStop instance
