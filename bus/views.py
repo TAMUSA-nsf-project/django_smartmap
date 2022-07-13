@@ -103,10 +103,6 @@ def bus_position_ajax(request):
         bus.route = selected_route
         bus.save()
 
-        # Broadcast the bus's position
-        sio.emit("display busses",
-                 {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude}})
-
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
