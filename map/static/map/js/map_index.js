@@ -154,6 +154,25 @@ function hideDisplayedMarkers() {
 }
 
 
+function getActiveBussesOnSelectedRoute() {
+    if (displayedRoute){
+        const toSend = {'route': displayedRoute}
+        jQuery.ajax({
+            url: AJAX_URL_ACTIVE_BUSSES_ON_ROUTE,
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                updateBusMarkersBySid(data);
+            },
+        });
+
+    }
+}
+
+
 
 /**
  * Class to represent a bus stop. One of its properties is a google.maps.Marker instance.
