@@ -19,6 +19,10 @@
 
 If you have trouble with any of these steps, message me on discord.
 
+### Google Cloud Build CI/CD
+The master branch is configured to google cloud build CI/CD. A new build will be created and deployed when ever a new commit happens to this branch. In some cases, you may want to make a change to your source code but you don't want to invoke a build. For example, you might not want to invoke a build when you update documentation or configuration files.
+In such scenarios, you can include **[skip ci]** or **[ci skip]** in the commit message, and a build will not be invoked.
+If you want to run a build on that commit later, use the Run trigger button in the Triggers page
 
 ***
 
