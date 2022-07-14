@@ -259,6 +259,13 @@ class BusStop {
 
 }
 
+/**
+ * Updates bus markers for currently selected route every X seconds.
+ */
+setInterval(function () {
+    getActiveBussesOnSelectedRoute();
+}, 3000)
+
 
 setInterval(function () {
     console.log("infoWindow is bound to map: " + (activeMarkerInfoWindow.getMap() ? true : false));
