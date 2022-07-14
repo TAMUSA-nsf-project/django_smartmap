@@ -10,7 +10,7 @@
 4. Open a terminal in PyCharm and execute the following
     1. pip install -r requirements.txt
 5. Install Docker Desktop for your OS from https://www.docker.com/products/docker-desktop/
-   1. On Windows, if the docker installation didn't prompt you to install the SWL 2 Kernel package update, Follow the instructions available at https://docs.microsoft.com/en-gb/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package
+   1. On Windows, if the docker installation didn't prompt you to install the WSL 2 Kernel package update, Follow the instructions available at https://docs.microsoft.com/en-gb/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package
       to install and configure it. (Step 6 - Install your Linux distribution of choice is not required.)
    2. Create a basic docker account and sign in.
 6. Before we start working with Docker, make sure that the Docker plugin is enabled. 
