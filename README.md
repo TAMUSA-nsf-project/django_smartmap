@@ -68,16 +68,11 @@ Click the edit configurations in the top right corner of the IDE.
 
 ![](readme-guide-images/run_config.PNG)
 
-3. Make sure you select the correct interpreter from the right side corner of the IDE according to the 
-   runsettings you select.
-   1. Select [Interpreter-1](#interpreter-1) for Django_DEV
-   2. Select [Interpreter-2](#interpreter-2) for Django_PROD
-<br><br>![](readme-guide-images/interpreter_selection.PNG)
 <br><br>
-4. Select **Run manage.py Task** from Tools menu.<br><br>
+3. Select **Run manage.py Task** from Tools menu.<br><br>
 ![](readme-guide-images/manage_py.PNG)
 <br><br>
-5. Run **makemigrations** and **migrate** respectively in the window opened.<br><br>
+4. Run **makemigrations** and **migrate** respectively in the window opened.<br><br>
 ![](readme-guide-images/makemigrations.PNG)<br><br>
 5.Click the link http://0.0.0.0:8000/ to access the application.<br><br>
 ![](readme-guide-images/app_link.PNG)
