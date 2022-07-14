@@ -2,10 +2,6 @@ version: '3.9'
 
 services:
   smart_map:
-    depends_on:
-      - database
-    profiles:
-      - dev
     container_name: django-app-dev
     build:
       context: .
@@ -15,13 +11,20 @@ services:
       - .:/app
     env_file:
       - ./env/local.env
+    depends_on:
+      - database
+    links:
+      - database
     restart: always
 
+  database:
+    image: "postgres:14.4-bullseye"
+    env_file:
+      - ./env/local.env
+    volumes:
+      - ./database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+
   smart_map_cloud:
-    depends_on:
-      - cloudsqlproxy
-    profiles:
-      - prod
     container_name: django-app-prod
     build:
       context: .
@@ -32,13 +35,15 @@ services:
       - ./creds.json:/secrets/creds.json
     env_file:
       - ./env/prod.env
+    depends_on:
+      - cloudsqlproxy
+    links:
+      - cloudsqlproxy
     restart: always
 
   # The proxy will help us connect to remote CloudSQL instance locally.
   # Make sure to turn off any VPNs for the proxy to work.
   cloudsqlproxy:
-    profiles:
-      - prod
     container_name: cloudsql-proxy
     image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
     volumes:
@@ -47,12 +52,3 @@ services:
       - 127.0.0.1:5432:5432
     command: /cloud_sql_proxy -instances="nsf-2131193-18902:us-central1:smart-map-db-instance"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
     restart: always
-
-  database:
-    profiles:
-      - dev
-    image: "postgres:14.4-bullseye"
-    env_file:
-      - ./env/local.env
-    volumes:
-      - ./database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
