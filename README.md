@@ -35,10 +35,10 @@ If you have trouble with any of these steps, message me on discord.
 <br><br>
 3. Select **Project:django_smartmap | Python Interpreter**. Click the gear icon (highlighted below) and select Add
    <br><br>![Add Python Interpreter](readme-guide-images/add_interpreter.PNG)<br><br>
-#####Interpreter-1
+####Interpreter-1
 4. Click Docker Compose and select **smart_map** for the service option from the drop down. Click OK
 <br><br>![Add Python Interpreter](readme-guide-images/compose_dev.PNG)<br><br>
-#####Interpreter-2
+####Interpreter-2
 5. Add one more interpreter for the PROD settings by following the same steps except selecting the 
  **smart_map_cloud** option for service this time. Click OK
 <br><br>![Add Python Interpreter](readme-guide-images/compose_prod.PNG)<br><br>
