@@ -1,0 +1,10 @@
+env
+static
+readme-guide-images
+database-data
+docker-compose.yml
+.Dockerignore
+.gitignore
+README.md
+.idea
+Security-testing-docs

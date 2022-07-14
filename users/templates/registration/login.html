@@ -1,13 +1,14 @@
-{%  extends "main/base.html" %}
+{% extends "main/base.html" %}
 
 {% block extend_head %}
     <style>
-        #wrapper{
+        #wrapper {
             height: 100%;
             display: flex;
             align-items: center;
         }
-        .row{
+
+        .row {
             margin-bottom: 10px;
         }
     </style>
@@ -25,10 +26,10 @@
 
                 {% if next %}
                     {% if user.is_authenticated %}
-                    <p>Your account doesn't have access to this page. To proceed,
-                    please login with an account that has access.</p>
+                        <p>Your account doesn't have access to this page. To proceed,
+                            please login with an account that has access.</p>
                     {% else %}
-                    <p>Please login to see this page.</p>
+                        <p>Please login to see this page.</p>
                     {% endif %}
                 {% endif %}
             </div>
@@ -37,14 +38,14 @@
                 <form method="post" action="{% url 'users:login' %}">
                     {% csrf_token %}
                     <table>
-                    <tr>
-                        <td>{{ form.username.label_tag }}</td>
-                        <td>{{ form.username }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.password.label_tag }}</td>
-                        <td>{{ form.password }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ form.username.label_tag }}</td>
+                            <td>{{ form.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.password.label_tag }}</td>
+                            <td>{{ form.password }}</td>
+                        </tr>
                     </table>
 
                     <input type="submit" value="login">

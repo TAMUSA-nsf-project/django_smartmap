@@ -3,21 +3,22 @@
 
 {% block extend_head %}
     <title>Add Map</title>
-      {#   I don't think the following script is needed. Map still loads.   #}
+    {#   I don't think the following script is needed. Map still loads.   #}
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <style>
-      /* Always set the mapindex height explicitly to define the size of the div
-       * element that contains the mapindex. */
+        /* Always set the mapindex height explicitly to define the size of the div
+         * element that contains the mapindex. */
         #map {
-            height: 100%;  /* Google's suggested height of 100% may prevent map from displaying */
+            height: 100%; /* Google's suggested height of 100% may prevent map from displaying */
         }
     </style>
 
     <script type="text/javascript">
-        const MAP_CENTER = {lat: {{ lat_coord }}, lng: {{ lng_coord }} }
-        const JSON_ROUTES = JSON.parse('{{ route_json | escapejs }}');
+        const MAP_CENTER = {lat: {{ lat_coord }}, lng: {{ lng_coord }}}
+        const JSON_ROUTES = {{ route_json | safe }};
         const AJAX_EST_ARRIVAL_URL = "{% url 'bus:busestarrival-ajax' %}"
+        const AJAX_URL_ACTIVE_BUSSES_ON_ROUTE = "{% url 'bus:activebussesonroute-ajax' %}"
     </script>
 
     <script type="text/javascript" src="{% static 'map/js/map_index.js' %}"></script>
@@ -40,7 +41,7 @@
      load.
     -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer>
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer>
     </script>
 
 

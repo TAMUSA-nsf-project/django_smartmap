@@ -19,6 +19,8 @@ json_routes = json.dumps(json_data)
 """
 Google Map
 """
+
+
 def map_hello_world(request):
     """
     Renders a page with embedded Google map. Passes variables to the associated html template via dictionary
@@ -32,4 +34,3 @@ def map_hello_world(request):
         "route_json": json_routes
     }
     return render(request, 'map/map_index.html', context)
-

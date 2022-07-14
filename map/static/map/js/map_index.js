@@ -1,5 +1,3 @@
-
-
 // the following are variables accessible anywhere in the script (script vars)
 let map;
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
@@ -7,7 +5,6 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
-var intervalHandle;
 
 var busIcon;  // icon for bus
 
@@ -83,8 +80,8 @@ function RouteDropdown(map) {
     routeDropdown.style.marginTop = "10px";
 
     const button = document.createElement("button")
-    button.className="btn btn-secondary dropdown-toggle"
-    button.type="button"
+    button.className = "btn btn-secondary dropdown-toggle"
+    button.type = "button"
     button.id = "dropdownMenuButton1"
     button.setAttribute("data-bs-toggle", "dropdown")
     button.setAttribute("aria-expanded", "false")
@@ -92,7 +89,7 @@ function RouteDropdown(map) {
     routeDropdown.appendChild(button)
 
     const listItems = document.createElement("ul")
-    listItems.className="dropdown-menu"
+    listItems.className = "dropdown-menu"
     listItems.setAttribute("aria-labelledby", "dropdownMenuButton1")
     // listItems.innerHTML = '<li><a className="dropdown-item" href="#">Action</a></li>'
 
@@ -112,6 +109,7 @@ function RouteDropdown(map) {
             button.innerHTML = key;
             hideDisplayedMarkers()
             showRouteMarkers(key);
+            getActiveBussesOnSelectedRoute();
         }
 
         li.appendChild(li_button);
@@ -154,6 +152,24 @@ function hideDisplayedMarkers() {
 }
 
 
+function getActiveBussesOnSelectedRoute() {
+    if (displayedRoute) {
+        const toSend = {'route': displayedRoute}
+        jQuery.ajax({
+            url: AJAX_URL_ACTIVE_BUSSES_ON_ROUTE,
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                updateBusMarkersBySid(data);
+            },
+        });
+
+    }
+}
+
 
 /**
  * Class to represent a bus stop. One of its properties is a google.maps.Marker instance.
@@ -171,8 +187,7 @@ class BusStop {
         // this.intervalHandle = null;
     }
 
-    callBackMethod()
-    {
+    callBackMethod() {
 
         const toSend = {'route': this.route, 'bus_stop_id': this.number}
         jQuery.ajax({
@@ -187,8 +202,7 @@ class BusStop {
                 if (data) {
                     console.log(data)
                     this.est_arrival = data;
-                }
-                else
+                } else
                     this.est_arrival = "TBD"
 
                 // Refresh the info window
@@ -200,9 +214,9 @@ class BusStop {
 
     getInfoWindowContent() {
         return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
-        `Stop #: ${this.number}<br>` +
-        `Route: ${this.route}<br>` +
-        `Next Arrival in ${this.est_arrival}`;
+            `Stop #: ${this.number}<br>` +
+            `Route: ${this.route}<br>` +
+            `Next Arrival in ${this.est_arrival}`;
     }
 
 
@@ -212,10 +226,21 @@ class BusStop {
 
     // '#' prefix makes it a private method
     #initMapMarker() {
+        // Google's recommended collection of icons: http://kml4earth.appspot.com/icons.html
+        // Also see https://mapicons.mapsmarker.com/category/markers/transportation/?style=simple
+
+        const icon_size = 30;  // dimension in pixels
+
+        const busStopIcon = {
+            url: "https://maps.google.com/mapfiles/kml/pal5/icon57.png",
+            scaledSize: new google.maps.Size(icon_size, icon_size),  // resize to X by X pixels
+        };
+
         let marker = new google.maps.Marker({
             position: {lat: this.Lat, lng: this.Lng},
             map: null,
-            title: this.name
+            title: this.name,
+            icon: busStopIcon,
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
@@ -235,11 +260,9 @@ class BusStop {
 }
 
 
-
-setInterval(function ()
-{
-    console.log("infoWindow is bound to map: "+(activeMarkerInfoWindow.getMap() ? true : false));
-    if (activeMarkerInfoWindow.getMap() && activeMarkerObj){
+setInterval(function () {
+    console.log("infoWindow is bound to map: " + (activeMarkerInfoWindow.getMap() ? true : false));
+    if (activeMarkerInfoWindow.getMap() && activeMarkerObj) {
         activeMarkerObj.callBackMethod();
     } else {
         activeMarkerObj = null;
@@ -253,9 +276,9 @@ setInterval(function ()
  * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
  */
 function initAllRouteMarkers() {
-    for(const route in JSON_ROUTES) {
+    for (const route in JSON_ROUTES) {
         mapRouteMarkers[route] = [];
-        for (const busStop in JSON_ROUTES[route]){
+        for (const busStop in JSON_ROUTES[route]) {
             mapRouteMarkers[route][busStop] = new BusStop(JSON_ROUTES[route][busStop])
         }
     }
@@ -280,7 +303,7 @@ function initMap() {
     busIcon = {
         url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
         scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
-       // rotationAngle: 0
+        // rotationAngle: 0
     };
 
     // Initialize BuStop instances that contain google.maps.Marker instances
@@ -301,17 +324,10 @@ function initMap() {
 window.initMap = initMap;
 
 
-
 /**
- * Socket.IO Stuff
+ * Updates from server
  */
-
-// setup socket var
-var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-// objects to track different busses which are identified by socket ID (sid) and organized by route or sid
-var busMarkersByRoute = {}
-var busMarkersBySid = {}
+let busMarkers = [];
 
 
 /**
@@ -319,84 +335,27 @@ var busMarkersBySid = {}
  */
 function updateBusMarkersBySid(data) {
 
+    for (let i = 0; i < busMarkers.length; i++) {
+        busMarkers[i].setMap(null);
+    }
+
+    busMarkers = [];
+
     for (const sid in data) {
         const sidData = data[sid]
 
         var newLatLng = new google.maps.LatLng(sidData.bus_lat, sidData.bus_lng)
 
-        var sidMarker;
+        let sidMarker = new google.maps.Marker({
+            position: newLatLng,
+            map: map,
+            title: sid,
+            icon: busIcon,
+        })
 
-        if (sid in busMarkersBySid) {
-            sidMarker = busMarkersBySid[sid]
-            if (sidMarker !== undefined) {
-
-                //  Using this option will force center the map to the current location of teh bus.
-                // This may be annoying. So commenting it for now.
-               /* const moveCamaraOptions = {
-                    center:newLatLng,
-                    heading:sidData.bus_dir
-                }*/
-
-                sidMarker.setPosition(newLatLng)
-                //sidMarker.map.moveCamera(moveCamaraOptions);
-            } else {
-                //todo, shouldn't happen
-            }
-        } else {
-            sidMarker = new google.maps.Marker({
-                position: newLatLng,
-                map: map,
-                title: sid,
-                icon: busIcon,
-            })
-            busMarkersBySid[sid] = sidMarker
-        }
-    }
-}
-
-
-/**
- * Updates the google map markers in the busMarkersByRoute object by using the updated markers from busMarkersBySid
- */
-function updateBusMarkersByRoute(data) {
-    for (const sid in data) {
-
-        const busRoute = data[sid].selected_route
-
-        if (busRoute in busMarkersByRoute) {
-            busMarkersByRoute[busRoute][sid] = busMarkersBySid[sid]
-        } else {
-            busMarkersByRoute[busRoute] = {[sid]: busMarkersBySid[sid]}  // must enclose first sid in brackets to force use of its string value
-        }
+        busMarkers.push(sidMarker);
 
     }
 }
-
-function updateBusStopArrivalTimes(data) {
-    for(const route in data) {
-        let updatedStopData = data[route]
-        let routeBusStops = mapRouteMarkers[route]
-
-        for (let i=0; i < routeBusStops.length; i++) {
-            routeBusStops[i].updateEstArrival(updatedStopData[i].est_arrival)
-        }
-
-    }
-}
-
-
-// socket event listener for updated bus position
-socket.on("display busses", data => {
-    updateBusMarkersBySid(data);  // must be called first
-    // updateBusMarkersByRoute(data);  // dependent on busMarkersBySid object
-});
-
-
-// socket event listener for updated estimated arrival times
-socket.on("update arrival times", data => {
-    updateBusStopArrivalTimes(data)
-    if(activeMarkerObj !== null)
-        activeMarkerObj.refreshInfoWindow()
-});
 
 

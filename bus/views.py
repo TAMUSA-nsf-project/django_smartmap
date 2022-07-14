@@ -60,12 +60,6 @@ def getEstimatedArrivalAJAX(request):
     except Bus.DoesNotExist:
         return HttpResponse("")
 
-    # check age of bus's data
-    now = datetime.utcnow().replace(tzinfo=utc)
-    timediff = now - bus.end_time
-    if timediff.total_seconds() > 30:
-        return HttpResponse("Data older than 30 sec!")
-
     busCoord = (bus.latitude, bus.longitude)
 
     # get BusStop instance
@@ -77,6 +71,21 @@ def getEstimatedArrivalAJAX(request):
 
     # return estimated arrival time result to user
     return HttpResponse(res)
+
+
+def getActiveBussesOnRouteAJAX(request):
+    # extract the data from the request
+    user_data = ast.literal_eval(request.GET.get('data'))
+    user_selected_route = user_data.get('route')
+
+    # filter for all busses active on user-selected route
+    busObjs = Bus.objects.filter(route=user_selected_route)
+
+    # bus data to send back to client
+    bus_data = {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
+                busObjs}
+
+    return HttpResponse(json.dumps(bus_data))
 
 
 @login_required
@@ -102,10 +111,6 @@ def bus_position_ajax(request):
         bus.longitude = bus_lng
         bus.route = selected_route
         bus.save()
-
-        # Broadcast the bus's position
-        sio.emit("display busses",
-                 {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude}})
 
         return HttpResponse(f"Success")
     else:
