@@ -213,10 +213,20 @@ class BusStop {
     }
 
     getInfoWindowContent() {
-        return `<div style='margin-bottom:-10px'><strong><b>${this.name}</b></strong></div><br>` +
-            `Stop #: ${this.number}<br>` +
-            `Route: ${this.route}<br>` +
-            `Next Arrival in ${this.est_arrival}`;
+        return `<div class="container">
+                    <div class="row">
+                        <strong><b>${this.name}</b></strong>
+                    </div>
+                    <div class="row">
+                        <div>Stop #: ${this.number}</div>
+                    </div>
+                    <div class="row">
+                        <div>Route: ${this.route}</div>
+                    </div>
+                    <div class="row">
+                        <div>${this.est_arrival}</div>
+                    </div>
+                </div>`
     }
 
 
