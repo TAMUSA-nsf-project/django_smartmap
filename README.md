@@ -67,18 +67,22 @@ Click the edit configurations in the top right corner of the IDE.
 2. Select an appropriate run setting (Django_DEV or Django_PROD). Click the green bug icon to run the server in debug mode. (You can use the green play button for regular mode.)
 
 ![](readme-guide-images/run_config.PNG)
-
+3. Make sure you select the correct interpreter from the right side corner of the IDE according to the 
+   runsettings you select.
+   1. Select [Interpreter-1](#interpreter-1) for Django_DEV
+   2. Select [Interpreter-2](#interpreter-2) for Django_PROD
+<br><br>![](readme-guide-images/interpreter_selection.PNG)
 <br><br>
-3. Select **Run manage.py Task** from Tools menu.<br><br>
+4. Select **Run manage.py Task** from Tools menu.<br><br>
 ![](readme-guide-images/manage_py.PNG)
 <br><br>
-4. Run **makemigrations** and **migrate** respectively in the window opened.<br><br>
+5. Run **makemigrations** and **migrate** respectively in the window opened.<br><br>
 ![](readme-guide-images/makemigrations.PNG)<br><br>
-5.Click the link http://0.0.0.0:8000/ to access the application.<br><br>
+6. Click the link http://0.0.0.0:8000/ to access the application.<br><br>
 ![](readme-guide-images/app_link.PNG)
 
 <br><br>
-6. Interact with the website to hit a breakpoint. Use the controls and tools in the debug window to step through the code
+7. Interact with the website to hit a breakpoint. Use the controls and tools in the debug window to step through the code
 and evaluate expressions.
 ![](readme-guide-images/hit_break_point.png)
 
@@ -96,12 +100,45 @@ The easiest way right now is to open the server in Chrome.
 6. Evaluate expressions in the Console window at the bottom.
    ![](readme-guide-images/evaluate_console_window_vals.png)
 
-### Simulating the Bus movement on the map for testing
+### Installing Android Device Emulator For Testing
+#### Method 1 Without Android Studio [Windows x64]
+1. Download and install [JDK](https://download.oracle.com/java/18/latest/jdk-18_windows-x64_bin.msi "JDK").
+2. Set JAVA_HOME variable.
+	Open Command Prompt (Win+R, type cmd and press Enter) or use any other terminal you like. For me path to JDK is `E:\Program Files\Java\jdk1.8.0_251.` Execute the following:
+	<br><br>	`setx JAVA_HOME "E:\Program Files\Java\jdk1.8.0_251"`<br><br>
+3. Download and install [Intel Hardware Accelerated Execution Manager (HAXM)](https://github.com/intel/haxm/releases/download/v7.7.1/haxm-windows_v7_7_1.zip "Intel Hardware Accelerated Execution Manager (HAXM)") if not already present in your system (you also need to switch off Hyper-V feature and enable Virtualization in BIOS for successful installation).
+4. Download [Command-Line-Tools](https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip "Command-Line-Tools")
+5. Now create a folder to store the sdk files. This can be done in some drive were you have enough space. Mine is
+		`D:\android-sdk`<br><br>
+	5.1 Extarct the contents of the file downloaded in step 4 in this directory. After this, the folder structure should look like this.
+<br><br>![](readme-guide-images/directory_structure.PNG)<br><br>
+	If yours is not shown like the above structure, make it as shown above.
+6. Set ANDROID_SDK_ROOT environment variable:
+		<br><br>`setx ANDROID_SDK_ROOT D:\android-sdk`<br><br>
+7. Create new entry in Path environment variable:
+	<br><br>	`setx path "%PATH%;%ANDROID_SDK_ROOT%\cmdline-tools\tools\bin" /m`<br><br>
+	Note: you'll probably need to restart cmd in order the changes take effect.
+8. Open CMD in directory **D:\android-sdk\cmdline-tools\tools\bin**<br><br>
+	8.1 Execute the below command. You can change the **android-29** with some other version which you want. You can see all the available versions [here](https://developer.android.com/studio/releases/platforms "here").
+			<br><br>`sdkmanager "platforms;android-29" "system-images;android-29;google_apis;x86_64" "platform-tools"`<br><br>
+	Note: This may take some time.<br><br>
+	8.2 Next we have to accept a bunch of licenses. Type the next command and answer y to each question:
+			<br><br>`sdkmanager --licenses`<br><br>
+	8.3 Now we are ready to create new virtual device:
+		<br><br>	`avdmanager create avd -n test_avd_29 -k "system-images;android-29;google_apis;x86_64"`<br><br>
+	You can change the ADV name from **test_avd_29** to something else if you wish. Also make sure you use the same android sdk version you downloaded in the previous step in place of **android-29**.
+	<br><br>8.4 To see the list of virtual devices just type:
+		<br><br>`avdmanager list avd`<br><br>
+9. Go to emulator folder:
+		<br><br>`cd %ANDROID_SDK_ROOT%\emulator`<br><br>
+10. Last but not least thing is launching:
+		<br><br>`emulator -avd test_avd_29`<br><br>
+	Note: This may take sometime.
 
-This can be done using the android device emulator. There is some way to install the android device manager alone. But,
-for now we need to install the android studio to get it working.
+<br><br>
+Reference : https://dev.to/andreisfedotov/how-to-install-android-emulator-without-installing-android-studio-3lce
 
-Follow the steps below.
+#### Method 2 With Android Studio
 
 1. Download and install the latest android studio from https://developer.android.com/studio#downloads.
 2. Launch Android Studio.
