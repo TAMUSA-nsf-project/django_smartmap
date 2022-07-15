@@ -54,11 +54,10 @@ def getEstimatedArrivalAJAX(request):
     # TODO filter BusRoute models
 
     # filter Bus models by route (for now)
-    try:
-        # assumptions:  only one bus at anytime per route
-        bus = Bus.objects.get(route=user_selected_route)  # TODO filter for multiple busses
-    except Bus.DoesNotExist:
-        return HttpResponse("")
+    # assumptions:  only one bus at anytime per route
+    bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
+    if bus is None:
+        return HttpResponse("There are no active buses on this route.")
 
     busCoord = (bus.latitude, bus.longitude)
 
@@ -92,19 +91,26 @@ def getActiveBussesOnRouteAJAX(request):
 # @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
     """
-    data format: {'selected_route': str, 'bus_lat': float, 'bus_lng': float }
+    data format:
+    {
+         'selected_route': routeSelect.value,
+         'latitude': geolocationCoordinates.latitude,
+         'longitude': geolocationCoordinates.longitude,
+         'accuracy': geolocationCoordinates.accuracy,
+         'speed': geolocationCoordinates.speed,
+         'heading': geolocationCoordinates.heading
+     }
     """
     if request.method == 'GET':
         # extract bus position out of request
         pos_data = ast.literal_eval(request.GET.get('posData'))
         selected_route = pos_data['selected_route']
-        bus_lat = pos_data['bus_lat']
-        bus_lng = pos_data['bus_lng']
+        bus_lat = pos_data['latitude']
+        bus_lng = pos_data['longitude']
 
         # update bus pos in db (todo: push this task to async queue)
-        try:
-            bus = Bus.objects.get(driver=request.user.username)
-        except Bus.DoesNotExist:
+        bus = Bus.objects.filter(driver=request.user.username).first()
+        if bus is None:
             bus = Bus(driver=request.user.username)
 
         bus.latitude = bus_lat

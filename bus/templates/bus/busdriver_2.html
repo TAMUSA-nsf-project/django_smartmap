@@ -42,14 +42,17 @@
                         latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
                                                       Longitude :${geolocationCoordinates.longitude}
                                                       Accuracy  :${geolocationCoordinates.accuracy}
-                                                      Speed     :${geolocationCoordinates.speed}`
+                                                      Speed     :${geolocationCoordinates.speed}
+                                                      Rotation  :${geolocationCoordinates.heading}`
 
                         // Send the location information to the server
                         const posData = {
                             'selected_route': routeSelect.value,
-                            'bus_lat': geolocationCoordinates.latitude,
-                            'bus_lng': geolocationCoordinates.longitude,
-                            //'bus_dir': geolocationCoordinates.heading  // commented to not break map_index.js
+                            'latitude': geolocationCoordinates.latitude,
+                            'longitude': geolocationCoordinates.longitude,
+                            'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy: "",
+                            'speed': geolocationCoordinates.speed != null ? geolocationCoordinates.speed: "",
+                            'heading': geolocationCoordinates.heading != null ? geolocationCoordinates.heading: ""
                         }
 
                         jQuery.ajax({
