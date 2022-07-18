@@ -6,6 +6,6 @@ app_name = "map"
 urlpatterns = [
     # Map:
     path('map/', views.map_hello_world, name='map'),
-    path('routedetails-ajax/', views.getRouteDetails, name='routedetails-ajax'),
+    path('routedetails-ajax/', views.getRouteDetailsAJAX, name='routedetails-ajax'),
 
 ]

@@ -31,7 +31,7 @@ def map_hello_world(request):
     return render(request, 'map/map_index.html', context)
 
 
-def getRouteDetails(request):
+def getRouteDetailsAJAX(request):
     user_data = ast.literal_eval(request.GET.get('data'))
     stops = commons.helper.getRoutesDetails(user_data)
     if stops:
