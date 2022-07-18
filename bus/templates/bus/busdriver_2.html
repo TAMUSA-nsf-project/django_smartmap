@@ -30,7 +30,7 @@
 
             routeSelect.addEventListener("input", () => {
 
-                statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
+                statusMessageDiv.innerHTML = `Broadcasting position for :  ${routeSelect.options[routeSelect.selectedIndex].text}`
 
                 const watchPositionSuccess = function (geolocationPosition) {
 
@@ -42,14 +42,17 @@
                         latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
                                                       Longitude :${geolocationCoordinates.longitude}
                                                       Accuracy  :${geolocationCoordinates.accuracy}
-                                                      Speed     :${geolocationCoordinates.speed}`
+                                                      Speed     :${geolocationCoordinates.speed}
+                                                      Rotation  :${geolocationCoordinates.heading}`
 
                         // Send the location information to the server
                         const posData = {
                             'selected_route': routeSelect.value,
-                            'bus_lat': geolocationCoordinates.latitude,
-                            'bus_lng': geolocationCoordinates.longitude,
-                            //'bus_dir': geolocationCoordinates.heading  // commented to not break map_index.js
+                            'latitude': geolocationCoordinates.latitude,
+                            'longitude': geolocationCoordinates.longitude,
+                            'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy: "",
+                            'speed': geolocationCoordinates.speed != null ? geolocationCoordinates.speed: "",
+                            'heading': geolocationCoordinates.heading != null ? geolocationCoordinates.heading: ""
                         }
 
                         jQuery.ajax({
@@ -84,8 +87,8 @@
         <div class="mb-3">
             <select class="form-select" id="routeSelect">
                 <option selected disabled value="">Select route...</option>
-                {% for route in route_json %}
-                    <option value="{{ route }}">{{ route }}</option>
+                {% for route_id, route_text in allRoutes.items %}
+                    <option value="{{ route_id }}">{{ route_text }}</option>
                 {% endfor %}
             </select>
         </div>

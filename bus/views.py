@@ -6,7 +6,8 @@ import os
 import ast
 from django.utils.timezone import utc
 
-from .models import Bus, BusDriver, BusStop
+import commons.helper
+from .models import Bus, BusDriver, BusStop, BusRoute
 
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -30,9 +31,7 @@ Bus Driver page
 @login_required
 # @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
-    context = {
-        "route_json": json_data.keys(),
-    }
+    context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
 
 
@@ -54,11 +53,10 @@ def getEstimatedArrivalAJAX(request):
     # TODO filter BusRoute models
 
     # filter Bus models by route (for now)
-    try:
-        # assumptions:  only one bus at anytime per route
-        bus = Bus.objects.get(route=user_selected_route)  # TODO filter for multiple busses
-    except Bus.DoesNotExist:
-        return HttpResponse("")
+    # assumptions:  only one bus at anytime per route
+    bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
+    if bus is None:
+        return HttpResponse("There are no active buses on this route.")
 
     busCoord = (bus.latitude, bus.longitude)
 
@@ -82,7 +80,7 @@ def getActiveBussesOnRouteAJAX(request):
     busObjs = Bus.objects.filter(route=user_selected_route)
 
     # bus data to send back to client
-    bus_data = {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
+    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
                 busObjs}
 
     return HttpResponse(json.dumps(bus_data))
@@ -92,24 +90,33 @@ def getActiveBussesOnRouteAJAX(request):
 # @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
     """
-    data format: {'selected_route': str, 'bus_lat': float, 'bus_lng': float }
+    data format:
+    {
+         'selected_route': routeSelect.value,
+         'latitude': geolocationCoordinates.latitude,
+         'longitude': geolocationCoordinates.longitude,
+         'accuracy': geolocationCoordinates.accuracy,
+         'speed': geolocationCoordinates.speed,
+         'heading': geolocationCoordinates.heading
+     }
     """
     if request.method == 'GET':
         # extract bus position out of request
         pos_data = ast.literal_eval(request.GET.get('posData'))
         selected_route = pos_data['selected_route']
-        bus_lat = pos_data['bus_lat']
-        bus_lng = pos_data['bus_lng']
+        bus_lat = pos_data['latitude']
+        bus_lng = pos_data['longitude']
 
         # update bus pos in db (todo: push this task to async queue)
-        try:
-            bus = Bus.objects.get(driver=request.user.username)
-        except Bus.DoesNotExist:
+        bus = Bus.objects.filter(driver=request.user.username).first()
+        if bus is None:
+            # Add the bus details
             bus = Bus(driver=request.user.username)
-
+            bus.route = BusRoute.objects.filter(pk=selected_route).first()
+        # Update the location details
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-        bus.route = selected_route
+
         bus.save()
 
         return HttpResponse(f"Success")
