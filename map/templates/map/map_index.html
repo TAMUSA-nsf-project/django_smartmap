@@ -16,7 +16,8 @@
 
     <script type="text/javascript">
         const MAP_CENTER = {lat: {{ lat_coord }}, lng: {{ lng_coord }}}
-        const JSON_ROUTES = {{ route_json | safe }};
+        const ALL_ACTIVE_ROUTES = {{ all_routes | safe }};
+        const ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
         const AJAX_EST_ARRIVAL_URL = "{% url 'bus:busestarrival-ajax' %}"
         const AJAX_URL_ACTIVE_BUSSES_ON_ROUTE = "{% url 'bus:activebussesonroute-ajax' %}"
     </script>

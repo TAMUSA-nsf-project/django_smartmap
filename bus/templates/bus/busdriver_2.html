@@ -30,7 +30,7 @@
 
             routeSelect.addEventListener("input", () => {
 
-                statusMessageDiv.innerHTML = `broadcasting position for ${routeSelect.value}`
+                statusMessageDiv.innerHTML = `Broadcasting position for :  ${routeSelect.options[routeSelect.selectedIndex].text}`
 
                 const watchPositionSuccess = function (geolocationPosition) {
 
@@ -87,8 +87,8 @@
         <div class="mb-3">
             <select class="form-select" id="routeSelect">
                 <option selected disabled value="">Select route...</option>
-                {% for route in route_json %}
-                    <option value="{{ route }}">{{ route }}</option>
+                {% for route_id, route_text in allRoutes.items %}
+                    <option value="{{ route_id }}">{{ route_text }}</option>
                 {% endfor %}
             </select>
         </div>

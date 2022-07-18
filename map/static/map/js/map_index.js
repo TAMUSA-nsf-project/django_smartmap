@@ -95,21 +95,30 @@ function RouteDropdown(map) {
 
     const arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
 
-    for (let key in JSON_ROUTES) {
+    for (let key in ALL_ACTIVE_ROUTES) {
 
         const li = document.createElement('li');     // create li element.
 
         const li_button = document.createElement("button")
         li_button.type = "button"
         li_button.setAttribute("class", 'dropdown-item')
-        li_button.innerHTML = key
+        li_button.innerHTML = ALL_ACTIVE_ROUTES[key]
 
         // define the button's onclick behavior
         li_button.onclick = () => {
-            button.innerHTML = key;
-            hideDisplayedMarkers()
-            showRouteMarkers(key);
-            getActiveBussesOnSelectedRoute();
+            button.innerHTML = ALL_ACTIVE_ROUTES[key];
+            // Check whether the route is already cached
+            if (mapRouteMarkers[key]) {
+                hideDisplayedMarkers()
+                showRouteMarkers(key)
+                getActiveBussesOnSelectedRoute()
+            } else {
+                initRouteMarkers(key).then((res) => {
+                    hideDisplayedMarkers()
+                    showRouteMarkers(key)
+                    getActiveBussesOnSelectedRoute()
+                });
+            }
         }
 
         li.appendChild(li_button);
@@ -124,6 +133,7 @@ function RouteDropdown(map) {
  * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
  */
 function showRouteMarkers(route /*string*/) {
+    route = parseInt(route)
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
         bus_stop.marker.setMap(map);  // shows the marker
@@ -176,11 +186,14 @@ function getActiveBussesOnSelectedRoute() {
  */
 class BusStop {
     constructor(json_data) {
-        this.name = json_data["Stop Name"]
-        this.number = json_data["Stop Number"]
-        this.route = json_data["route"]
-        this.Lat = json_data.Lat
-        this.Lng = json_data.Lng
+
+        this.name = json_data.BusStopName
+        this.index = json_data.BusStopIndex
+        this.number = json_data.BusStopNumber
+        this.route = json_data.BusRouteName
+        this.routeId = json_data.BusRouteId
+        this.Lat = json_data.BusStopLatitude
+        this.Lng = json_data.BusStopLongitude
         this.est_arrival = "TBD"
         // this.active = false;
         this.#initMapMarker();
@@ -189,7 +202,7 @@ class BusStop {
 
     callBackMethod() {
 
-        const toSend = {'route': this.route, 'bus_stop_id': this.number}
+        const toSend = {'route': this.routeId, 'bus_stop_id': this.number}
         jQuery.ajax({
             url: AJAX_EST_ARRIVAL_URL, //TODO setup url
             data: {'data': JSON.stringify(toSend)},
@@ -289,16 +302,36 @@ setInterval(function () {
 }, 5000);
 
 
+
 /**
- * Initializes the mapRouteMarkers object that will contain google.maps.Marker instances.
+ * Initializes the given mapRouteMarkers object that will contain google.maps.Marker instances.
  */
-function initAllRouteMarkers() {
-    for (const route in JSON_ROUTES) {
-        mapRouteMarkers[route] = [];
-        for (const busStop in JSON_ROUTES[route]) {
-            mapRouteMarkers[route][busStop] = new BusStop(JSON_ROUTES[route][busStop])
+function initRouteMarkers(route_id) {
+    return new Promise((resolve, reject) => {
+            jQuery.ajax({
+                url: ROUTE_DETAILS,
+                data: {'data': JSON.stringify(route_id)},
+                type: "GET",
+                dataType: 'json',
+                success: (data) => {
+                    if (data) {
+                        console.log(data)
+                        mapRouteMarkers[route_id] = []
+                        data.all_stops.forEach((busStop) => {
+                            mapRouteMarkers[route_id].push(new BusStop(busStop));
+                        })
+                    } else
+                        console.log("No stops found for the given route.")
+                    resolve("Resolved")
+                },
+                error: (e) => {
+                    console.log(e.message)
+                    reject("rejected")
+                }
+            });
         }
-    }
+    )
+
 }
 
 
@@ -322,9 +355,6 @@ function initMap() {
         scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
         // rotationAngle: 0
     };
-
-    // Initialize BuStop instances that contain google.maps.Marker instances
-    initAllRouteMarkers();
 
     // Create the DIV to hold the control by calling CenterControl()
     const centerControlDiv = CenterControl(map);

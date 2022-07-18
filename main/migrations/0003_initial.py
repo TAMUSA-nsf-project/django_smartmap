@@ -30,6 +30,7 @@ def addRouteIfNotExist(bus_route: dict):
         busRoute.name = bus_route["name"]
         busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
         busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
+        busRoute.active = True
         busRoute.save()
 
 

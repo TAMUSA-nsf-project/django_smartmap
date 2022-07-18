@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'map',
     'bus',
     'users',
+    'commons',
 
     # Django default apps
     'django.contrib.admin',

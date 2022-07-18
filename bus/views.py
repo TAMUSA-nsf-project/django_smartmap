@@ -6,7 +6,8 @@ import os
 import ast
 from django.utils.timezone import utc
 
-from .models import Bus, BusDriver, BusStop
+import commons.helper
+from .models import Bus, BusDriver, BusStop, BusRoute
 
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -30,9 +31,7 @@ Bus Driver page
 @login_required
 # @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
-    context = {
-        "route_json": json_data.keys(),
-    }
+    context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
 
 
@@ -81,7 +80,7 @@ def getActiveBussesOnRouteAJAX(request):
     busObjs = Bus.objects.filter(route=user_selected_route)
 
     # bus data to send back to client
-    bus_data = {bus.id: {'selected_route': bus.route, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
+    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
                 busObjs}
 
     return HttpResponse(json.dumps(bus_data))
@@ -111,11 +110,13 @@ def bus_position_ajax(request):
         # update bus pos in db (todo: push this task to async queue)
         bus = Bus.objects.filter(driver=request.user.username).first()
         if bus is None:
+            # Add the bus details
             bus = Bus(driver=request.user.username)
-
+            bus.route = BusRoute.objects.filter(pk=selected_route).first()
+        # Update the location details
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-        bus.route = selected_route
+
         bus.save()
 
         return HttpResponse(f"Success")
