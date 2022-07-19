@@ -7,6 +7,7 @@ urlpatterns = [
     # Bus driver
     path('busdriver/', views.busdriver_view, name='busdriver-page'),
     path('busposition-ajax/', views.bus_position_ajax, name='busposition-ajax'),
+    path('bushasendedbroadcast-ajax/', views.deleteBusHasEndedBroadcastAJAX, name='bushasendedbroadcast-ajax'),
 
     # User-requested bus data
     path('busestarrival-ajax/', views.getEstimatedArrivalAJAX, name='busestarrival-ajax'),

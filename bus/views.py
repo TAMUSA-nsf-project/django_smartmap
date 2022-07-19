@@ -122,3 +122,18 @@ def bus_position_ajax(request):
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
+
+
+
+@login_required
+def deleteBusHasEndedBroadcastAJAX(request):
+    """
+    Deletes a bus instance in the database if the driver has ended their broadcast session.
+    """
+    if request.method == 'GET':
+        bus = Bus.objects.filter(driver=request.user.username).first()
+        if bus is not None:
+            bus.delete()
+        return HttpResponse(f"Success")
+    else:
+        return HttpResponse("Error: Didn't receive data.")

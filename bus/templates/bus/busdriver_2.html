@@ -2,16 +2,41 @@
 {% load static %}
 
 {% block extend_head %}
+    <!-- Scripts/links needed for the toggle switch (a custom checkbox) -->
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
+        $(document).ready(function () {
 
-            const routeSelect = document.querySelector("#routeSelect");
-            const statusMessageDiv = document.querySelector("#statusMessage")
-            const latlngMessageDiv = document.querySelector("#latlngMessage")
+            /**
+             * Store page elements in variables
+             */
+
+            // Broadcast toggle switch
+            const toggleSwitch = $('#toggle-event');
+
+            // Immediately disable the broadcast toggle switch
+            toggleSwitch.prop('disabled', true);
+
+            // Route select dropdown
+            const routeSelect = $('#routeSelect');
+
+            // Status message divs
+            const statusMessageDiv = $("#statusMessage")
+            const latlngMessageDiv = $("#latlngMessage")
+
+            // Handle to watchPosition execution
+            let watchPositionID;
+
+            // Initialize prevTime, broadcast frequency
+            let prevTime = Date.now();
             const broadcastFrequency = 2000;
 
-            let prevTime = Date.now();
+
+            /**
+             * Options and callbacks
+             */
 
             const watchPositionOptions = {
                 enableHighAccuracy: true,
@@ -27,27 +52,24 @@
                 // nothing
             }
 
+            function watchPositionSuccess(geolocationPosition) {
 
-            routeSelect.addEventListener("input", () => {
-
-                statusMessageDiv.innerHTML = `Broadcasting position for :  ${routeSelect.options[routeSelect.selectedIndex].text}`
-
-                const watchPositionSuccess = function (geolocationPosition) {
+                statusMessageDiv.html(`Broadcasting position for:  ${routeSelect.children("option").filter(":selected").text()}`)
 
                     if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
                         prevTime = geolocationPosition.timestamp
                         const geolocationCoordinates = geolocationPosition.coords;
 
-                        //console.log(`Function called with ${geolocationCoordinates}`)
-                        latlngMessageDiv.innerHTML = `Latitude  :${geolocationCoordinates.latitude}
+                        // Update position data status message on page
+                        latlngMessageDiv.html(`Latitude  :${geolocationCoordinates.latitude}
                                                       Longitude :${geolocationCoordinates.longitude}
                                                       Accuracy  :${geolocationCoordinates.accuracy}
                                                       Speed     :${geolocationCoordinates.speed}
-                                                      Rotation  :${geolocationCoordinates.heading}`
+                                                      Rotation  :${geolocationCoordinates.heading}`)
 
                         // Send the location information to the server
                         const posData = {
-                            'selected_route': routeSelect.value,
+                            'selected_route': routeSelect.val(),
                             'latitude': geolocationCoordinates.latitude,
                             'longitude': geolocationCoordinates.longitude,
                             'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy: "",
@@ -55,26 +77,79 @@
                             'heading': geolocationCoordinates.heading != null ? geolocationCoordinates.heading: ""
                         }
 
-                        jQuery.ajax({
-                            url: "{% url 'bus:busposition-ajax' %}",
-                            data: {'posData': JSON.stringify(posData)},
-                            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                            // server-side, hence the object defined here
-                            type: "GET",
-                            //dataType: 'json', // dataType specifies the type of data expected back from the server,
-                            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
-                            success: ajaxSuccess,
-                        });
+                    // Send the watchPosition data to the server
+                    jQuery.ajax({
+                        url: "{% url 'bus:busposition-ajax' %}",
+                        data: {'posData': JSON.stringify(posData)},
+                        // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                        // server-side, hence the object defined here
+                        type: "GET",
+                        //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                        dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                        success: ajaxSuccess,
+                    });
 
-                    } else {
-                        // We don't want to make frequent commits to server.
-                        console.log(geolocationPosition.timestamp - prevTime)
-                    }
-                };
+                }
+                else
+                {
+                    // We don't want to make frequent commits to server.
+                    console.log(geolocationPosition.timestamp - prevTime)
+                }
+            }
 
-                navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
 
+            /**
+             * On-change actions
+             */
+
+            // Route selector on-change action
+            routeSelect.on('change', function () {
+                if($(this).val() !== '') {
+                    toggleSwitch.prop('disabled', false);
+                }
             })
+
+            // Broadcast toggle-switch on-change action
+            toggleSwitch.change(function() {
+                // boolean value from toggle switch
+                if( $(this).prop('checked') ) {
+                    // Immediately disable the route selector
+                    routeSelect.prop('disabled', true);
+
+                    // Execute watchPosition callback, store its handle in the global script var
+                    watchPositionID = navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
+
+                } else {
+                    // Clear watchPosition using handle
+                    navigator.geolocation.clearWatch(watchPositionID);
+
+                    // Enable the route selector
+                    routeSelect.prop('disabled', false);
+
+                    // Clear status message divs
+                    statusMessageDiv.html('');
+                    latlngMessageDiv.html('');
+
+
+                    // temporary dummy data
+                    const dataToSend = {'active': 0}
+
+                    // Notify the server that the driver has ended their broadcast
+                    jQuery.ajax({
+                        url: "{% url 'bus:bushasendedbroadcast-ajax' %}",
+                        data: {'data': JSON.stringify(dataToSend)},
+                        // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                        // server-side, hence the object defined here
+                        type: "GET",
+                        //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                        dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                        success: ajaxSuccess,
+                    });
+
+
+                }
+            })
+
         })
 
     </script>
@@ -92,10 +167,11 @@
                 {% endfor %}
             </select>
         </div>
+        <div class="mb-3">
+            <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving" data-off="Start Driving" data-onstyle="danger">
+        </div>
         <div class="mb-3" id="statusMessage"></div>
         <div class="mb-3" id="latlngMessage"></div>
     </div>
-
-
 
 {% endblock %}
