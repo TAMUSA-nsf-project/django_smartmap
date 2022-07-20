@@ -26,6 +26,7 @@ def getRoutesDetails(route_id):
         BusStopName=F('bus_stop__name'),
         BusStopLatitude=F('bus_stop__latitude'),
         BusStopLongitude=F('bus_stop__longitude'),
-        BusStopNumber = F('bus_stop__stop_id')
+        BusStopNumber = F('bus_stop__stop_id'),
+        LocationPinColor = F('parent_route__color_code')
     )
     return allStops

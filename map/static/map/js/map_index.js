@@ -195,6 +195,7 @@ class BusStop {
         this.Lat = json_data.BusStopLatitude
         this.Lng = json_data.BusStopLongitude
         this.est_arrival = "TBD"
+        this.location_pin_color = json_data.LocationPinColor
         // this.active = false;
         this.#initMapMarker();
         // this.intervalHandle = null;
@@ -252,18 +253,24 @@ class BusStop {
         // Google's recommended collection of icons: http://kml4earth.appspot.com/icons.html
         // Also see https://mapicons.mapsmarker.com/category/markers/transportation/?style=simple
 
-        const icon_size = 30;  // dimension in pixels
-
-        const busStopIcon = {
-            url: "https://maps.google.com/mapfiles/kml/pal5/icon57.png",
-            scaledSize: new google.maps.Size(icon_size, icon_size),  // resize to X by X pixels
+        const svgMarker = {
+            path: "M17.98,10.1c0,6.51-8.74,17.44-8.74,17.44,0,0-8.74-11.49-8.74-17.44C.5,4.8,4.41,.5,9.24,.5s8.74,4.3,8.74,9.6Z",
+            fillColor: this.location_pin_color,
+            fillOpacity: 1,
+            scale: 1.5,
+            labelOrigin: new google.maps.Point(10, 10)
         };
 
         let marker = new google.maps.Marker({
             position: {lat: this.Lat, lng: this.Lng},
             map: null,
             title: this.name,
-            icon: busStopIcon,
+            label: {
+                text: `${this.index}`,
+                color: "black",
+                fontWeight: "bold"
+            },
+            icon: svgMarker,
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
@@ -275,6 +282,8 @@ class BusStop {
 
             // Set the current object as the active marker object
             activeMarkerObj = this
+            // Set the map view to the selected bus stop location
+            activeMarkerObj.getMap().panTo(new google.maps.LatLng(activeMarkerObj.lat, activeMarkerObj.lng))
         })
 
         this.marker = marker;
@@ -300,7 +309,6 @@ setInterval(function () {
 
 
 }, 5000);
-
 
 
 /**
@@ -343,7 +351,8 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: MAP_CENTER
+        center: MAP_CENTER,
+        gestureHandling : "greedy"
     });
 
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
