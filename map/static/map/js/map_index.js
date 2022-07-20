@@ -258,7 +258,13 @@ class BusStop {
             fillColor: this.location_pin_color,
             fillOpacity: 1,
             scale: 1.5,
-            labelOrigin: new google.maps.Point(10, 10)
+            labelOrigin: new google.maps.Point(10, 10),
+            // Size of the SVG image
+            size: new google.maps.Size(18.48, 28.35),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+
+            anchor: new google.maps.Point(10, 29),
         };
 
         let marker = new google.maps.Marker({
@@ -352,7 +358,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: MAP_CENTER,
-        gestureHandling : "greedy"
+        gestureHandling: "greedy"
     });
 
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
