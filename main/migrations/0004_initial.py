@@ -12,6 +12,14 @@ from django.conf import settings
 from bus.models import BusStop, BusRoute, BusRouteDetails
 
 Stop_Name_KEY = "Stop Name"
+std_color_codes = {
+    "Route 51" : "#9A2A99",
+    "Route 51 (reverse)": "#9A2A99",
+    "Route 660": "#9A2A99",
+    "Route 660 (reverse)": "#9A2A99",
+    "Route 672": "#9A2A99",
+    "Route 672 (reverse)": "#9A2A99",
+}
 
 
 def addStopIfNotExist(bus_stop: dict):
@@ -31,6 +39,8 @@ def addRouteIfNotExist(bus_route: dict):
         busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
         busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
         busRoute.active = True
+        if busRoute.name in std_color_codes:
+            busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
 
 
@@ -100,7 +110,8 @@ def createsuperuser(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> Non
 
 
 class Migration(migrations.Migration):
-    initial = True
-    dependencies = []
+    dependencies = [
+        ('bus', '0001_initial'),
+    ]
     operations = [migrations.RunPython(createsuperuser),
                   migrations.RunPython(populatedata)]

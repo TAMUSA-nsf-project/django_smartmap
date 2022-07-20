@@ -37,6 +37,7 @@ class BusRoute(models.Model):
     first_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE, related_name="first_stop")
     last_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE, related_name="last_stop")
     active = models.BooleanField(default=False)
+    color_code = models.CharField(max_length=10, default="red")
 
     def __str__(self):
         return self.name
