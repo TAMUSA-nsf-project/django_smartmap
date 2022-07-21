@@ -54,7 +54,7 @@ class BusRouteDetails(models.Model):
         verbose_name_plural = 'bus route details'
 
     def __str__(self):
-        return f"{self.parent_route.name}::{self.bus_stop.name}"
+        return f"{self.parent_route.name}: {self.bus_stop.name}"
 
 
 class BusDriver(models.Model):
