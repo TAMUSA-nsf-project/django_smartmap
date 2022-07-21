@@ -134,13 +134,25 @@ function RouteDropdown(map) {
  */
 function showRouteMarkers(route /*string*/) {
     route = parseInt(route)
+
+    // Create a bounds variable used to update the viewport to fully display the current route
+    let bounds = new google.maps.LatLngBounds()
+    const bound_padding = 90;  // bound padding in pixels, 90 appears to be the right amount
+
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
+        // Display the marker
         bus_stop.marker.setMap(map);  // shows the marker
-    })
 
+        // Extend the bounds of what the viewport will be updated to
+        bounds.extend(new google.maps.LatLng(bus_stop.Lat, bus_stop.Lng))
+    })
     // set the script var to current route
     displayedRoute = route;
+
+    // Sets the viewport to contain the given bounds
+    map.fitBounds(bounds, bound_padding)
+
 }
 
 
@@ -288,8 +300,8 @@ class BusStop {
 
             // Set the current object as the active marker object
             activeMarkerObj = this
-            // Set the map view to the selected bus stop location
-            activeMarkerObj.getMap().panTo(new google.maps.LatLng(activeMarkerObj.lat, activeMarkerObj.lng))
+
+            //TODO Set the map view to the selected bus stop location
         })
 
         this.marker = marker;
