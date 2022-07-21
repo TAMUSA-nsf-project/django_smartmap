@@ -294,8 +294,8 @@ class BusStop {
 
             // Set the current object as the active marker object
             activeMarkerObj = this
-            // Set the map view to the selected bus stop location
-            activeMarkerObj.getMap().panTo(new google.maps.LatLng(activeMarkerObj.lat, activeMarkerObj.lng))
+
+            //TODO Set the map view to the selected bus stop location
         })
 
         this.marker = marker;
