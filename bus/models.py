@@ -51,7 +51,7 @@ class BusRouteDetails(models.Model):
     route_index = models.PositiveSmallIntegerField()
 
     class Meta:
-        verbose_name_plural = "Bus Route Details"
+        verbose_name_plural = 'bus route details'
 
     def __str__(self):
         return f"{self.parent_route.name}::{self.bus_stop.name}"
