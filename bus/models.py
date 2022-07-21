@@ -14,8 +14,10 @@ class Bus(models.Model):
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
-
     # therefore it does not need to be updated explicitly
+
+    class Meta:
+        verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
 
     def __str__(self):
         return f"Bus {self.id}"
