@@ -8,6 +8,10 @@ let activeMarkerObj = null;   // marker info window
 
 var busIcon;  // icon for bus
 
+let poly;
+let directionsService;
+let directionsRenderer;
+
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.
@@ -119,6 +123,7 @@ function RouteDropdown(map) {
                     getActiveBussesOnSelectedRoute()
                 });
             }
+
         }
 
         li.appendChild(li_button);
@@ -153,6 +158,9 @@ function showRouteMarkers(route /*string*/) {
     // Sets the viewport to contain the given bounds
     map.fitBounds(bounds, bound_padding)
 
+
+    calcRouteTest(route);
+
 }
 
 
@@ -170,6 +178,9 @@ function hideDisplayedMarkers() {
 
         // reset script var
         displayedRoute = ""
+
+        // Polyline
+        poly.setPath([]);
     }
 }
 
@@ -376,6 +387,17 @@ function initMap() {
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
     activeMarkerInfoWindow = new google.maps.InfoWindow();
 
+
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
+
+    // Route line
+    poly = new google.maps.Polyline({
+        strokeColor: "#000000",
+        strokeOpacity: 1,
+        strokeWeight: 3,
+      });
+
     // Initialize bus icon using google.maps.Size method to resize image at specified url
     busIcon = {
         url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
@@ -433,3 +455,89 @@ function updateBusMarkersBySid(data) {
 }
 
 
+
+
+
+
+/**
+ * Test function for drawing more hardcoded routes.
+ * constructs polyline from multiple API calls based on divisions of overall route containing no more than 8 waypoints
+ * https://developers.google.com/maps/documentation/directions/get-directions
+ * @param {String} route the route's name
+ */
+function calcRouteTest(route) {
+
+  var cur = 1;
+  var testLen = JSON_ROUTES[route].length;
+  var trip = JSON_ROUTES[route];
+  var div = 9;
+  path = []                                 // new path array
+  // user_markers = [];                        // new markers array
+  let bounds = new google.maps.LatLngBounds();
+  // console.log(trip);
+
+  /**
+   * Recursive function to build poly line based on incremental directionsSevices() API calls
+   * @returns
+   */
+  function build() {
+    if (!trip[cur] || !trip[div]) {
+      // build map
+      poly.setPath(path);
+      map.fitBounds(bounds);
+      return;
+    }
+    var waypoints = [];
+    for (var i = cur; i < div; i++) {
+
+      waypoints.push({
+        location: new google.maps.LatLng(trip[i].Lat, trip[i].Lng),
+        stopover: false
+      })
+      bounds.extend(new google.maps.LatLng(trip[i].Lat, trip[i].Lng));
+    }
+
+    directionsService.route({
+      origin: new google.maps.LatLng(trip[cur - 1].Lat, trip[cur - 1].Lng),
+
+      destination: new google.maps.LatLng(trip[div].Lat, trip[div].Lng),
+      waypoints: waypoints,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    },
+      function (result, status) {
+        console.log(result);
+        if (status == google.maps.DirectionsStatus.OK) {
+          for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
+            // console.log(JSON.stringify(result.routes[0].overview_path[i]));
+
+            path.push(result.routes[0].overview_path[i]);
+          }
+        } else {
+          path.push(new google.maps.LatLng(trip[cur].Lat, trip[cur].Lng));
+        }
+
+        // make sure every stop is included
+        if (div + 1 == testLen - 1) {
+          cur = testLen - 2;
+          div = testLen - 1;
+          console.log("Current start/stop index: ", cur, div);
+        } else if ((div + 9 >= testLen - 1) && (div + 1 <= testLen - 2)) {
+          cur = div + 1;
+          div = testLen - 1;
+          console.log("Current start/stop index: ", cur, div);
+        } else {
+          cur = div + 1;
+          div = cur + 8;
+          console.log("Current start/stop index: ", cur, div);
+        }
+        build();
+      });
+  }
+
+  // console.log(trip[0].Lat, trip[0].Lng);
+  bounds.extend(new google.maps.LatLng(trip[0].Lat, trip[0].Lng));
+  build();
+
+  poly.setMap(map);
+
+}
