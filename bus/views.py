@@ -2,7 +2,7 @@ import ast
 import json
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, HttpResponse
 
 import commons.helper
@@ -135,12 +135,16 @@ def deleteBusHasEndedBroadcastAJAX(request):
         return HttpResponse("Error: Didn't receive data.")
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def transit_logs_view(request):
     transit_logs = TransitLog.objects.order_by('-date_added')
     context = {'transit_logs': transit_logs}
     return render(request, 'bus/transit_logs.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def transit_log_entries_view(request, log_id):
     transit_log = TransitLog.objects.get(id=log_id)
     entries = transit_log.transitlogentry_set.order_by('time_stamp')
