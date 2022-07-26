@@ -8,4 +8,9 @@ urlpatterns = [
     path('map/', views.map_hello_world, name='map'),
     path('routedetails-ajax/', views.getRouteDetailsAJAX, name='routedetails-ajax'),
 
+
+    path('routedirections-ajax/', views.getRouteDirectionsAJAX, name='routedirections-ajax'),
+
+
+
 ]

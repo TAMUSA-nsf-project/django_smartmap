@@ -37,7 +37,35 @@ def getRouteDetailsAJAX(request):
     if stops:
         stops = list(stops)
     allStops = {
-        'all_stops' : stops
+        'all_stops': stops
     }
     return HttpResponse(json.dumps(allStops))
 
+
+import googlemaps
+from googlemaps.directions import directions
+
+gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
+
+
+def calc_route_directions(route_id):
+    stops = list(commons.helper.getRoutesDetails(route_id))
+    route = []
+    for i in range(len(stops) - 1):
+        origin_coords = (stops[i]['BusStopLatitude'], stops[i]['BusStopLongitude'])
+        dest_coords = (stops[i + 1]['BusStopLatitude'], stops[i + 1]['BusStopLongitude'])
+        res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
+        print(res)
+        # polyline = res[0]['overview_polyline']['points']
+        # legs = res[0]['legs']
+        # for leg in legs:
+        #     steps = leg['steps']
+        #     for step in steps:
+        #         print(step)
+    return route
+
+
+def getRouteDirectionsAJAX(request):
+    user_selected_route_id = ast.literal_eval(request.GET.get('data'))
+    res = calc_route_directions(user_selected_route_id)
+    return HttpResponse(json.dumps(res))

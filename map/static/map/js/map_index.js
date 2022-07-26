@@ -116,11 +116,13 @@ function RouteDropdown(map) {
                 hideDisplayedMarkers()
                 showRouteMarkers(key)
                 getActiveBussesOnSelectedRoute()
+                getRouteDirections(key)
             } else {
                 initRouteMarkers(key).then((res) => {
                     hideDisplayedMarkers()
                     showRouteMarkers(key)
                     getActiveBussesOnSelectedRoute()
+                    getRouteDirections(key)
                 });
             }
 
@@ -159,7 +161,7 @@ function showRouteMarkers(route /*string*/) {
     map.fitBounds(bounds, bound_padding)
 
 
-    calcRouteTest(route);
+    // drawRoute(route);
 
 }
 
@@ -182,6 +184,29 @@ function hideDisplayedMarkers() {
         // Polyline
         poly.setPath([]);
     }
+}
+
+
+function DrawBusRouteOnMap(data) {
+}
+
+
+function getRouteDirections(route_id) {
+
+        jQuery.ajax({
+            url: AJAX_URL_ROUTE_DIRECTIONS,
+            data: {'data': JSON.stringify(route_id)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                DrawBusRouteOnMap(data);
+            },
+        });
+
+
+
 }
 
 
@@ -455,7 +480,40 @@ function updateBusMarkersBySid(data) {
 }
 
 
+function sleep(ms) {
+    return new Promise(resolveFunc => setTimeout(resolveFunc, ms));
+}
 
+async function drawRoute(route) {
+    let path = [];
+    let busStops = mapRouteMarkers[route]
+
+    for (let i = 0; i < busStops.length - 1; i++){
+        directionsService.route({
+            origin: new google.maps.LatLng(busStops[i].Lat, busStops[i].Lng),
+            destination: new google.maps.LatLng(busStops[i + 1].Lat, busStops[i + 1].Lng),
+            travelMode: 'TRANSIT',
+            transitOptions: {
+                modes: ['BUS'],
+            },
+
+        },
+            function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+
+                    for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
+                        console.log(result.routes[0].overview_path[i])
+                        path.push(result.routes[0].overview_path[i]);
+                    }
+                }
+            }
+        )
+        await sleep(1000);
+    }
+
+    poly.setPath(path);
+    poly.setMap(map);
+}
 
 
 
@@ -468,8 +526,8 @@ function updateBusMarkersBySid(data) {
 function calcRouteTest(route) {
 
   var cur = 1;
-  var testLen = JSON_ROUTES[route].length;
-  var trip = JSON_ROUTES[route];
+  var testLen = mapRouteMarkers[route].length;
+  var trip = mapRouteMarkers[route];
   var div = 9;
   path = []                                 // new path array
   // user_markers = [];                        // new markers array
