@@ -94,21 +94,21 @@ def bus_position_ajax(request):
         bus_lat = pos_data['latitude']
         bus_lng = pos_data['longitude']
 
-        # update bus pos in db (todo: push this task to async queue)
+        # Check if the bus exists already
         bus = Bus.objects.filter(driver=request.user.username).first()
         if bus is None:
-            # Add the bus details
+            # Create a Bus and TransitLog instance
             log = TransitLog(driver=request.user.username, bus_route=selected_route)
             log.save()
             bus = Bus(driver=request.user.username, transit_log_id=log.id)
             bus.route = selected_route
-        # Update the location details
+
+        # Update the bus coordinates
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-
         bus.save()
 
-        # Transit log
+        # Create new TransitLogEntry
         transit_log = TransitLog.objects.get(id=bus.transit_log_id)
         new_transit_log_entry = TransitLogEntry()
         new_transit_log_entry.transit_log = transit_log
