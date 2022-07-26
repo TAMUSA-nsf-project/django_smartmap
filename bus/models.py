@@ -77,7 +77,7 @@ class TransitLog(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.bus_route.name}: {self.driver}"
+        return f"{self.bus_route.name}, {self.date_added}, {self.driver}"
 
 
 class TransitLogEntry(models.Model):
