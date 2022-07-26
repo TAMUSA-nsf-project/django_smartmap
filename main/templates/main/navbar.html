@@ -10,9 +10,9 @@
 
             <div class="navbar-nav">
                 <a class="nav-link" href="{% url 'map:map' %}">Map</a>
-                <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
 
-                {% if user.is_superuser %}
+                {% if perms.bus.access_busdriver_pages %}
+                    <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
                     <a class="nav-link" href="{% url 'bus:transitlogs' %}">Transit-Logs</a>
                 {% endif %}
 

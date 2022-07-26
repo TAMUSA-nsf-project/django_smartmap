@@ -2,7 +2,7 @@ import ast
 import json
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.shortcuts import render, HttpResponse
 
 import commons.helper
@@ -16,7 +16,7 @@ Bus Driver page
 
 
 @login_required
-# @permission_required('bus.access_busdriver_pages', raise_exception=True)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
     context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
@@ -74,7 +74,7 @@ def getActiveBussesOnRouteAJAX(request):
 
 
 @login_required
-# @permission_required('bus.access_busdriver_pages', raise_exception=True)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
     """
     data format:
@@ -122,6 +122,7 @@ def bus_position_ajax(request):
 
 
 @login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def deleteBusHasEndedBroadcastAJAX(request):
     """
     Deletes a bus instance in the database if the driver has ended their broadcast session.
@@ -136,7 +137,7 @@ def deleteBusHasEndedBroadcastAJAX(request):
 
 
 @login_required
-@user_passes_test(lambda user: user.is_superuser)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def transit_logs_view(request):
     transit_logs = TransitLog.objects.order_by('-date_added')
     context = {'transit_logs': transit_logs}
@@ -144,7 +145,7 @@ def transit_logs_view(request):
 
 
 @login_required
-@user_passes_test(lambda user: user.is_superuser)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def transit_log_entries_view(request, log_id):
     transit_log = TransitLog.objects.get(id=log_id)
     entries = transit_log.transitlogentry_set.order_by('time_stamp')
