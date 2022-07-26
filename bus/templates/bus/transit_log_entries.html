@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h4>Transit Log: {{ transit_log }}</h4>
+
+        <h5>Entries:</h5>
+        <ul>
+            {% for entry in entries %}
+                <li>
+                    <p>{{ entry.time_stamp|date:'M d, Y H:i' }}, Lat: {{ entry.latitude }}, Lng: {{ entry.longitude }}</p>
+                </li>
+            {% empty %}
+                <li>There are no entries yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

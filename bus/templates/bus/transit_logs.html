@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h4>Transit Logs:</h4>
+
+        <ul>
+            {% for log in transit_logs %}
+                <li>
+                    <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
+                </li>
+            {% empty %}
+                <li>There are no transit logs yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

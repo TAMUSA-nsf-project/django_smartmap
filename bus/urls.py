@@ -12,5 +12,8 @@ urlpatterns = [
     # User-requested bus data
     path('busestarrival-ajax/', views.getEstimatedArrivalAJAX, name='busestarrival-ajax'),
     path('activebussesonroute-ajax/', views.getActiveBussesOnRouteAJAX, name='activebussesonroute-ajax'),
+    
+    path('transitlogs/', views.transit_logs_view, name='transitlogs'),
+    path('transitlogs/<int:log_id>', views.transit_log_entries_view, name='transitlogentries'),
 
 ]
