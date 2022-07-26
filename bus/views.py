@@ -109,12 +109,13 @@ def bus_position_ajax(request):
         bus.save()
 
         # Transit log
-        transit_log = TransitLog.objects.get(id=bus.transit_log_id)
-        new_transit_log_entry = TransitLogEntry()
-        new_transit_log_entry.transit_log = transit_log
-        new_transit_log_entry.latitude = bus_lat
-        new_transit_log_entry.longitude = bus_lng
-        new_transit_log_entry.save()
+        if request.user.is_superuser: #Allow log entry creation for admins only for now
+            transit_log = TransitLog.objects.get(id=bus.transit_log_id)
+            new_transit_log_entry = TransitLogEntry()
+            new_transit_log_entry.transit_log = transit_log
+            new_transit_log_entry.latitude = bus_lat
+            new_transit_log_entry.longitude = bus_lng
+            new_transit_log_entry.save()
 
         return HttpResponse(f"Success")
     else:
