@@ -77,7 +77,7 @@ class TransitLog(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.bus_route.name}: {self.driver}"
+        return f"{self.bus_route.name}, {self.date_added}, {self.driver}"
 
 
 class TransitLogEntry(models.Model):
@@ -88,11 +88,3 @@ class TransitLogEntry(models.Model):
 
     def __str__(self):
         return f"{self.time_stamp}, Lat: {self.latitude}, Lng: {self.longitude}"
-
-
-    # last_bus_stop = models.CharField(max_length=200)
-    # start_time = models.DateTimeField(auto_now_add=True)
-    # end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
-    # therefore it does not need to be updated explicitly
-
-

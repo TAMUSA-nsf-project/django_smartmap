@@ -15,7 +15,7 @@
         <ul>
             {% for entry in entries %}
                 <li>
-                    <p>{{ entry.time_stamp|date:'M d, Y H:i' }}, Lat: {{ entry.latitude }}, Lng: {{ entry.longitude }}</p>
+                    <p>{{ entry.time_stamp|date:'Y-m-d H:i:s' }}, Lat: {{ entry.latitude }}, Lng: {{ entry.longitude }}</p>
                 </li>
             {% empty %}
                 <li>There are no entries yet.</li>
