@@ -36,7 +36,7 @@
             // Warn driver with popup if they try to leave the page while toggle-switch is activated
             $(window).bind('beforeunload', function() {
                 if(toggleSwitch.prop('checked')) {
-                    return "";  // As of 2021, for security reasons it's no longer possible to display a custom message
+                    return "a string must be returned";  // As of 2021, for security reasons it's no longer possible to display a custom message
                 }
             });
 
