@@ -33,6 +33,13 @@
             let prevTime = Date.now();
             const broadcastFrequency = 2000;
 
+            // Warn driver with popup if they try to leave the page while toggle-switch is activated
+            $(window).bind('beforeunload', function() {
+                if(toggleSwitch.prop('checked')) {
+                    return "";  // As of 2021, for security reasons it's no longer possible to display a custom message
+                }
+            });
+
 
             /**
              * Options and callbacks
