@@ -20,8 +20,8 @@
     <option name="browserUrl" value="" />
     <option name="runTestServer" value="false" />
     <option name="runNoReload" value="false" />
-    <option name="useCustomRunCommand" value="false" />
-    <option name="customRunCommand" value="" />
+    <option name="useCustomRunCommand" value="true" />
+    <option name="customRunCommand" value="runsslserver" />
     <method v="2" />
   </configuration>
 </component>

@@ -85,6 +85,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',  # for javascript, others
     'storages'
 ]
+# Add sslserevr app if running dev mode
+if DEBUG:
+    INSTALLED_APPS += ['sslserver']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
