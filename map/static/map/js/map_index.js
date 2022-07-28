@@ -116,13 +116,13 @@ function RouteDropdown(map) {
                 hideDisplayedMarkers()
                 showRouteMarkers(key)
                 getActiveBussesOnSelectedRoute()
-                getRouteDirections(key)
+                // getRouteDirections(key)
             } else {
                 initRouteMarkers(key).then((res) => {
                     hideDisplayedMarkers()
                     showRouteMarkers(key)
                     getActiveBussesOnSelectedRoute()
-                    getRouteDirections(key)
+                    // getRouteDirections(key)
                 });
             }
 
@@ -161,7 +161,7 @@ function showRouteMarkers(route /*string*/) {
     map.fitBounds(bounds, bound_padding)
 
 
-    // drawRoute(route);
+    drawRoute(route);
 
 }
 
@@ -188,6 +188,12 @@ function hideDisplayedMarkers() {
 
 
 function DrawBusRouteOnMap(data) {
+    path = []
+    for (let i = 0; i < data.length; i++) {
+        path.push(new google.maps.LatLng(data[i].lat, data[i].lng))
+    }
+    poly.setPath(path);
+    poly.setMap(map);
 }
 
 
@@ -204,9 +210,6 @@ function getRouteDirections(route_id) {
                 DrawBusRouteOnMap(data);
             },
         });
-
-
-
 }
 
 
@@ -430,6 +433,8 @@ function initMap() {
         // rotationAngle: 0
     };
 
+
+
     // Create the DIV to hold the control by calling CenterControl()
     const centerControlDiv = CenterControl(map);
 
@@ -484,37 +489,77 @@ function sleep(ms) {
     return new Promise(resolveFunc => setTimeout(resolveFunc, ms));
 }
 
-async function drawRoute(route) {
-    let path = [];
+// async function drawRoute(route) {
+//     let path = [];
+//     let busStops = mapRouteMarkers[route]
+//
+//     for (let i = 0; i < busStops.length - 1; i++){
+//         directionsService.route({
+//             origin: new google.maps.LatLng(busStops[i].Lat, busStops[i].Lng),
+//             destination: new google.maps.LatLng(busStops[i + 1].Lat, busStops[i + 1].Lng),
+//             travelMode: 'TRANSIT',
+//             transitOptions: {
+//                 modes: ['BUS'],
+//             },
+//
+//         },
+//             function (result, status) {
+//                 if (status == google.maps.DirectionsStatus.OK) {
+//
+//                     for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
+//                         console.log(result.routes[0].overview_path[i])
+//                         path.push(result.routes[0].overview_path[i]);
+//                     }
+//                 }
+//             }
+//         )
+//         await sleep(1000);
+//     }
+//
+//     poly.setPath(path);
+//     poly.setMap(map);
+// }
+
+
+function drawRoute(route) {
+    path = [];
     let busStops = mapRouteMarkers[route]
+    const routeLen = busStops.length
+    const routeMidpoint = routeLen / 2
+    const routeIndices = [0, routeMidpoint, routeLen-1]
 
-    for (let i = 0; i < busStops.length - 1; i++){
+    for (let j = 0; j < routeIndices.length - 1; j++) {
+
+        const origin_index = routeIndices[j]
+        const dest_index = routeIndices[j+1]
+
         directionsService.route({
-            origin: new google.maps.LatLng(busStops[i].Lat, busStops[i].Lng),
-            destination: new google.maps.LatLng(busStops[i + 1].Lat, busStops[i + 1].Lng),
-            travelMode: 'TRANSIT',
-            transitOptions: {
-                modes: ['BUS'],
-            },
+                origin: new google.maps.LatLng(busStops[origin_index].Lat, busStops[origin_index].Lng),
+                destination: new google.maps.LatLng(busStops[dest_index].Lat, busStops[dest_index].Lng),
+                travelMode: 'TRANSIT',
 
-        },
+                transitOptions: {
+                    modes: ['BUS'],
+                },
+
+            },
             function (result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
-
                     for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-                        console.log(result.routes[0].overview_path[i])
+                        // console.log(result.routes[0].overview_path[i])
                         path.push(result.routes[0].overview_path[i]);
                     }
                 }
             }
         )
-        await sleep(1000);
+
     }
 
     poly.setPath(path);
     poly.setMap(map);
-}
 
+
+}
 
 
 /**

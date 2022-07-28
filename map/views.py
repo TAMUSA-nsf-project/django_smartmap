@@ -56,16 +56,52 @@ def calc_route_directions(route_id):
         dest_coords = (stops[i + 1]['BusStopLatitude'], stops[i + 1]['BusStopLongitude'])
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
         print(res)
-        # polyline = res[0]['overview_polyline']['points']
-        # legs = res[0]['legs']
-        # for leg in legs:
-        #     steps = leg['steps']
-        #     for step in steps:
-        #         print(step)
+
+        legs = res[0]['legs']
+        for leg in legs:
+            steps = leg['steps']
+            for step in steps:
+
+                # if step['travel_mode'] == 'WALKING':
+                #     continue
+
+                if 'steps' in step:
+                    substeps = step['steps']
+                    for substep in substeps:
+                        route.append(substep['start_location'])
+                        route.append(substep['end_location'])
+                else:
+                    route.append(step['start_location'])
+                    route.append(step['end_location'])
+
     return route
 
 
+
+def calcRouteDirectionsWithFirstAndLast(route_id):
+    stops = list(commons.helper.getRoutesDetails(route_id))
+    origin_coords = (stops[0]['BusStopLatitude'], stops[0]['BusStopLongitude'])
+    dest_coords = (stops[-1]['BusStopLatitude'], stops[-1]['BusStopLongitude'])
+    res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
+    route = []
+    legs = res[0]['legs']
+    for leg in legs:
+        steps = leg['steps']
+        for step in steps:
+            # if step['travel_mode'] == 'WALKING':
+            #     continue
+            if 'steps' in step:
+                substeps = step['steps']
+                for substep in substeps:
+                    route.append(substep['start_location'])
+                    route.append(substep['end_location'])
+            else:
+                route.append(step['start_location'])
+                route.append(step['end_location'])
+
+    return route
+
 def getRouteDirectionsAJAX(request):
     user_selected_route_id = ast.literal_eval(request.GET.get('data'))
-    res = calc_route_directions(user_selected_route_id)
+    res = calcRouteDirectionsWithFirstAndLast(user_selected_route_id)
     return HttpResponse(json.dumps(res))
