@@ -15,6 +15,7 @@ class Bus(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
     # therefore it does not need to be updated explicitly
+    transit_log_id = models.PositiveIntegerField(default=None)
 
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
@@ -70,15 +71,20 @@ class BusDriver(models.Model):
 
 
 class TransitLog(models.Model):
-    bus_driver = models.ForeignKey("BusDriver", on_delete=models.CASCADE)
-    bus_route = models.ForeignKey("BusRoute", on_delete=models.CASCADE)
-    last_known_lat = models.FloatField()
-    last_known_lng = models.FloatField()
-    last_bus_stop = models.CharField(max_length=200)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
-
-    # therefore it does not need to be updated explicitly
+    # bus_driver = models.ForeignKey("BusDriver", on_delete=models.DO_NOTHING)
+    driver = models.CharField(max_length=100)
+    bus_route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.start_time}::{self.bus_driver.user.username}::{self.bus_route.name}"
+        return f"{self.bus_route.name}, {self.date_added}, {self.driver}"
+
+
+class TransitLogEntry(models.Model):
+    transit_log = models.ForeignKey("TransitLog", on_delete=models.CASCADE)
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    def __str__(self):
+        return f"{self.time_stamp}, Lat: {self.latitude}, Lng: {self.longitude}"

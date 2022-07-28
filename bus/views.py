@@ -1,35 +1,22 @@
-from django.shortcuts import render, HttpResponse
-from collections import defaultdict
-from django.conf import settings
-import json
-import os
 import ast
-from django.utils.timezone import utc
+import json
+
+from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.shortcuts import render, HttpResponse
 
 import commons.helper
-from .models import Bus, BusDriver, BusStop, BusRoute
-
-from django.contrib.auth.decorators import login_required, permission_required
+from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry
 
 # Socket IO
 sio = settings.SIO
-
-# Create your views here.
-
-# Read json file with all the route data (bus stops and their lat, lng, etc)
-with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
-    json_data = json.load(f)
-
-# to be passed to template
-json_routes = json.dumps(json_data)
-
 """
 Bus Driver page
 """
 
 
 @login_required
-# @permission_required('bus.access_busdriver_pages', raise_exception=True)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def busdriver_view(request):
     context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
@@ -87,7 +74,7 @@ def getActiveBussesOnRouteAJAX(request):
 
 
 @login_required
-# @permission_required('bus.access_busdriver_pages', raise_exception=True)
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
     """
     data format:
@@ -103,29 +90,39 @@ def bus_position_ajax(request):
     if request.method == 'GET':
         # extract bus position out of request
         pos_data = ast.literal_eval(request.GET.get('posData'))
-        selected_route = pos_data['selected_route']
+        selected_route = BusRoute.objects.filter(pk=pos_data['selected_route']).first()
         bus_lat = pos_data['latitude']
         bus_lng = pos_data['longitude']
 
-        # update bus pos in db (todo: push this task to async queue)
+        # Check if the bus exists already
         bus = Bus.objects.filter(driver=request.user.username).first()
         if bus is None:
-            # Add the bus details
-            bus = Bus(driver=request.user.username)
-            bus.route = BusRoute.objects.filter(pk=selected_route).first()
-        # Update the location details
+            # Create a Bus and TransitLog instance
+            log = TransitLog(driver=request.user.username, bus_route=selected_route)
+            log.save()
+            bus = Bus(driver=request.user.username, transit_log_id=log.id)
+            bus.route = selected_route
+
+        # Update the bus coordinates
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-
         bus.save()
+
+        # Create new TransitLogEntry
+        transit_log = TransitLog.objects.get(id=bus.transit_log_id)
+        new_transit_log_entry = TransitLogEntry()
+        new_transit_log_entry.transit_log = transit_log
+        new_transit_log_entry.latitude = bus_lat
+        new_transit_log_entry.longitude = bus_lng
+        new_transit_log_entry.save()
 
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
 
 
-
 @login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def deleteBusHasEndedBroadcastAJAX(request):
     """
     Deletes a bus instance in the database if the driver has ended their broadcast session.
@@ -137,3 +134,20 @@ def deleteBusHasEndedBroadcastAJAX(request):
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
+def transit_logs_view(request):
+    transit_logs = TransitLog.objects.order_by('-date_added')
+    context = {'transit_logs': transit_logs}
+    return render(request, 'bus/transit_logs.html', context)
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
+def transit_log_entries_view(request, log_id):
+    transit_log = TransitLog.objects.get(id=log_id)
+    entries = transit_log.transitlogentry_set.order_by('time_stamp')
+    context = {'transit_log': transit_log, 'entries': entries}
+    return render(request, 'bus/transit_log_entries.html', context)
