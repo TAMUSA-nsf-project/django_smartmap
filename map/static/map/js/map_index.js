@@ -10,7 +10,6 @@ var busIcon;  // icon for bus
 
 let poly;
 let directionsService;
-let directionsRenderer;
 
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
@@ -116,13 +115,11 @@ function RouteDropdown(map) {
                 hideDisplayedMarkers()
                 showRouteMarkers(key)
                 getActiveBussesOnSelectedRoute()
-                // getRouteDirections(key)
             } else {
                 initRouteMarkers(key).then((res) => {
                     hideDisplayedMarkers()
                     showRouteMarkers(key)
                     getActiveBussesOnSelectedRoute()
-                    // getRouteDirections(key)
                 });
             }
 
@@ -184,34 +181,6 @@ function hideDisplayedMarkers() {
         // Polyline
         poly.setPath([]);
     }
-}
-
-
-function DrawBusRouteOnMap(data) {
-    path = []
-    for (let i = 0; i < data.length; i++) {
-        path.push(new google.maps.LatLng(data[i].lat, data[i].lng))
-    }
-    poly.setPath(path);
-    poly.setMap(map);
-}
-
-
-function getRouteDirections(route_id) {
-        // Server-side Python Client for Directions Service API is basically useless because it won't give you
-        // the coordinates of the stops between origin in destination that Google says are a part of the route
-
-        jQuery.ajax({
-            url: AJAX_URL_ROUTE_DIRECTIONS,
-            data: {'data': JSON.stringify(route_id)},
-            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-            // server-side, hence the object defined here
-            type: "GET",
-            dataType: 'json',  // data returned by server is json in this case
-            success: (data) => {
-                DrawBusRouteOnMap(data);
-            },
-        });
 }
 
 
@@ -419,7 +388,6 @@ function initMap() {
 
 
     directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
 
     // Route line
     poly = new google.maps.Polyline({
@@ -518,89 +486,5 @@ function DrawRoutePolyline(route) {
             }
         }
     )
-
-}
-
-
-/**
- * Test function for drawing more hardcoded routes.
- * constructs polyline from multiple API calls based on divisions of overall route containing no more than 8 waypoints
- * https://developers.google.com/maps/documentation/directions/get-directions
- * @param {String} route the route's name
- */
-function calcRouteTest(route) {
-
-  var cur = 1;
-  var testLen = mapRouteMarkers[route].length;
-  var trip = mapRouteMarkers[route];
-  var div = 9;
-  path = []                                 // new path array
-  // user_markers = [];                        // new markers array
-  let bounds = new google.maps.LatLngBounds();
-  // console.log(trip);
-
-  /**
-   * Recursive function to build poly line based on incremental directionsSevices() API calls
-   * @returns
-   */
-  function build() {
-    if (!trip[cur] || !trip[div]) {
-      // build map
-      poly.setPath(path);
-      map.fitBounds(bounds);
-      return;
-    }
-    var waypoints = [];
-    for (var i = cur; i < div; i++) {
-
-      waypoints.push({
-        location: new google.maps.LatLng(trip[i].Lat, trip[i].Lng),
-        stopover: false
-      })
-      bounds.extend(new google.maps.LatLng(trip[i].Lat, trip[i].Lng));
-    }
-
-    directionsService.route({
-      origin: new google.maps.LatLng(trip[cur - 1].Lat, trip[cur - 1].Lng),
-
-      destination: new google.maps.LatLng(trip[div].Lat, trip[div].Lng),
-      waypoints: waypoints,
-      travelMode: google.maps.DirectionsTravelMode.DRIVING
-    },
-      function (result, status) {
-        console.log(result);
-        if (status == google.maps.DirectionsStatus.OK) {
-          for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-            // console.log(JSON.stringify(result.routes[0].overview_path[i]));
-
-            path.push(result.routes[0].overview_path[i]);
-          }
-        } else {
-          path.push(new google.maps.LatLng(trip[cur].Lat, trip[cur].Lng));
-        }
-
-        // make sure every stop is included
-        if (div + 1 == testLen - 1) {
-          cur = testLen - 2;
-          div = testLen - 1;
-          console.log("Current start/stop index: ", cur, div);
-        } else if ((div + 9 >= testLen - 1) && (div + 1 <= testLen - 2)) {
-          cur = div + 1;
-          div = testLen - 1;
-          console.log("Current start/stop index: ", cur, div);
-        } else {
-          cur = div + 1;
-          div = cur + 8;
-          console.log("Current start/stop index: ", cur, div);
-        }
-        build();
-      });
-  }
-
-  // console.log(trip[0].Lat, trip[0].Lng);
-  bounds.extend(new google.maps.LatLng(trip[0].Lat, trip[0].Lng));
-  build();
-
-  poly.setMap(map);
 
 }
