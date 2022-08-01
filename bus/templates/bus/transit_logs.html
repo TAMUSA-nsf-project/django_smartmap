@@ -52,7 +52,7 @@
         <ul>
             {% for log in transit_logs %}
                 <li>
-                    <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
+                    <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i:s' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
                     <input type="button" value="Download CSV File" onclick="DownloadFile({{ log.id }})"/>
                 </li>
             {% empty %}
