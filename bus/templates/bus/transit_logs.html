@@ -3,44 +3,7 @@
 
 {% block extend_head %}
 
-    <script type="text/javascript">
 
-        function DownloadFile(log_id) {
-            //Set the File URL.
-            jQuery.ajax({
-                url: "{% url 'bus:downloadtransitlogcsv-ajax' %}",
-                data: {'data': JSON.stringify(log_id)},
-                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                // server-side, hence the object defined here
-                type: "GET",
-                //dataType: 'json', // dataType specifies the type of data expected back from the server,
-                dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py,
-                success: function (data) {
-                    let fileName = `${data.filename}.csv`
-                    let json_data = data.json_data
-
-                    if (json_data.length < 1)
-                        return;
-
-                    const newline = "\r\n";
-                    const delim = ",";
-                    let csvContent = "data:text/csv;charset=utf-8," + Object.keys(json_data[0]).join(delim) + newline;
-
-                    json_data.forEach(function (rowObj) {
-                        csvContent += Object.values(rowObj).join(delim) + newline;
-                    })
-
-                    // To download file with a custom name, must create a hidden <a> DOM node and set its download attribute
-                    var encodedUri = encodeURI(csvContent);
-                    var link = document.createElement("a");
-                    link.setAttribute("href", encodedUri);
-                    link.setAttribute("download", fileName);  // Name of downloaded file is set here
-                    document.body.appendChild(link); // Required for FF
-                    link.click(); // This will download the data file
-                }
-            });
-        }
-    </script>
 
 {% endblock %}
 
@@ -53,7 +16,6 @@
             {% for log in transit_logs %}
                 <li>
                     <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i:s' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
-                    <input type="button" value="Download CSV File" onclick="DownloadFile({{ log.id }})"/>
                 </li>
             {% empty %}
                 <li>There are no transit logs yet.</li>
