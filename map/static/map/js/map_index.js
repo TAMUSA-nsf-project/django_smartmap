@@ -1,6 +1,7 @@
 // the following are variables accessible anywhere in the script (script vars)
 let map;
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
+let mapRoutePolylinePaths = {};  // object to hold routes and their DirectionsService polyline paths
 let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
@@ -158,6 +159,7 @@ function showRouteMarkers(route /*string*/) {
     map.fitBounds(bounds, bound_padding)
 
 
+    // Draw Google's Directions Service polyline for the route
     DrawRoutePolyline(route);
 
 }
@@ -387,9 +389,10 @@ function initMap() {
     activeMarkerInfoWindow = new google.maps.InfoWindow();
 
 
+    // Initialize DirectionsService object
     directionsService = new google.maps.DirectionsService();
 
-    // Route line
+    // Initialize polyline object
     poly = new google.maps.Polyline({
         strokeColor: "#000000",
         strokeOpacity: 1,
@@ -454,37 +457,56 @@ function updateBusMarkersBySid(data) {
     }
 }
 
-
-function DrawRoutePolyline(route) {
+/**
+ * Draws Google's Directions Service polyline path for the user-selected route.
+ * @param route: user-selected bus route
+ * @constructor
+ */
+async function DrawRoutePolyline(route) {
     let path = [];
     let busStops = mapRouteMarkers[route]
     const routeLen = busStops.length
 
-    directionsService.route({
-            origin: new google.maps.LatLng(busStops[0].Lat, busStops[0].Lng),
-            destination: new google.maps.LatLng(busStops[routeLen - 1].Lat, busStops[routeLen - 1].Lng),
-            travelMode: 'TRANSIT',
+    // Check whether the route is already cached
+    if (mapRoutePolylinePaths[route]) {
+        // Draw path
+        poly.setPath(mapRoutePolylinePaths[route]);
+        poly.setMap(map);
 
-            // travelMode must be 'TRANSIT' to use transitOptions
-            transitOptions: {
-                modes: ['BUS'],
+    } else {
+
+        directionsService.route({
+                origin: new google.maps.LatLng(busStops[0].Lat, busStops[0].Lng),
+                destination: new google.maps.LatLng(busStops[routeLen - 1].Lat, busStops[routeLen - 1].Lng),
+                travelMode: 'TRANSIT',
+
+                // travelMode must be 'TRANSIT' to use transitOptions
+                transitOptions: {
+                    modes: ['BUS'],
+                },
+
             },
+            function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    // Push Google's path points to path array
+                    for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
+                        path.push(result.routes[0].overview_path[i]);
+                    }
 
-        },
-        function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                // Push Google's path points to path array
-                for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-                    path.push(result.routes[0].overview_path[i]);
+                    // Cache the path
+                    mapRoutePolylinePaths[route] = path;
+
+                    // Draw path
+                    poly.setPath(path);
+                    poly.setMap(map);
+
+                } else {
+                    // Error
+                    console.log(status)
                 }
-                // Draw path
-                poly.setPath(path);
-                poly.setMap(map);
-            } else {
-                // Error
-                console.log(status)
             }
-        }
-    )
+        )
+
+    }
 
 }
