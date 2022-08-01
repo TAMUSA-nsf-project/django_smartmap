@@ -161,7 +161,7 @@ function showRouteMarkers(route /*string*/) {
     map.fitBounds(bounds, bound_padding)
 
 
-    drawRoute(route);
+    DrawRoutePolyline(route);
 
 }
 
@@ -198,6 +198,8 @@ function DrawBusRouteOnMap(data) {
 
 
 function getRouteDirections(route_id) {
+        // Server-side Python Client for Directions Service API is basically useless because it won't give you
+        // the coordinates of the stops between origin in destination that Google says are a part of the route
 
         jQuery.ajax({
             url: AJAX_URL_ROUTE_DIRECTIONS,
@@ -485,79 +487,37 @@ function updateBusMarkersBySid(data) {
 }
 
 
-function sleep(ms) {
-    return new Promise(resolveFunc => setTimeout(resolveFunc, ms));
-}
-
-// async function drawRoute(route) {
-//     let path = [];
-//     let busStops = mapRouteMarkers[route]
-//
-//     for (let i = 0; i < busStops.length - 1; i++){
-//         directionsService.route({
-//             origin: new google.maps.LatLng(busStops[i].Lat, busStops[i].Lng),
-//             destination: new google.maps.LatLng(busStops[i + 1].Lat, busStops[i + 1].Lng),
-//             travelMode: 'TRANSIT',
-//             transitOptions: {
-//                 modes: ['BUS'],
-//             },
-//
-//         },
-//             function (result, status) {
-//                 if (status == google.maps.DirectionsStatus.OK) {
-//
-//                     for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-//                         console.log(result.routes[0].overview_path[i])
-//                         path.push(result.routes[0].overview_path[i]);
-//                     }
-//                 }
-//             }
-//         )
-//         await sleep(1000);
-//     }
-//
-//     poly.setPath(path);
-//     poly.setMap(map);
-// }
-
-
-function drawRoute(route) {
-    path = [];
+function DrawRoutePolyline(route) {
+    let path = [];
     let busStops = mapRouteMarkers[route]
     const routeLen = busStops.length
-    const routeMidpoint = routeLen / 2
-    const routeIndices = [0, routeMidpoint, routeLen-1]
 
-    for (let j = 0; j < routeIndices.length - 1; j++) {
+    directionsService.route({
+            origin: new google.maps.LatLng(busStops[0].Lat, busStops[0].Lng),
+            destination: new google.maps.LatLng(busStops[routeLen - 1].Lat, busStops[routeLen - 1].Lng),
+            travelMode: 'TRANSIT',
 
-        const origin_index = routeIndices[j]
-        const dest_index = routeIndices[j+1]
-
-        directionsService.route({
-                origin: new google.maps.LatLng(busStops[origin_index].Lat, busStops[origin_index].Lng),
-                destination: new google.maps.LatLng(busStops[dest_index].Lat, busStops[dest_index].Lng),
-                travelMode: 'TRANSIT',
-
-                transitOptions: {
-                    modes: ['BUS'],
-                },
-
+            // travelMode must be 'TRANSIT' to use transitOptions
+            transitOptions: {
+                modes: ['BUS'],
             },
-            function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-                        // console.log(result.routes[0].overview_path[i])
-                        path.push(result.routes[0].overview_path[i]);
-                    }
+
+        },
+        function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                // Push Google's path points to path array
+                for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
+                    path.push(result.routes[0].overview_path[i]);
                 }
+                // Draw path
+                poly.setPath(path);
+                poly.setMap(map);
+            } else {
+                // Error
+                console.log(status)
             }
-        )
-
-    }
-
-    poly.setPath(path);
-    poly.setMap(map);
-
+        }
+    )
 
 }
 
