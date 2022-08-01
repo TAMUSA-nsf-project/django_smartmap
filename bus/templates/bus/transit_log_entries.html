@@ -48,7 +48,7 @@
     <div class="container">
         <h4>Transit Log: {{ transit_log }}</h4>
         <input type="button" value="Download CSV File" onclick="DownloadFile({{ transit_log.id }})"/>
-        <br>
+        <br><br>
         <h5>Entries:</h5>
         <ul>
             {% for entry in entries %}
