@@ -1,5 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+
+import googlemaps
+from googlemaps.directions import directions
+
+gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
 
 
 # Create your models here.
@@ -47,6 +53,19 @@ class BusRoute(models.Model):
     last_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE, related_name="last_stop")
     active = models.BooleanField(default=False)
     color_code = models.CharField(max_length=10, default="red")
+    gmaps_polyline_encoding = models.TextField(default="")
+
+    def getGmapsPolylineEncoding(self):
+        """
+        Calls the API.
+        """
+        origin_coords = self.first_stop.getCoordinates()
+        dest_coords = self.last_stop.getCoordinates()
+        res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
+        polyline_encoding = res[0]['overview_polyline']['points']
+        if not polyline_encoding:
+            raise ValueError("BusRoute Gmaps polyline encoding is empty.")
+        return polyline_encoding
 
     def __str__(self):
         return self.name

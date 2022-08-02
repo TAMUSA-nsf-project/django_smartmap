@@ -13,7 +13,7 @@ from bus.models import BusStop, BusRoute, BusRouteDetails
 
 Stop_Name_KEY = "Stop Name"
 std_color_codes = {
-    "Route 51" : "#9A2A99",
+    "Route 51": "#9A2A99",
     "Route 51 (reverse)": "#9A2A99",
     "Route 660": "#9A2A99",
     "Route 660 (reverse)": "#9A2A99",
@@ -33,18 +33,25 @@ def addStopIfNotExist(bus_stop: dict):
 
 
 def addRouteIfNotExist(bus_route: dict):
-    if not BusRoute.objects.filter(name=bus_route["name"]).exists():
+    busRoute = BusRoute.objects.filter(name=bus_route["name"]).first()
+    if busRoute is None:
         busRoute = BusRoute()
         busRoute.name = bus_route["name"]
         busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
         busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
         busRoute.active = True
+        busRoute.gmaps_polyline_encoding = busRoute.getGmapsPolylineEncoding()
         if busRoute.name in std_color_codes:
             busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
+    else:
+        # TODO temporary fix, revisit, move outside of migrations
+        # Set the BusRoute instance's polyline encoding even if it's in the db already
+        busRoute.gmaps_polyline_encoding = busRoute.getGmapsPolylineEncoding()
+        busRoute.save()
 
 
-def addRoteDetailsIfNotExist(bus_stop: dict):
+def addRouteDetailsIfNotExist(bus_stop: dict):
     if not BusRouteDetails.objects.filter(parent_route__name=bus_stop["route"],
                                           bus_stop__stop_id=bus_stop["Stop Number"]).exists():
         new_bus_route_details = BusRouteDetails()
@@ -79,7 +86,7 @@ def populatedata(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> None:
         # Now Add rest of the bus_stops
         for bus_stop in bus_stops:
             addStopIfNotExist(bus_stop)
-            addRoteDetailsIfNotExist(bus_stop)
+            addRouteDetailsIfNotExist(bus_stop)
 
 
 def createsuperuser(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> None:
