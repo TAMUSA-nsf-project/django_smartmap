@@ -463,50 +463,34 @@ function updateBusMarkersBySid(data) {
  * @constructor
  */
 async function DrawRoutePolyline(route) {
-    let path = [];
-    let busStops = mapRouteMarkers[route]
-    const routeLen = busStops.length
 
     // Check whether the route is already cached
-    if (mapRoutePolylinePaths[route]) {
-        // Draw path
-        poly.setPath(mapRoutePolylinePaths[route]);
-        poly.setMap(map);
+    if (!mapRoutePolylinePaths[route]) {
 
-    } else {
-
-        directionsService.route({
-                origin: new google.maps.LatLng(busStops[0].Lat, busStops[0].Lng),
-                destination: new google.maps.LatLng(busStops[routeLen - 1].Lat, busStops[routeLen - 1].Lng),
-                travelMode: 'TRANSIT',
-
-                // travelMode must be 'TRANSIT' to use transitOptions
-                transitOptions: {
-                    modes: ['BUS'],
-                },
-
-            },
-            function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    // Push Google's path points to path array
-                    for (var i = 0, len = result.routes[0].overview_path.length; i < len; i++) {
-                        path.push(result.routes[0].overview_path[i]);
-                    }
-
+        // Create a Promise for fetching the polyline encoding from the server
+        let promise = new Promise(function (resolve) {
+            const toSend = {'route': route}
+            jQuery.ajax({
+                url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
+                data: {'data': JSON.stringify(toSend)},
+                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                // server-side, hence the object defined here
+                type: "GET",
+                dataType: 'json',  // data returned by server is json in this case
+                success: (data) => {
                     // Cache the path
-                    mapRoutePolylinePaths[route] = path;
+                    mapRoutePolylinePaths[route] = google.maps.geometry.encoding.decodePath(data);
+                    resolve("Resolved");  // Lets await call know it can continue
+                },
+            });
+        })
 
-                    // Draw path
-                    poly.setPath(path);
-                    poly.setMap(map);
-
-                } else {
-                    // Error
-                    console.log(status)
-                }
-            }
-        )
-
+        // Wait for the data to come back from the server
+        await promise;  // waits for a resolve to be executed within this Promise instance
     }
+
+    // Draw the line, todo make sure this part is always asynchronous
+    poly.setPath(mapRoutePolylinePaths[route]);
+    poly.setMap(map);
 
 }
