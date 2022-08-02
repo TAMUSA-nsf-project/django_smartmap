@@ -5,7 +5,7 @@ let displayedRoute = ""  // ID of currently displayed route
 
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
-
+const defaultTimeString = "TBD";
 var busIcon;  // icon for bus
 
 /**
@@ -206,16 +206,28 @@ class BusStop {
         this.routeId = json_data.BusRouteId
         this.Lat = json_data.BusStopLatitude
         this.Lng = json_data.BusStopLongitude
-        this.est_arrival = "TBD"
+
+        this.scheduled_arrival = defaultTimeString
+        this.est_arrival = defaultTimeString
         this.location_pin_color = json_data.LocationPinColor
         // this.active = false;
         this.#initMapMarker();
         // this.intervalHandle = null;
     }
 
+    showEATMessage()
+    {
+        let message = ""
+        if (this.scheduled_arrival !== defaultTimeString)
+            message += this.scheduled_arrival + "<br />"
+        if (this.est_arrival !== defaultTimeString)
+            message += "Arrival in " + this.est_arrival
+        return message
+    }
+
     callBackMethod() {
 
-        const toSend = {'route': this.routeId, 'bus_stop_id': this.number}
+        const toSend = {'route': this.routeId, 'bus_stop_id': this.number, 'calc_schedule' : this.scheduled_arrival === defaultTimeString ? 1 : 0 }
         jQuery.ajax({
             url: AJAX_EST_ARRIVAL_URL, //TODO setup url
             data: {'data': JSON.stringify(toSend)},
@@ -223,13 +235,29 @@ class BusStop {
             // server-side, hence the object defined here
             type: "GET",
             //dataType: 'json', // dataType specifies the type of data expected back from the server,
-            dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+            dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
             success: (data) => {
                 if (data) {
                     console.log(data)
-                    this.est_arrival = data;
-                } else
-                    this.est_arrival = "TBD"
+                    if(data['est_arrival'] !== '') {
+                        if (this.est_arrival === defaultTimeString)
+                        {
+                            // Reset the scheduled arrival string. This scenario will happen if there were no buses available
+                            // on the route when the info window was opened.
+                            this.scheduled_arrival = defaultTimeString
+                        }
+                        this.est_arrival = data['est_arrival'];
+                    }
+                    else
+                        this.est_arrival = defaultTimeString;
+
+                    if(data['scheduled_arrival'] !== '')
+                        this.scheduled_arrival = data['scheduled_arrival']
+                } else{
+                    this.est_arrival = defaultTimeString
+                    this.scheduled_arrival = defaultTimeString
+                }
+
 
                 // Refresh the info window
                 this.refreshInfoWindow();
@@ -250,7 +278,7 @@ class BusStop {
                         <div>Route: ${this.route}</div>
                     </div>
                     <div class="row">
-                        <div>${this.est_arrival}</div>
+                        <div>${this.showEATMessage()}</div>
                     </div>
                 </div>`
     }
