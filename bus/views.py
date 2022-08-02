@@ -73,6 +73,20 @@ def getActiveBussesOnRouteAJAX(request):
     return HttpResponse(json.dumps(bus_data))
 
 
+def getBusRouteGmapsPolylineEncodingAJAX(request):
+    """
+    Returns polyline encoding (str) from Google Maps DirectionsService API
+    for user-selected route.
+    """
+    # extract the data from the request
+    user_data = ast.literal_eval(request.GET.get('data'))
+    user_selected_route = user_data.get('route')
+    # get the BusRoute instance and return the polyline encoding
+    busRoute = BusRoute.objects.filter(id=user_selected_route).first()
+    return HttpResponse(json.dumps(busRoute.gmaps_polyline_encoding))
+
+
+
 @login_required
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
