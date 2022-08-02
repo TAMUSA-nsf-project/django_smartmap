@@ -12,9 +12,8 @@ class Bus(models.Model):
     # driver = models.OneToOneField("BusDriver", on_delete=models.CASCADE)
     driver = models.CharField(max_length=100)
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True)  # this field is auto updated anytime the model is updated,
-    # therefore it does not need to be updated explicitly
+    start_time = models.DateTimeField(default=None,  blank=True, null=True)
+    end_time = models.DateTimeField(default=None,  blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
 
     class Meta:
