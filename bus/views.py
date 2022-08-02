@@ -152,6 +152,7 @@ def bus_position_ajax(request):
             log.save()
             bus = Bus(driver=request.user.username, transit_log_id=log.id)
             bus.route = selected_route
+            bus.start_time = datetime.utcnow()
 
         # Update the bus coordinates
         bus.latitude = bus_lat
