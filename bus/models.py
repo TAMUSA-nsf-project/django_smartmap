@@ -30,6 +30,12 @@ class BusStop(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
+    def getLatLngTuple(self):
+        return self.latitude, self.longitude
+
+    def getCoordinates(self):
+        return self.getLatLngTuple()
+
     def __str__(self):
         return self.name
 
