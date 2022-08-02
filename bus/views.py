@@ -1,8 +1,11 @@
 import ast
+import datetime
 import json
+from datetime import timedelta
 
+import pytz
 from django.conf import settings
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, HttpResponse
 
 import commons.helper
@@ -10,6 +13,8 @@ from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry
 
 # Socket IO
 sio = settings.SIO
+
+BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
 Bus Driver page
 """
@@ -36,26 +41,71 @@ def getEstimatedArrivalAJAX(request):
     user_data = ast.literal_eval(request.GET.get('data'))
     user_selected_route = user_data.get('route')
     user_selected_bus_stop = user_data.get('bus_stop_id')
+    calc_scheduled_time = user_data.get('calc_schedule')
+
+    result = {
+        'est_arrival': "",
+        'scheduled_arrival': ""
+    }
 
     # TODO filter BusRoute models
-
-    # filter Bus models by route (for now)
-    # assumptions:  only one bus at anytime per route
-    bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
-    if bus is None:
-        return HttpResponse("There are no active buses on this route.")
-
-    busCoord = (bus.latitude, bus.longitude)
 
     # get BusStop instance
     busStop = BusStop.objects.get(stop_id=int(user_selected_bus_stop))
     busStopCoord = (busStop.latitude, busStop.longitude)
 
+    # filter Bus models by route (for now)
+    # assumptions:  only one bus at anytime per route
+    bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
+
+    if calc_scheduled_time:
+        next_schedule_start = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
+        result['scheduled_arrival'] = "Next Scheduled Arrival is at : " + next_schedule_start.strftime(
+            "%I:%M%p on %B %d, %Y")
+
+    if bus is None:
+        return HttpResponse(json.dumps(result))
+
+    busCoord = (bus.latitude, bus.longitude)
+
     # send Bus obj coords and BusStop obj coords to dist matrix calc
-    res = calc_duration(busCoord, busStopCoord, datetime.now())
+    result['est_arrival'] = calc_duration(busCoord, busStopCoord, datetime.now())
 
     # return estimated arrival time result to user
-    return HttpResponse(res)
+    return HttpResponse(json.dumps(result))
+
+
+def calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus):
+    next_schedule_start = ""
+    if bus is not None:
+        # use the bus start time for calculation
+        next_schedule_start = bus.start_time
+    else:
+        # Calculate the number of minutes elapsed from midnight
+        now = datetime.now()
+        midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        total_mins_elapsed = (now - midnight).seconds // 60
+        # Derive the total number of services completed. Assuming there is a service evry 40 minutes.
+        no_of_schedules = total_mins_elapsed // BUS_SCHEDULE_INTERVAL_MINUTES
+        # With this calculate the latest service start time
+        next_schedule_start = (midnight + timedelta(minutes=no_of_schedules * BUS_SCHEDULE_INTERVAL_MINUTES))
+
+    # Hard coding to CDT for now
+    next_schedule_start = next_schedule_start.astimezone(pytz.timezone('US/Central'))
+
+    # Now calculate the approximate travel time from the first bus stop till the selected stop.
+    route = BusRoute.objects.filter(id=int(user_selected_route)).first()
+    startCoord = (route.first_stop.latitude, route.first_stop.longitude)
+    eat_for_the_stop = calc_duration(startCoord, busStopCoord, datetime.now())
+    eat_for_the_stop = int(eat_for_the_stop.split(' ')[0])
+
+    # Add this value to the scheduled start time to find the time for the given stop.
+    next_schedule_start = next_schedule_start + timedelta(minutes=eat_for_the_stop)
+
+    # If the calculated time is in the past, move to the next schedule.
+    if next_schedule_start < datetime.utcnow().astimezone(pytz.timezone('US/Central')):
+        next_schedule_start = next_schedule_start + timedelta(minutes=40)
+    return next_schedule_start
 
 
 def getActiveBussesOnRouteAJAX(request):
@@ -173,8 +223,7 @@ def downloadTransitLogCSV_AJAX(request):
     log_id = ast.literal_eval(request.GET.get('data'))
     transit_log = TransitLog.objects.get(id=log_id)
     entries = transit_log.transitlogentry_set.order_by('time_stamp')
-    data = [{'time_stamp': str(entry.time_stamp), 'latitude': str(entry.latitude), 'longitude': str(entry.longitude)} for entry in entries]
+    data = [{'time_stamp': str(entry.time_stamp), 'latitude': str(entry.latitude), 'longitude': str(entry.longitude)}
+            for entry in entries]
     filename = f"{transit_log.bus_route.name}-{transit_log.driver}-{transit_log.date_added.strftime('%Y-%m-%d_%H-%M-%S')}"
     return HttpResponse(json.dumps({'filename': filename, 'json_data': data}))
-
-
