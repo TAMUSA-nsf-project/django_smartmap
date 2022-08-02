@@ -165,3 +165,16 @@ def transit_log_entries_view(request, log_id):
     entries = transit_log.transitlogentry_set.order_by('time_stamp')
     context = {'transit_log': transit_log, 'entries': entries}
     return render(request, 'bus/transit_log_entries.html', context)
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
+def downloadTransitLogCSV_AJAX(request):
+    log_id = ast.literal_eval(request.GET.get('data'))
+    transit_log = TransitLog.objects.get(id=log_id)
+    entries = transit_log.transitlogentry_set.order_by('time_stamp')
+    data = [{'time_stamp': str(entry.time_stamp), 'latitude': str(entry.latitude), 'longitude': str(entry.longitude)} for entry in entries]
+    filename = f"{transit_log.bus_route.name}-{transit_log.driver}-{transit_log.date_added.strftime('%Y-%m-%d_%H-%M-%S')}"
+    return HttpResponse(json.dumps({'filename': filename, 'json_data': data}))
+
+

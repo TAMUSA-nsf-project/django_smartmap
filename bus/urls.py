@@ -18,5 +18,6 @@ urlpatterns = [
     # Transit log
     path('transitlogs/', views.transit_logs_view, name='transitlogs'),
     path('transitlogs/<int:log_id>', views.transit_log_entries_view, name='transitlogentries'),
+    path('downloadtransitlogcsv-ajax', views.downloadTransitLogCSV_AJAX, name='downloadtransitlogcsv-ajax'),
 
 ]

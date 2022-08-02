@@ -4,6 +4,7 @@
 {% block extend_head %}
 
 
+
 {% endblock %}
 
 
@@ -14,7 +15,7 @@
         <ul>
             {% for log in transit_logs %}
                 <li>
-                    <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
+                    <a href="{% url 'bus:transitlogentries' log.id %}">{{ log.date_added|date:'M d, Y H:i:s' }}, {{ log.bus_route.name }}, {{ log.driver }}</a>
                 </li>
             {% empty %}
                 <li>There are no transit logs yet.</li>
