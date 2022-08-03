@@ -233,8 +233,7 @@ class BusStop {
     showEATMessage()
     {
         let message = ""
-        if (this.scheduled_arrival !== defaultTimeString)
-            message += this.scheduled_arrival + "<br />"
+        message += "Next Scheduled Arrival is at : " + this.scheduled_arrival + "<br />"
         if (this.est_arrival !== defaultTimeString)
             message += "Arrival in " + this.est_arrival
         return message
