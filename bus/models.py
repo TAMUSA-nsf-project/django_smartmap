@@ -22,6 +22,12 @@ class Bus(models.Model):
     end_time = models.DateTimeField(default=None,  blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
 
+    def getLatLngTuple(self):
+        return self.latitude, self.longitude
+
+    def getCoordinates(self):
+        return self.getLatLngTuple()
+
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
 
