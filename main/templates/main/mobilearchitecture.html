@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extend_head %}
-    <style>
+    <style nonce="{{request.csp_nonce}}">
         #content-main {
             height: 100%;
             color: black;
@@ -17,7 +17,8 @@
 {% block content %}
     <div id="content-main" class="container">
         <div class="row">
-            <h3 style="text-align: center; ">Mobile App Architecture</h3>
+            <style nonce="{{request.csp_nonce}}"> #mobAppArch{text-align: center; }</style>
+            <h3 id="mobAppArch">Mobile App Architecture</h3>
             <p> The backbone of the MySmartSA application is Web Architecture. All designed interfaces
                 will respond to different screen sizes of devices and different browsers and will run well on any mobile
                 phone, tablet, laptop, and desktop. This project integrates security into agile software
@@ -59,8 +60,8 @@
             </div>
             <div class="col-md-6 align-self-center">
                 <a href="{% static 'main/img/mobile_architecture_image.png' %}">
-                    <img src="{% static 'main/img/mobile_architecture_image.png' %}" alt="Mobile Architecture"
-                         style="max-width: 100%;">
+                    <style nonce="{{request.csp_nonce}}"> #mobile_architecture_image{max-width: 100%;}</style>
+                    <img src="{% static 'main/img/mobile_architecture_image.png' %}" alt="Mobile Architecture" id="mobile_architecture_image">
                 </a>
             </div>
         </div>

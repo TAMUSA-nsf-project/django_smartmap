@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extend_head %}
-    <style>
+    <style nonce="{{request.csp_nonce}}">
         #content-main {
             height: 100%;
             color: black;
@@ -16,13 +16,14 @@
     <div id="content-main" class="container">
         <div class="row">
             <div class="col-md-5 align-self-center">
-                <img src="{% static 'main/img/shutterstock_627370652.jpg' %}" alt="shutterstock_627370652.jpg"
-                     style="max-width: 100%;">
+                <style nonce="{{request.csp_nonce}}"> #shutterstockIMG{max-width: 100%;}</style>
+                <img src="{% static 'main/img/shutterstock_627370652.jpg' %}" alt="shutterstock_627370652.jpg" id="shutterstockIMG">
             </div>
             <div class="col-md-7 align-self-center">
-                <article class="container d-flex flex-column align-items-start justify-content-md-start"
-                         style="margin-bottom: 5%; margin-top: 5%;">
-                    <h3 style="text-align: center; ">Goals and Objectives</h3>
+                <style nonce="{{request.csp_nonce}}"> #article{ margin-bottom: 5%;margin-top: 5%;}</style>
+                <article class="container d-flex flex-column align-items-start justify-content-md-start" id="article">
+                    <style nonce="{{request.csp_nonce}}"> #goalsObj{ text-align: center;}</style>
+                    <h3 id="goalsObj">Goals and Objectives</h3>
                     <!-- <article class="text-white mb-0"> -->
                     <!-- <article class="text-white mb-0" style="background-color: rgba(51, 46, 112, 0.02);"> -->
 
