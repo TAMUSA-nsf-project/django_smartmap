@@ -140,24 +140,14 @@ function RouteDropdown(map) {
 function showRouteMarkers(route /*string*/) {
     route = parseInt(route)
 
-    // Create a bounds variable used to update the viewport to fully display the current route
-    let bounds = new google.maps.LatLngBounds()
-    const bound_padding = 90;  // bound padding in pixels, 90 appears to be the right amount
-
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
         // Display the marker
         bus_stop.marker.setMap(map);  // shows the marker
 
-        // Extend the bounds of what the viewport will be updated to
-        bounds.extend(new google.maps.LatLng(bus_stop.Lat, bus_stop.Lng))
     })
     // set the script var to current route
     displayedRoute = route;
-
-    // Sets the viewport to contain the given bounds
-    map.fitBounds(bounds, bound_padding)
-
 
     // Draw Google's Directions Service polyline for the route
     DrawRoutePolyline(route);
@@ -507,7 +497,13 @@ async function DrawRoutePolyline(route) {
                 dataType: 'json',  // data returned by server is json in this case
                 success: (data) => {
                     // Cache the path
-                    mapRoutePolylinePaths[route] = google.maps.geometry.encoding.decodePath(data);
+                    mapRoutePolylinePaths[route] = {}
+
+                    mapRoutePolylinePaths[route]['polyline'] = {}
+                    mapRoutePolylinePaths[route]['polyline'] = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
+
+                    mapRoutePolylinePaths[route]['bounds'] = {}
+                    mapRoutePolylinePaths[route]['bounds'] = data.polyline_bounds
                     resolve("Resolved");  // Lets await call know it can continue
                 },
             });
@@ -518,7 +514,18 @@ async function DrawRoutePolyline(route) {
     }
 
     // Draw the line, todo make sure this part is always asynchronous
-    poly.setPath(mapRoutePolylinePaths[route]);
+    poly.setPath(mapRoutePolylinePaths[route].polyline);
+
+    // Create a bounds variable used to update the viewport to fully display the current route
+    const polyline_bounds = mapRoutePolylinePaths[route].bounds
+    let bounds = new google.maps.LatLngBounds()
+    bounds.extend(new google.maps.LatLng(polyline_bounds.northeast))
+    bounds.extend(new google.maps.LatLng(polyline_bounds.southwest))
+
+    // Sets the viewport to contain the given bounds
+    map.fitBounds(bounds)  // todo bound padding optional arg
+
+    // Display everything
     poly.setMap(map);
 
 }
