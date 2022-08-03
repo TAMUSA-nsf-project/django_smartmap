@@ -261,8 +261,7 @@ class BusStop {
                             // on the route when the info window was opened.
                             this.scheduled_arrival = defaultTimeString
                         }
-                        else
-                            this.est_arrival = data['est_arrival'];
+                        this.est_arrival = data['est_arrival'];
                     }
                     else
                         this.est_arrival = defaultTimeString;
