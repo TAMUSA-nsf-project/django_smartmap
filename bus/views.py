@@ -60,8 +60,7 @@ def getEstimatedArrivalAJAX(request):
 
     if calc_scheduled_time:
         next_schedule_start = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
-        result['scheduled_arrival'] = "Next Scheduled Arrival is at : " + next_schedule_start.strftime(
-            "%I:%M%p on %B %d, %Y")
+        result['scheduled_arrival'] = next_schedule_start.strftime("%I:%M%p on %B %d, %Y")
 
     if bus is None:
         return HttpResponse(json.dumps(result))
