@@ -48,7 +48,9 @@ def addRouteIfNotExist(bus_route: dict):
         busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
         busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
         busRoute.active = True
-        busRoute.gmaps_polyline_encoding = busRoute.getGmapsPolylineEncoding()
+        bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
+        busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
+        busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
         if busRoute.name in std_color_codes:
             busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
