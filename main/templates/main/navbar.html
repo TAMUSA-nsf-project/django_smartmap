@@ -11,8 +11,10 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="{% url 'map:map' %}">Map</a>
 
-                {% if perms.bus.access_busdriver_pages %}
+                  {% if perms.bus.access_busdriver_pages %}
                     <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
+                {% endif %}
+                {% if user.is_superuser %}
                     <a class="nav-link" href="{% url 'bus:transitlogs' %}">Transit-Logs</a>
                 {% endif %}
 
