@@ -152,6 +152,9 @@ function showRouteMarkers(route /*string*/) {
         // Extend the bounds of what the viewport will be updated to
         bounds.extend(new google.maps.LatLng(bus_stop.Lat, bus_stop.Lng))
     })
+    // Set the polyline stroke color to match the database value.
+    poly.setOptions({strokeColor:mapRouteMarkers[route][0].location_pin_color});
+
     // set the script var to current route
     displayedRoute = route;
 
@@ -258,7 +261,8 @@ class BusStop {
                             // on the route when the info window was opened.
                             this.scheduled_arrival = defaultTimeString
                         }
-                        this.est_arrival = data['est_arrival'];
+                        else
+                            this.est_arrival = data['est_arrival'];
                     }
                     else
                         this.est_arrival = defaultTimeString;
@@ -424,7 +428,7 @@ function initMap() {
     poly = new google.maps.Polyline({
         strokeColor: "#000000",
         strokeOpacity: 1,
-        strokeWeight: 3,
+        strokeWeight: 5,
       });
 
     // Initialize bus icon using google.maps.Size method to resize image at specified url

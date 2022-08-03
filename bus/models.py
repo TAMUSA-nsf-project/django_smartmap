@@ -5,6 +5,8 @@ from django.conf import settings
 import googlemaps
 from googlemaps.directions import directions
 
+DEFAULT_COLOR_CODE = "#FF0000"
+
 gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
 
 
@@ -57,7 +59,7 @@ class BusRoute(models.Model):
     first_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE, related_name="first_stop")
     last_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE, related_name="last_stop")
     active = models.BooleanField(default=False)
-    color_code = models.CharField(max_length=10, default="red")
+    color_code = models.CharField(max_length=10, default=DEFAULT_COLOR_CODE)
     gmaps_polyline_encoding = models.TextField(default="")
 
     def getGmapsPolylineEncoding(self):
