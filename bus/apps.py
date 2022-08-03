@@ -53,8 +53,6 @@ def addRouteIfNotExist(bus_route: dict):
             busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
     elif len(busRoute.gmaps_polyline_encoding) <= 1:
-        # TODO temporary fix, revisit, move outside of migrations
-        # Set the BusRoute instance's polyline encoding even if it's in the db already
         print("Adding encoded polyline string.")
         busRoute.gmaps_polyline_encoding = busRoute.getGmapsPolylineEncoding()
         busRoute.save()
