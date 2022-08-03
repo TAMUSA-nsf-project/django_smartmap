@@ -52,9 +52,11 @@ def addRouteIfNotExist(bus_route: dict):
         if busRoute.name in std_color_codes:
             busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
-    elif len(busRoute.gmaps_polyline_encoding) <= 1:
-        print("Adding encoded polyline string.")
-        busRoute.gmaps_polyline_encoding = busRoute.getGmapsPolylineEncoding()
+    elif not busRoute.gmaps_polyline_encoding or not busRoute.gmaps_polyline_bounds:
+        print("Adding gmaps polyline data.")
+        bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
+        busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
+        busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
         busRoute.save()
     else:
         print(f'Route {bus_route["name"]} exist in database.')
