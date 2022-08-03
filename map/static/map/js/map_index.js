@@ -113,8 +113,8 @@ function RouteDropdown(map) {
         li_button.onclick = () => {
             button.innerHTML = ALL_ACTIVE_ROUTES[key];
             // Check whether the route is already cached
-            hideBusRouteElements()
-            showBusRouteElements(key)
+            BusRoute.hideBusRouteElements()
+            BusRoute.showBusRouteElements(key)
 
 
         }
@@ -127,129 +127,136 @@ function RouteDropdown(map) {
 }
 
 
+class BusRoute {
 
-/**
- * Hides currently displayed markers by setting their map property to null.
- * Uses script variable displayedRoute, which contains the name of the currently displayed route. This could be
- * turned into an array to hold the IDs of several routes if we allow that.
- */
-function hideBusRouteElements() {
-    if (displayedRoute) {
-        hideBusStopMarkers()
-        hidePolyline()
+    /**
+     * Hides currently displayed markers by setting their map property to null.
+     * Uses script variable displayedRoute, which contains the name of the currently displayed route. This could be
+     * turned into an array to hold the IDs of several routes if we allow that.
+     */
+    static hideBusRouteElements() {
+        if (displayedRoute) {
+            this.hideBusStopMarkers()
+            this.hidePolyline()
+        }
     }
-}
 
-async function hideBusStopMarkers() {
-    if (displayedRoute) {
+    static async hideBusStopMarkers() {
+        if (displayedRoute) {
+            // bus_stop is a BusStop instance
+            mapRouteMarkers[displayedRoute].forEach(bus_stop => {
+                bus_stop.marker.setMap(null);
+            })
+
+            // reset script var
+            displayedRoute = ""
+        }
+    }
+
+    static async hidePolyline() {
+        // Polyline
+        poly.setPath([]);
+    }
+
+
+    /**
+     * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
+     */
+    static showBusRouteElements(route) {
+        this.showBusStopMarkers(route)
+        // Draw Google's Directions Service polyline for the route
+        this.DrawRoutePolyline(route);
+
+        getActiveBussesOnSelectedRoute()
+    }
+
+    static async showBusStopMarkers(route /*string*/) {
+        route = parseInt(route)
+
+        if (!mapRouteMarkers[route]) {
+            let promise = new Promise((resolve) => {
+                jQuery.ajax({
+                    url: ROUTE_DETAILS,
+                    data: {'data': JSON.stringify(route)},
+                    type: "GET",
+                    dataType: 'json',
+                    success: (data) => {
+                        mapRouteMarkers[route] = []
+                        data['all_stops'].forEach((busStop) => {
+                            mapRouteMarkers[route].push(new BusStop(busStop));
+                        })
+                        resolve("Resolved")
+                    },
+                });
+            })
+            // Wait for mapRouteMarkers to be updated
+            await promise;
+        }
+
+        // Create a bounds variable used to update the viewport to fully display the current route
+        let bounds = new google.maps.LatLngBounds()
+        const bound_padding = 90;  // bound padding in pixels, 90 appears to be the right amount
+
         // bus_stop is a BusStop instance
-        mapRouteMarkers[displayedRoute].forEach(bus_stop => {
-            bus_stop.marker.setMap(null);
+        mapRouteMarkers[route].forEach(bus_stop => {
+            // Display the marker
+            bus_stop.marker.setMap(map);  // shows the marker
+
+            // Extend the bounds of what the viewport will be updated to
+            bounds.extend(new google.maps.LatLng(bus_stop.Lat, bus_stop.Lng))
         })
+        // set the script var to current route
+        displayedRoute = route;
 
-        // reset script var
-        displayedRoute = ""
-    }
-}
+        // Sets the viewport to contain the given bounds
+        map.fitBounds(bounds, bound_padding)
 
-async function hidePolyline() {
-    // Polyline
-    poly.setPath([]);
-}
-
-
-/**
- * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
- */
-function showBusRouteElements(route) {
-    showBusStopMarkers(route)
-    // Draw Google's Directions Service polyline for the route
-    DrawRoutePolyline(route);
-
-    getActiveBussesOnSelectedRoute()
-}
-
-async function showBusStopMarkers(route /*string*/) {
-    route = parseInt(route)
-
-    if (!mapRouteMarkers[route]) {
-        let promise = new Promise((resolve) => {
-            jQuery.ajax({
-                url: ROUTE_DETAILS,
-                data: {'data': JSON.stringify(route)},
-                type: "GET",
-                dataType: 'json',
-                success: (data) => {
-                    mapRouteMarkers[route] = []
-                    data['all_stops'].forEach((busStop) => {
-                        mapRouteMarkers[route].push(new BusStop(busStop));
-                    })
-                    resolve("Resolved")
-                },
-            });
-        })
-        // Wait for mapRouteMarkers to be updated
-        await promise;
     }
 
-    // Create a bounds variable used to update the viewport to fully display the current route
-    let bounds = new google.maps.LatLngBounds()
-    const bound_padding = 90;  // bound padding in pixels, 90 appears to be the right amount
 
-    // bus_stop is a BusStop instance
-    mapRouteMarkers[route].forEach(bus_stop => {
-        // Display the marker
-        bus_stop.marker.setMap(map);  // shows the marker
+    /**
+     * Draws Google's Directions Service polyline path for the user-selected route.
+     * @param route: user-selected bus route
+     * @constructor
+     */
+    static async DrawRoutePolyline(route) {
 
-        // Extend the bounds of what the viewport will be updated to
-        bounds.extend(new google.maps.LatLng(bus_stop.Lat, bus_stop.Lng))
-    })
-    // set the script var to current route
-    displayedRoute = route;
+        // Check whether the route is already cached
+        if (!mapRoutePolylinePaths[route]) {
 
-    // Sets the viewport to contain the given bounds
-    map.fitBounds(bounds, bound_padding)
+            // Create a Promise for fetching the polyline encoding from the server
+            let promise = new Promise(function (resolve) {
+                const toSend = {'route': route}
+                jQuery.ajax({
+                    url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
+                    data: {'data': JSON.stringify(toSend)},
+                    // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                    // server-side, hence the object defined here
+                    type: "GET",
+                    dataType: 'json',  // data returned by server is json in this case
+                    success: (data) => {
+                        // Cache the path
+                        mapRoutePolylinePaths[route] = google.maps.geometry.encoding.decodePath(data);
+                        resolve("Resolved");  // Lets await call know it can continue
+                    },
+                });
+            })
 
-}
+            // Wait for the data to come back from the server
+            await promise;  // waits for a resolve to be executed within this Promise instance
+        }
 
+        // Draw the line, todo make sure this part is always asynchronous
+        poly.setPath(mapRoutePolylinePaths[route]);
+        poly.setMap(map);
 
-/**
- * Draws Google's Directions Service polyline path for the user-selected route.
- * @param route: user-selected bus route
- * @constructor
- */
-async function DrawRoutePolyline(route) {
-
-    // Check whether the route is already cached
-    if (!mapRoutePolylinePaths[route]) {
-
-        // Create a Promise for fetching the polyline encoding from the server
-        let promise = new Promise(function (resolve) {
-            const toSend = {'route': route}
-            jQuery.ajax({
-                url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
-                data: {'data': JSON.stringify(toSend)},
-                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                // server-side, hence the object defined here
-                type: "GET",
-                dataType: 'json',  // data returned by server is json in this case
-                success: (data) => {
-                    // Cache the path
-                    mapRoutePolylinePaths[route] = google.maps.geometry.encoding.decodePath(data);
-                    resolve("Resolved");  // Lets await call know it can continue
-                },
-            });
-        })
-
-        // Wait for the data to come back from the server
-        await promise;  // waits for a resolve to be executed within this Promise instance
     }
 
-    // Draw the line, todo make sure this part is always asynchronous
-    poly.setPath(mapRoutePolylinePaths[route]);
-    poly.setMap(map);
 
 }
+
+
+
 
 
 function getActiveBussesOnSelectedRoute() {
