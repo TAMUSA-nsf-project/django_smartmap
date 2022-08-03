@@ -52,7 +52,7 @@ def getEstimatedArrivalAJAX(request):
 
     # get BusStop instance
     busStop = BusStop.objects.get(stop_id=int(user_selected_bus_stop))
-    busStopCoord = (busStop.latitude, busStop.longitude)
+    busStopCoord = busStop.getCoordinates()
 
     # filter Bus models by route (for now)
     # assumptions:  only one bus at anytime per route
@@ -66,7 +66,7 @@ def getEstimatedArrivalAJAX(request):
     if bus is None:
         return HttpResponse(json.dumps(result))
 
-    busCoord = (bus.latitude, bus.longitude)
+    busCoord = bus.getCoordinates()
 
     # send Bus obj coords and BusStop obj coords to dist matrix calc
     result['est_arrival'] = calc_duration(busCoord, busStopCoord, datetime.now())
@@ -95,7 +95,7 @@ def calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus):
 
     # Now calculate the approximate travel time from the first bus stop till the selected stop.
     route = BusRoute.objects.filter(id=int(user_selected_route)).first()
-    startCoord = (route.first_stop.latitude, route.first_stop.longitude)
+    startCoord = route.first_stop.getCoordinates()
     eat_for_the_stop = calc_duration(startCoord, busStopCoord, datetime.now())
     eat_for_the_stop = int(eat_for_the_stop.split(' ')[0])
 
