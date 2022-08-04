@@ -32,9 +32,11 @@
                 </li>
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <a class="nav-link" href="/admin" style="color: whitesmoke;">Hello {{ user.username }}</a>
+                        <style nonce="{{request.csp_nonce}}"> #nav-link{ color: whitesmoke}</style>
+                        <a class="nav-link" id="nav-link" href="/admin">Hello {{ user.username }}</a>
                     {% else %}
-                        <a class="nav-link disabled" style="color: whitesmoke;">Hello {{ user.username }}</a>
+                        <style nonce="{{request.csp_nonce}}"> #nav-link-disabled{ color: whitesmoke}</style>
+                        <a class="nav-link disabled" id="nav-link-disabled">Hello {{ user.username }}</a>
                     {% endif %}
                     <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
                 {% else %}
@@ -45,13 +47,17 @@
             <div class="navbar-nav ms-auto">
                 {# TODO create page for feedback submission #}
                 <a class="nav-link" href="/" title="Send us your Feedback">
-                    <i class="fa fa-envelope" style="color: white;"></i>
+                    <style nonce="{{request.csp_nonce}}"> #envelope {color: white}</style>
+                    <i class="fa fa-envelope" id="envelope" ></i>
                 </a>
                 <a class="nav-link" href="https://www.linkedin.com">
-                    <i class="fa fa-linkedin" style="color: white;"></i>
+                    <style nonce="{{request.csp_nonce}}"> #linkedin{color: white} </style>
+                    <i class="fa fa-linkedin" id="linkedin" ></i>
+
                 </a>
                 <a class="nav-link" href="https://github.com/" rel="nofollow" target="_blank">
-                    <i class="fa fa-github" style="color: white;"></i>
+                    <style nonce="{{request.csp_nonce}}"> #github{color: white}</style>
+                    <i class="fa fa-github" id="github"></i>
                 </a>
             </div>
 

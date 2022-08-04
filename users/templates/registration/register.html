@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
 
 {% block extend_head %}
-    <style>
+    <style nonce="{{request.csp_nonce}}">
         #wrapper {
             height: 100%;
             display: flex;

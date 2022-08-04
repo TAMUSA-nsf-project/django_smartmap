@@ -4,9 +4,9 @@
 {% block extend_head %}
     <title>Add Map</title>
     {#   I don't think the following script is needed. Map still loads.   #}
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default" nonce="{{request.csp_nonce}}"></script>
 
-    <style>
+    <style nonce="{{request.csp_nonce}}">
         /* Always set the mapindex height explicitly to define the size of the div
          * element that contains the mapindex. */
         #map {
@@ -14,7 +14,7 @@
         }
     </style>
 
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{request.csp_nonce}}">
         const MAP_CENTER = {lat: {{ lat_coord }}, lng: {{ lng_coord }}}
         const ALL_ACTIVE_ROUTES = {{ all_routes | safe }};
         const ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
@@ -23,7 +23,7 @@
         const AJAX_URL_ROUTE_POLYLINE_ENCODING = "{% url 'bus:busroutepolyline-ajax' %}"
     </script>
 
-    <script type="text/javascript" src="{% static 'map/js/map_index.js' %}"></script>
+    <script type="text/javascript" nonce="{{request.csp_nonce}}" src="{% static 'map/js/map_index.js' %}"></script>
 
 {% endblock %}
 
@@ -43,7 +43,7 @@
      load.
     -->
     <script
-            src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer>
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer nonce="{{request.csp_nonce}}">
     </script>
 
 
