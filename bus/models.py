@@ -20,8 +20,8 @@ class Bus(models.Model):
     # driver = models.OneToOneField("BusDriver", on_delete=models.CASCADE)
     driver = models.CharField(max_length=100)
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
-    start_time = models.DateTimeField(default=None,  blank=True, null=True)
-    end_time = models.DateTimeField(default=None,  blank=True, null=True)
+    start_time = models.DateTimeField(default=None, blank=True, null=True)
+    end_time = models.DateTimeField(default=None, blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
 
     def getLatLngTuple(self):
@@ -61,18 +61,40 @@ class BusRoute(models.Model):
     active = models.BooleanField(default=False)
     color_code = models.CharField(max_length=10, default=DEFAULT_COLOR_CODE)
     gmaps_polyline_encoding = models.TextField(default="")
+    gmaps_polyline_bounds = models.CharField(default="", max_length=200)
 
-    def getGmapsPolylineEncoding(self):
+    def getGmapsDirectionsServiceResult(self):
         """
-        Calls the API.
+        Returns an object representing a Google Map's DirectionsService API result.
         """
         origin_coords = self.first_stop.getCoordinates()
         dest_coords = self.last_stop.getCoordinates()
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
-        polyline_encoding = res[0]['overview_polyline']['points']
-        if not polyline_encoding:
-            raise ValueError("BusRoute Gmaps polyline encoding is empty.")
-        return polyline_encoding
+
+        class GmapsDirectionsServiceResult:
+            def __init__(self):
+                self._res = res
+
+            def getGmapsPolylineEncoding(self) -> str:
+                """
+                Returns the ascii string encoding of the polyline calculated by Google's Directions Service API.
+                """
+                polyline_encoding = self._res[0]['overview_polyline']['points']
+                if not polyline_encoding:
+                    raise ValueError("BusRoute Gmaps polyline encoding is empty.")
+                return polyline_encoding
+
+            def getGmapsPolylineBounds(self) -> dict:
+                """
+                Returns the bounds of the polyline as determined by Google's Directions Service API.
+                Example: {'northeast': {'lat': 29.422504, 'lng': -98.4895075}, 'southwest': {'lat': 29.3468565, 'lng': -98.5465827}}
+                """
+                return self._res[0]['bounds']
+
+            def __repr__(self):
+                return str(self._res)
+
+        return GmapsDirectionsServiceResult()
 
     def __str__(self):
         return self.name

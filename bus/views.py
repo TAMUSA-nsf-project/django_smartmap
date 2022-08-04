@@ -132,7 +132,10 @@ def getBusRouteGmapsPolylineEncodingAJAX(request):
     user_selected_route = user_data.get('route')
     # get the BusRoute instance and return the polyline encoding
     busRoute = BusRoute.objects.filter(id=user_selected_route).first()
-    return HttpResponse(json.dumps(busRoute.gmaps_polyline_encoding))
+
+    to_send = {'polyline_encoding': busRoute.gmaps_polyline_encoding, 'polyline_bounds': ast.literal_eval(busRoute.gmaps_polyline_bounds)}
+
+    return HttpResponse(json.dumps(to_send))
 
 
 
