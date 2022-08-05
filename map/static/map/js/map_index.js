@@ -403,7 +403,8 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: MAP_CENTER,
-        gestureHandling: "greedy"
+        gestureHandling: "greedy",
+        disableDefaultUI: true,
     });
 
     // Initialize InfoWindow instance for the markers (all markers will use this instance)
