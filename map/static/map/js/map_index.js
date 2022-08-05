@@ -15,7 +15,7 @@ let directionsService;
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.
- *
+ * 4 Aug 2022: no longer being displayed, TODO delete?
  */
 function CenterControl(map) {
     // Create the DIV to hold the control and call the CenterControl()
@@ -429,17 +429,11 @@ function initMap() {
     };
 
 
-
-    // Create the DIV to hold the control by calling CenterControl()
-    const centerControlDiv = CenterControl(map);
-
-    // Create the DIV to hold the route-selection dropdown.
+    // Create the div to hold the route-selection dropdown.
     const routeDropdownDiv = RouteDropdown(map);
 
-    // Push the divs to the map.
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv)
+    // Push control divs to the map.
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(routeDropdownDiv)
-
 }
 
 window.initMap = initMap;
