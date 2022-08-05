@@ -82,6 +82,7 @@ function RouteDropdown(map) {
     routeDropdown.id = "route-dropdown"
     routeDropdown.className = "dropdown"
     routeDropdown.style.marginTop = "10px";
+    routeDropdown.style.marginLeft = "10px";
 
     const button = document.createElement("button")
     button.className = "btn btn-secondary dropdown-toggle"
