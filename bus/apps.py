@@ -21,7 +21,7 @@ class BusConfig(AppConfig):
     name = 'bus'
 
     def ready(self):
-        print("Connecting post_migrate signal for predata population.")
+        # print("Connecting post_migrate signal for predata population.")
         post_migrate.connect(PopulatePreData, sender=self, weak=False)
 
 

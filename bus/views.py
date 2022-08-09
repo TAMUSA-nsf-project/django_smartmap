@@ -41,7 +41,6 @@ def getEstimatedArrivalAJAX(request):
     user_data = ast.literal_eval(request.GET.get('data'))
     user_selected_route = user_data.get('route')
     user_selected_bus_stop = user_data.get('bus_stop_id')
-    calc_scheduled_time = user_data.get('calc_schedule')
 
     result = {
         'est_arrival': "",
@@ -58,22 +57,25 @@ def getEstimatedArrivalAJAX(request):
     # assumptions:  only one bus at anytime per route
     bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
 
-    if calc_scheduled_time:
-        next_schedule_start = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
-        result['scheduled_arrival'] = next_schedule_start.strftime("%I:%M%p on %B %d, %Y")
-
     if bus is None:
+        next_schedule_start = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
+        result['scheduled_arrival'] = next_schedule_start.strftime("%I:%M %p on %B %d, %Y")
         return HttpResponse(json.dumps(result))
 
     busCoord = bus.getCoordinates()
 
     # send Bus obj coords and BusStop obj coords to dist matrix calc
-    result['est_arrival'] = calc_duration(busCoord, busStopCoord, datetime.now())
+    travelDuration = calc_duration(busCoord, busStopCoord, datetime.now())
+    result['est_arrival'] = travelDuration['text']
+    dateTimeNow = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+    estimatedTime = dateTimeNow + timedelta(seconds=travelDuration['value'])
+    result['scheduled_arrival'] = estimatedTime.strftime("%I:%M %p on %B %d, %Y")
 
     # return estimated arrival time result to user
     return HttpResponse(json.dumps(result))
 
 
+# TODO : Needs to update this function to fetch value from db
 def calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus):
     next_schedule_start = ""
     if bus is not None:
@@ -96,7 +98,7 @@ def calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus):
     route = BusRoute.objects.filter(id=int(user_selected_route)).first()
     startCoord = route.first_stop.getCoordinates()
     eat_for_the_stop = calc_duration(startCoord, busStopCoord, datetime.now())
-    eat_for_the_stop = int(eat_for_the_stop.split(' ')[0])
+    eat_for_the_stop = int(eat_for_the_stop['text'].split(' ')[0])
 
     # Add this value to the scheduled start time to find the time for the given stop.
     next_schedule_start = next_schedule_start + timedelta(minutes=eat_for_the_stop)
