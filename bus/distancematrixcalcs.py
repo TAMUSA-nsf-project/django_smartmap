@@ -31,7 +31,7 @@ def calc_duration(origin, dest, timenow):
     res = distance_matrix(gmaps, origins=origin, destinations=dest,
                           transit_mode="bus",
                           departure_time=timenow)
-    return res['rows'][0]['elements'][0]['duration']['text']
+    return res['rows'][0]['elements'][0]['duration']
 
 
 # @timeit
@@ -66,7 +66,7 @@ def calc_est_arrival_times(socket_data, json_data):
 
     # update stop_data dict
     for i in range(len(stop_data)):
-        stop_data[i]['est_arrival'] = res[i]
+        stop_data[i]['est_arrival'] = res[i]['text']
 
     # return the updated dict as value of new dict with the route as the key
     return {bus_route: stop_data}
