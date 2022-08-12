@@ -116,8 +116,8 @@ def getActiveBussesOnRouteAJAX(request):
     busObjs = Bus.objects.filter(route=user_selected_route)
 
     # bus data to send back to client
-    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
-                busObjs}
+    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude,
+                         'bus_color': bus.getBusColorStaticUrl()} for bus in busObjs}
 
     return HttpResponse(json.dumps(bus_data))
 
