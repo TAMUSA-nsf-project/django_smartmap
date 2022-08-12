@@ -2,6 +2,8 @@ import ast
 import datetime
 import json
 from datetime import timedelta
+from .distancematrixcalcs import calc_duration
+from datetime import datetime
 
 import pytz
 from django.conf import settings
@@ -25,10 +27,6 @@ Bus Driver page
 def busdriver_view(request):
     context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
-
-
-from .distancematrixcalcs import calc_duration
-from datetime import datetime
 
 
 def getEstimatedArrivalAJAX(request):
