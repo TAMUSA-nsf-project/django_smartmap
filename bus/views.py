@@ -205,6 +205,21 @@ def deleteBusHasEndedBroadcastAJAX(request):
 
 @login_required
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
+def updateBusSeatAvailabilityAJAX(request):
+    data = ast.literal_eval(request.GET.get('data'))
+    btn_data = data.get('choice')
+
+    bus = Bus.objects.filter(driver=request.user.username).first()
+    # not setting the field directly from btn_data in case format of choice changes
+    if bus:
+        bus.open_seats_status_color = btn_data
+        bus.save()
+
+    return HttpResponse("Success")
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
 def transit_logs_view(request):
     transit_logs = TransitLog.objects.order_by('-date_added')
     context = {'transit_logs': transit_logs}
