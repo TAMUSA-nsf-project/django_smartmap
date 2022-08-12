@@ -191,7 +191,7 @@ function getActiveBussesOnSelectedRoute() {
             type: "GET",
             dataType: 'json',  // data returned by server is json in this case
             success: (data) => {
-                updateBusMarkersBySid(data);
+                updateBusMarkers(data);
             },
         });
 
@@ -448,7 +448,7 @@ let busMarkers = [];
 /**
  * Updates the google map markers in the busMarkersBySid object
  */
-function updateBusMarkersBySid(data) {
+function updateBusMarkers(data) {
 
     for (let i = 0; i < busMarkers.length; i++) {
         busMarkers[i].setMap(null);
