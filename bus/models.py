@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -122,6 +124,32 @@ class BusDriver(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+def default_time():
+    return datetime.time(hour=23, minute=59, second=59)
+
+
+def getDayOfWeek(day_of_week):
+    if day_of_week == "W":
+        return "Weekday"
+    elif day_of_week == "S":
+        return "Saturday"
+    elif day_of_week == "F":
+        return "Sunday"
+    else:
+        return ""
+
+
+class BusSchedule(models.Model):
+    bus_route = models.ForeignKey("BusRoute", on_delete=models.CASCADE)
+    bus_stop = models.ForeignKey("BusStop", on_delete=models.CASCADE)
+    # W = WeekDay (Monday - Friday), S = Saturday , F = Sunday
+    day_of_week = models.CharField(max_length=1)
+    scheduled_time = models.TimeField(default=default_time)
+
+    def __str__(self):
+        return f"{self.bus_route.name}, {self.bus_stop.name}, {self.scheduled_time.strftime('%I:%M %p')}, {getDayOfWeek(self.day_of_week)}"
 
 
 class TransitLog(models.Model):
