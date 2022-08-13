@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, HttpResponse
 
 import commons.helper
-from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry
+from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry, BusSchedule
 
 # Socket IO
 sio = settings.SIO
@@ -31,6 +31,36 @@ from .distancematrixcalcs import calc_duration
 from datetime import datetime
 
 
+def getScheduleDayOfWeekLetter(date):
+    today = date.weekday()
+
+    if today == 6:  # Sunday
+        return "F"
+    elif today == 5:  # Saturday
+        return "S"
+    else:  # Weekday
+        return "W"
+
+
+def getEstimatedTime(busStopCoord, user_selected_route, scheduled_time):
+    dateNow = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+    dateTime = dateNow.replace(hour=scheduled_time.hour, minute=scheduled_time.minute, second=scheduled_time.second)
+
+    if dateTime < datetime.utcnow().astimezone(pytz.timezone('US/Central')):
+        return None
+
+    route = BusRoute.objects.filter(id=user_selected_route).first()
+    startCoord = route.first_stop.getCoordinates()
+    eat_for_the_stop = calc_duration(startCoord, busStopCoord, dateTime)
+    # Add this value to the scheduled start time to find the time for the given stop.
+    next_schedule_arrival = dateTime + timedelta(seconds=eat_for_the_stop['value'])
+
+    # If the calculated time is in the past, move to the next schedule.
+    if next_schedule_arrival < datetime.utcnow().astimezone(pytz.timezone('US/Central')):
+        return None
+    return next_schedule_arrival
+
+
 def getEstimatedArrivalAJAX(request):
     """
     Called by BusStop js class method. User is requesting position of bus(es) for a route.
@@ -41,6 +71,7 @@ def getEstimatedArrivalAJAX(request):
     user_data = ast.literal_eval(request.GET.get('data'))
     user_selected_route = user_data.get('route')
     user_selected_bus_stop = user_data.get('bus_stop_id')
+    calc_schedule = user_data.get('calc_schedule')
 
     result = {
         'est_arrival': "",
@@ -58,12 +89,24 @@ def getEstimatedArrivalAJAX(request):
     bus = Bus.objects.filter(route=user_selected_route).first()  # TODO filter for multiple busses
 
     if bus is None:
-        next_schedule_start = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
-        result['scheduled_arrival'] = next_schedule_start.strftime("%I:%M %p on %B %d, %Y")
+        if calc_schedule == 1:
+            dateTimeNow = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+            day_of_week = getScheduleDayOfWeekLetter(dateTimeNow)
+            next_schedules = BusSchedule.objects.filter(bus_route_id=user_selected_route, day_of_week=day_of_week,
+                                                        scheduled_time__hour__gte=dateTimeNow.time().hour - 1)
+            est_time = None
+            for schedule in next_schedules:
+                est_time = getEstimatedTime(busStopCoord, user_selected_route, schedule.scheduled_time)
+                if est_time is None:
+                    continue
+                else:
+                    break
+            if est_time is None:
+                est_time = calculate_approximate_schedule_time(busStopCoord, user_selected_route, bus)
+            result['scheduled_arrival'] = est_time.strftime("%I:%M %p on %B %d, %Y")
         return HttpResponse(json.dumps(result))
 
     busCoord = bus.getCoordinates()
-
     # send Bus obj coords and BusStop obj coords to dist matrix calc
     travelDuration = calc_duration(busCoord, busStopCoord, datetime.now())
     result['est_arrival'] = travelDuration['text']
@@ -135,10 +178,10 @@ def getBusRouteGmapsPolylineEncodingAJAX(request):
     # get the BusRoute instance and return the polyline encoding
     busRoute = BusRoute.objects.filter(id=user_selected_route).first()
 
-    to_send = {'polyline_encoding': busRoute.gmaps_polyline_encoding, 'polyline_bounds': ast.literal_eval(busRoute.gmaps_polyline_bounds)}
+    to_send = {'polyline_encoding': busRoute.gmaps_polyline_encoding,
+               'polyline_bounds': ast.literal_eval(busRoute.gmaps_polyline_bounds)}
 
     return HttpResponse(json.dumps(to_send))
-
 
 
 @login_required

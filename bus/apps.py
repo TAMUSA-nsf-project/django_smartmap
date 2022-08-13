@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 
@@ -23,6 +24,7 @@ class BusConfig(AppConfig):
     def ready(self):
         # print("Connecting post_migrate signal for predata population.")
         post_migrate.connect(PopulatePreData, sender=self, weak=False)
+        post_migrate.connect(AddBusSchedules, sender=self, weak=False)
 
 
 def addStopIfNotExist(bus_stop: dict):
@@ -77,7 +79,6 @@ def addRouteDetailsIfNotExist(bus_stop: dict):
 
 
 def PopulatePreData(sender, **kwargs):
-
     # Read json file with all the route data (bus stops and their lat, lng, etc)
     json_data = None
     with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
@@ -103,3 +104,42 @@ def PopulatePreData(sender, **kwargs):
         for bus_stop in bus_stops:
             addStopIfNotExist(bus_stop)
             addRouteDetailsIfNotExist(bus_stop)
+
+
+def get_scheduled_time(scheduled_time):
+    if len(scheduled_time) > 0:
+        fTime = scheduled_time.split(':')
+        hour = int(fTime[0])
+        minutes = int(fTime[1])
+        return datetime.time(hour=hour, minute=minutes, second=0)
+    return None
+
+
+def addScheduleIfNotExist(route, schedules):
+    from bus.models import BusStop, BusRoute, BusSchedule
+
+    busRoute = BusRoute.objects.filter(name=route).first()
+    busStop = BusStop.objects.filter(stop_id=schedules[0]["bus_stop"]).first()
+    if busRoute and busStop:
+        for schedule in schedules:
+            if not BusSchedule.objects.filter(bus_route_id=busRoute.id,
+                                              bus_stop_id=busStop.id,
+                                              day_of_week=schedule["day_of_week"],
+                                              scheduled_time=get_scheduled_time(schedule["scheduled_time"])).exists():
+                print(f'Adding New Schedule for {get_scheduled_time(schedule["scheduled_time"])}')
+                newSchedule = BusSchedule()
+                newSchedule.bus_route = busRoute
+                newSchedule.bus_stop = busStop
+                newSchedule.day_of_week = schedule["day_of_week"]
+                newSchedule.scheduled_time = get_scheduled_time(schedule["scheduled_time"])
+                newSchedule.save()
+
+
+def AddBusSchedules(sender, **kwargs):
+    # Read json file with all the route data (bus stops and their lat, lng, etc)
+    schedule_data = None
+    with open(os.path.join(settings.BASE_DIR, "route_data/bus_schedules.json")) as f:
+        schedule_data = json.load(f)
+    for route, schedules in schedule_data.items():
+        print(f'Checking schedules for {route}')
+        addScheduleIfNotExist(route, schedules)

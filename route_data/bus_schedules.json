@@ -1,0 +1,522 @@
+{
+  "Route 51": [
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "4:39"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:18"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:55"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:35"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:15"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:55"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:34"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:15"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:55"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:35"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:15"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:53"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:32"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:02"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:42"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:22"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:00"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:40"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:01"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:56"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "18:36"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:16"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:56"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "20:39"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "W",
+      "scheduled_time" : "21:35"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "4:37"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:17"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:57"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "6:37"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:17"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:55"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "8:34"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:14"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:54"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:33"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:10"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:50"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:00"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:40"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:00"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:40"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "16:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "18:24"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "19:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "20:33"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "S",
+      "scheduled_time" : "21:27"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "4:37"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:17"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:57"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "6:37"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:17"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:55"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "8:34"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:14"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:54"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:33"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:10"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:50"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:00"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:40"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:00"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:40"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "16:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:20"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "18:24"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "19:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "20:33"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11397,
+      "bus_route": "Route 51",
+      "day_of_week" : "F",
+      "scheduled_time" : "21:27"
+    }
+  ]
+}
