@@ -9,7 +9,7 @@ let activeMarkerObj = null;   // marker info window
 const defaultTimeString = "TBD";
 var busIcon;  // icon for bus
 
-let poly;
+let poly, left, right;
 let directionsService;
 
 /**
@@ -148,7 +148,7 @@ function showRouteMarkers(route /*string*/) {
 
     })
     // Set the polyline stroke color to match the database value.
-    poly.setOptions({strokeColor:mapRouteMarkers[route][0].location_pin_color});
+    poly.setOptions({strokeColor: mapRouteMarkers[route][0].location_pin_color});
 
     // set the script var to current route
     displayedRoute = route;
@@ -221,8 +221,7 @@ class BusStop {
         // this.intervalHandle = null;
     }
 
-    showEATMessage()
-    {
+    showEATMessage() {
         let message = ""
         message += "Next Scheduled Arrival is at : " + this.scheduled_arrival + "<br />"
         if (this.est_arrival !== defaultTimeString)
@@ -232,7 +231,11 @@ class BusStop {
 
     callBackMethod() {
 
-        const toSend = {'route': this.routeId, 'bus_stop_id': this.number, 'calc_schedule' : this.scheduled_arrival === defaultTimeString ? 1 : 0 }
+        const toSend = {
+            'route': this.routeId,
+            'bus_stop_id': this.number,
+            'calc_schedule': this.scheduled_arrival === defaultTimeString ? 1 : 0
+        }
         jQuery.ajax({
             url: AJAX_EST_ARRIVAL_URL, //TODO setup url
             data: {'data': JSON.stringify(toSend)},
@@ -243,22 +246,20 @@ class BusStop {
             dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
             success: (data) => {
                 if (data) {
-                    console.log(data)
-                    if(data['est_arrival'] !== '') {
-                        if (this.est_arrival === defaultTimeString)
-                        {
+                    // console.log(data)
+                    if (data['est_arrival'] !== '') {
+                        if (this.est_arrival === defaultTimeString) {
                             // Reset the scheduled arrival string. This scenario will happen if there were no buses available
                             // on the route when the info window was opened.
                             this.scheduled_arrival = defaultTimeString
                         }
                         this.est_arrival = data['est_arrival'];
-                    }
-                    else
+                    } else
                         this.est_arrival = defaultTimeString;
 
-                    if(data['scheduled_arrival'] !== '')
+                    if (data['scheduled_arrival'] !== '')
                         this.scheduled_arrival = data['scheduled_arrival']
-                } else{
+                } else {
                     this.est_arrival = defaultTimeString
                     this.scheduled_arrival = defaultTimeString
                 }
@@ -351,15 +352,21 @@ setInterval(function () {
 
 
 setInterval(function () {
-    console.log("infoWindow is bound to map: " + (activeMarkerInfoWindow.getMap() ? true : false));
+    // console.log("infoWindow is bound to map: " + (activeMarkerInfoWindow.getMap() ? true : false));
     if (activeMarkerInfoWindow.getMap() && activeMarkerObj) {
+        console.log("Refreshing infowindow content.")
         activeMarkerObj.callBackMethod();
     } else {
         activeMarkerObj = null;
     }
-
-
 }, 5000);
+
+setInterval(function () {
+    if (displayedRoute !== "" && busMarkers.length > 0) {
+        console.log("Updating Polyline")
+        reDrawPolyLineWithCurrentLocation(busMarkers[0].getPosition(), mapRoutePolylinePaths[displayedRoute]['polyline'])
+    }
+}, 10000);
 
 
 /**
@@ -374,7 +381,7 @@ function initRouteMarkers(route_id) {
                 dataType: 'json',
                 success: (data) => {
                     if (data) {
-                        console.log(data)
+                        // console.log(data)
                         mapRouteMarkers[route_id] = []
                         data.all_stops.forEach((busStop) => {
                             mapRouteMarkers[route_id].push(new BusStop(busStop));
@@ -419,7 +426,17 @@ function initMap() {
         strokeColor: "#000000",
         strokeOpacity: 1,
         strokeWeight: 5,
-      });
+    });
+    left = new google.maps.Polyline({
+        strokeColor: "#000000",
+        strokeOpacity: 1,
+        strokeWeight: 5,
+    });
+    right = new google.maps.Polyline({
+        strokeColor: "#000000",
+        strokeOpacity: 1,
+        strokeWeight: 5,
+    });
 
     // Initialize bus icon using google.maps.Size method to resize image at specified url
     busIcon = {
@@ -443,7 +460,40 @@ window.initMap = initMap;
  * Updates from server
  */
 let busMarkers = [];
+let startIndex = 0;
 
+
+const LOCATION_PROXIMITY = 50;
+
+function reDrawPolyLineWithCurrentLocation(busLocation, mapRoutePolylinePath) {
+
+    let arrayLen = mapRoutePolylinePath.length;
+    let newIndex = -1;
+    for (let i = startIndex; i < arrayLen; i++) {
+        let distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(busLocation, mapRoutePolylinePath[i])
+        // console.log("Distance ----", val)
+        if (distanceBetween < LOCATION_PROXIMITY) {
+            // console.log("Found at index ---: ", i)
+            newIndex = i + 1
+            break
+        }
+    }
+
+    if (newIndex !== -1 && newIndex > startIndex) {
+        startIndex = newIndex
+
+        poly.setMap(null)
+        left.setMap(null)
+        right.setMap(null)
+
+        left.setPath(mapRoutePolylinePath.slice(0, startIndex))
+        left.setOptions({strokeColor: mapRouteMarkers[displayedRoute][0].location_pin_color});
+        left.setMap(map)
+
+        right.setPath(mapRoutePolylinePath.slice(startIndex - 1, arrayLen))
+        right.setMap(map)
+    }
+}
 
 /**
  * Updates the google map markers in the busMarkersBySid object
@@ -469,7 +519,6 @@ function updateBusMarkersBySid(data) {
         })
 
         busMarkers.push(sidMarker);
-
     }
 }
 
