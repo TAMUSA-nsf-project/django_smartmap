@@ -210,7 +210,6 @@ def updateBusSeatAvailabilityAJAX(request):
     btn_data = data.get('choice')
 
     bus = Bus.objects.filter(driver=request.user.username).first()
-    # not setting the field directly from btn_data in case format of choice changes
     if bus:
         bus.open_seats_status_color = btn_data
         bus.save()
