@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bus', '0011_busroute_gmaps_polyline_bounds'),
+        ('bus', '0012_busschedule'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='bus',
-            name='open_seats_status_color',
+            name='seat_availability',
             field=models.CharField(default='green', max_length=50),
         ),
     ]
