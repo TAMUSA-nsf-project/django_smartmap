@@ -440,7 +440,7 @@ let busMarkers = [];
 
 
 /**
- * Updates the google map markers in the busMarkersBySid object
+ * Updates the google map markers representing buses.
  */
 function updateBusMarkers(data) {
 
