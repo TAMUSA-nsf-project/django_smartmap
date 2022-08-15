@@ -559,6 +559,9 @@ async function DrawRoutePolyline(route) {
         // Wait for the data to come back from the server
         await promise;  // waits for a resolve to be executed within this Promise instance
     }
+    // Clear the polylines from the previous route
+    left.setMap(null)
+    right.setMap(null)
 
     // Draw the line, todo make sure this part is always asynchronous
     poly.setPath(mapRoutePolylinePaths[route].polyline);
