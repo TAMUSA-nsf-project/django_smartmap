@@ -2,6 +2,8 @@ import ast
 import datetime
 import json
 from datetime import timedelta
+from .distancematrixcalcs import calc_duration
+from datetime import datetime
 
 import pytz
 from django.conf import settings
@@ -25,10 +27,6 @@ Bus Driver page
 def busdriver_view(request):
     context = {'allRoutes': commons.helper.getAllActiveRoutesDropDown()}
     return render(request, "bus/busdriver_2.html", context)
-
-
-from .distancematrixcalcs import calc_duration
-from datetime import datetime
 
 
 def getScheduleDayOfWeekLetter(date):
@@ -161,8 +159,8 @@ def getActiveBussesOnRouteAJAX(request):
     busObjs = Bus.objects.filter(route=user_selected_route)
 
     # bus data to send back to client
-    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude} for bus in
-                busObjs}
+    bus_data = {bus.id: {'selected_route': bus.route.pk, 'bus_lat': bus.latitude, 'bus_lng': bus.longitude,
+                         'bus_color': bus.getBusColorStaticUrl()} for bus in busObjs}
 
     return HttpResponse(json.dumps(bus_data))
 
@@ -246,6 +244,20 @@ def deleteBusHasEndedBroadcastAJAX(request):
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
+def updateBusSeatAvailabilityAJAX(request):
+    data = ast.literal_eval(request.GET.get('data'))
+    btn_data = data.get('choice')
+
+    bus = Bus.objects.filter(driver=request.user.username).first()
+    if bus:
+        bus.seat_availability = btn_data
+        bus.save()
+
+    return HttpResponse("Success")
 
 
 @login_required

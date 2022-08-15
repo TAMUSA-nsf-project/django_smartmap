@@ -10,14 +10,57 @@
         $(document).ready(function () {
 
             /**
-             * Store page elements in variables
+             * Depth-first-search based function that recursively toggles disabled state and opacity of the descendants
+             * of an element.
+             *
+             * @param element
+             * @param disable_bool
+             * @param opacity
              */
+            function dfsToggleDisabledState(element, disable_bool, opacity=1) {
+
+                function _dfs_disable(element) {
+                    element.children().each(function () {
+                        _dfs_disable($(this))
+                    })
+                    element.prop('disabled', disable_bool).css('opacity', opacity)
+                }
+
+                _dfs_disable(element)
+            }
+
+            // setup button on-click behavior (send data to server via ajax)
+            $('.btn').each(function () {
+                $(this).on("click", function () {
+                    const toSend = {choice: $(this).data('color')}
+                    jQuery.ajax({
+                        url: "{% url 'bus:seatavailability-ajax' %}",
+                        data: {'data': JSON.stringify(toSend)},
+                        // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                        // server-side, hence the object defined here
+                        type: "GET",
+                        //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                        dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                        async: false,
+                        success: (data) => {
+
+                        },
+                    });
+                })
+            })
+
+            // Consts
+            const P5_OPACITY = 0.5
 
             // Broadcast toggle switch
-            const toggleSwitch = $('#toggle-event');
+            const toggleSwitch = $('#toggle-event')
+            const toggleSwitchParent = $('#toggleSwitchParent')
+            const seatAvailabilityInterfaceParent = $('#seatAvailabilityInterfaceParent')
 
-            // Immediately disable the broadcast toggle switch
-            toggleSwitch.prop('disabled', true);
+            // Immediately disable descendants of divs for toggle switch, seat availability interface
+            dfsToggleDisabledState(toggleSwitchParent, true, 0.8)
+            dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
+
 
             // Route select dropdown
             const routeSelect = $('#routeSelect');
@@ -112,7 +155,7 @@
             // Route selector on-change action
             routeSelect.on('change', function () {
                 if($(this).val() !== '') {
-                    toggleSwitch.prop('disabled', false);
+                    dfsToggleDisabledState(toggleSwitchParent, false)
                 }
             })
 
@@ -122,6 +165,7 @@
                 if( $(this).prop('checked') ) {
                     // Immediately disable the route selector
                     routeSelect.prop('disabled', true);
+                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, false)
 
                     // Execute watchPosition callback, store its handle in the global script var
                     watchPositionID = navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
@@ -130,8 +174,9 @@
                     // Clear watchPosition using handle
                     navigator.geolocation.clearWatch(watchPositionID);
 
-                    // Enable the route selector
+                    // Toggle disabled states of route selector,
                     routeSelect.prop('disabled', false);
+                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
 
                     // Clear status message divs
                     statusMessageDiv.html('');
@@ -174,11 +219,17 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="mb-3">
+        <div id="toggleSwitchParent" class="mb-3">
             <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving" data-off="Start Driving" data-onstyle="danger">
         </div>
         <div class="mb-3" id="statusMessage"></div>
         <div class="mb-3" id="latlngMessage"></div>
+        <div id="seatAvailabilityInterfaceParent" class="mb-3">
+            <h5>Open Seats</h5>
+                <button type="button" class="btn btn-success btn-lg" data-color="green">3+</button>
+                <button type="button" class="btn btn-warning btn-lg" data-color="yellow">< 3</button>
+                <button type="button" class="btn btn-danger btn-lg" data-color="red">None</button>
+        </div>
     </div>
 
 {% endblock %}

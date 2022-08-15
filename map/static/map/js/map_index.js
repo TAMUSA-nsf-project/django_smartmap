@@ -7,7 +7,6 @@ let displayedRoute = ""  // ID of currently displayed route
 let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
 const defaultTimeString = "TBD";
-var busIcon;  // icon for bus
 
 let poly, left, right;
 let directionsService;
@@ -191,7 +190,7 @@ function getActiveBussesOnSelectedRoute() {
             type: "GET",
             dataType: 'json',  // data returned by server is json in this case
             success: (data) => {
-                updateBusMarkersBySid(data);
+                updateBusMarkers(data);
             },
         });
 
@@ -438,12 +437,7 @@ function initMap() {
         strokeWeight: 5,
     });
 
-    // Initialize bus icon using google.maps.Size method to resize image at specified url
-    busIcon = {
-        url: "https://www.iconshock.com/image/SuperVista/Accounting/bus/",
-        scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
-        // rotationAngle: 0
-    };
+
 
 
     // Create the div to hold the route-selection dropdown.
@@ -496,9 +490,9 @@ function reDrawPolyLineWithCurrentLocation(busLocation, mapRoutePolylinePath) {
 }
 
 /**
- * Updates the google map markers in the busMarkersBySid object
+ * Updates the google map markers representing buses.
  */
-function updateBusMarkersBySid(data) {
+function updateBusMarkers(data) {
 
     for (let i = 0; i < busMarkers.length; i++) {
         busMarkers[i].setMap(null);
@@ -506,15 +500,21 @@ function updateBusMarkersBySid(data) {
 
     busMarkers = [];
 
-    for (const sid in data) {
-        const sidData = data[sid]
+    for (const busID in data) {
+        const busData = data[busID]
 
-        var newLatLng = new google.maps.LatLng(sidData.bus_lat, sidData.bus_lng)
+        const busLatLng = new google.maps.LatLng(busData.bus_lat, busData.bus_lng);
+
+        const busIcon = {
+            url: busData.bus_color,
+            scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
+            // rotationAngle: 0
+        };
 
         let sidMarker = new google.maps.Marker({
-            position: newLatLng,
+            position: busLatLng,
             map: map,
-            title: sid,
+            title: busID,
             icon: busIcon,
         })
 

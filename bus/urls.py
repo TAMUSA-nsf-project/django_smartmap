@@ -20,4 +20,7 @@ urlpatterns = [
     path('transitlogs/<int:log_id>', views.transit_log_entries_view, name='transitlogentries'),
     path('downloadtransitlogcsv-ajax', views.downloadTransitLogCSV_AJAX, name='downloadtransitlogcsv-ajax'),
 
+    # Seats
+    path('seatavailability-ajax/', views.updateBusSeatAvailabilityAJAX, name='seatavailability-ajax'),
+
 ]

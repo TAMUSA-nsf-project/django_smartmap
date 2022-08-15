@@ -25,6 +25,17 @@ class Bus(models.Model):
     start_time = models.DateTimeField(default=None, blank=True, null=True)
     end_time = models.DateTimeField(default=None, blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
+    seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
+
+    def getBusColorStaticUrl(self) -> str:
+        """
+        Returns URL to appropriate static colored bus icon based on seat availability.
+
+        'green' = many open seats
+        'yellow' = <3 open seats
+        'red' = no open seats
+        """
+        return settings.STATIC_URL + "map/icons/" + self.seat_availability + "_bus.png"
 
     def getLatLngTuple(self):
         return self.latitude, self.longitude
