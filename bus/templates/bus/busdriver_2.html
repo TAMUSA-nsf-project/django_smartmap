@@ -211,30 +211,24 @@
 
 {% block content %}
     <div class="container py-4">
-        <div class="row">
-            <div class="col">
-                <div class="mb-3">
-                    <select class="form-select" id="routeSelect">
-                        <option selected disabled value="">Select route...</option>
-                        {% for route_id, route_text in allRoutes.items %}
-                            <option value="{{ route_id }}">{{ route_text }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div id="toggleSwitchParent" class="mb-3">
-                    <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving" data-off="Start Driving" data-onstyle="danger">
-                </div>
-                <div class="mb-3" id="statusMessage"></div>
-                <div class="mb-3" id="latlngMessage"></div>
-            </div>
+        <div class="mb-3">
+            <select class="form-select" id="routeSelect">
+                <option selected disabled value="">Select route...</option>
+                {% for route_id, route_text in allRoutes.items %}
+                    <option value="{{ route_id }}">{{ route_text }}</option>
+                {% endfor %}
+            </select>
         </div>
-        <div id="seatAvailabilityInterfaceParent" class="row p-4">
+        <div id="toggleSwitchParent" class="mb-3">
+            <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving" data-off="Start Driving" data-onstyle="danger">
+        </div>
+        <div class="mb-3" id="statusMessage"></div>
+        <div class="mb-3" id="latlngMessage"></div>
+        <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
-            <div class="col">
                 <button type="button" class="btn btn-success btn-lg" data-color="green">3+</button>
                 <button type="button" class="btn btn-warning btn-lg" data-color="yellow">< 3</button>
                 <button type="button" class="btn btn-danger btn-lg" data-color="red">None</button>
-            </div>
         </div>
     </div>
 
