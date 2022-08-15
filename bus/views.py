@@ -211,7 +211,7 @@ def updateBusSeatAvailabilityAJAX(request):
 
     bus = Bus.objects.filter(driver=request.user.username).first()
     if bus:
-        bus.open_seats_status_color = btn_data
+        bus.seat_availability = btn_data
         bus.save()
 
     return HttpResponse("Success")
