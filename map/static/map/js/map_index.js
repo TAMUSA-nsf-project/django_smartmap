@@ -455,9 +455,11 @@ function updateBusMarkers(data) {
 
         const busLatLng = new google.maps.LatLng(busData.bus_lat, busData.bus_lng);
 
+        const iconWidth = 60  // pixels
+
         const busIcon = {
             url: busData.bus_color,
-            scaledSize: new google.maps.Size(50, 50),  // resize to 50x50 pixels
+            scaledSize: new google.maps.Size(iconWidth, iconWidth),
             // rotationAngle: 0
         };
 
