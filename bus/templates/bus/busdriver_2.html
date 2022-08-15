@@ -17,7 +17,7 @@
              * @param disable_bool
              * @param opacity
              */
-            function dfs_disable_toggle(element, disable_bool, opacity) {
+            function dfsToggleDisabledState(element, disable_bool, opacity=1) {
 
                 function _dfs_disable(element) {
                     element.children().each(function () {
@@ -29,6 +29,7 @@
                 _dfs_disable(element)
             }
 
+            // setup button on-click behavior (send data to server via ajax)
             $('.btn').each(function () {
                 $(this).on("click", function () {
                     const toSend = {choice: $(this).data('color')}
@@ -54,11 +55,11 @@
             // Broadcast toggle switch
             const toggleSwitch = $('#toggle-event')
             const toggleSwitchParent = $('#toggleSwitchParent')
-            const openSeatsInterfaceParent = $('#openSeatsInterfaceParent')
+            const seatAvailabilityInterfaceParent = $('#seatAvailabilityInterfaceParent')
 
-            // Immediately disable the descendants of divs for toggle switch, etc
-            dfs_disable_toggle(toggleSwitchParent, true, 0.8)
-            dfs_disable_toggle(openSeatsInterfaceParent, true, P5_OPACITY)
+            // Immediately disable descendants of divs for toggle switch, seat availability interface
+            dfsToggleDisabledState(toggleSwitchParent, true, 0.8)
+            dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
 
 
             // Route select dropdown
@@ -154,7 +155,7 @@
             // Route selector on-change action
             routeSelect.on('change', function () {
                 if($(this).val() !== '') {
-                    dfs_disable_toggle(toggleSwitchParent, false, 1)
+                    dfsToggleDisabledState(toggleSwitchParent, false)
                 }
             })
 
@@ -164,7 +165,7 @@
                 if( $(this).prop('checked') ) {
                     // Immediately disable the route selector
                     routeSelect.prop('disabled', true);
-                    dfs_disable_toggle(openSeatsInterfaceParent, false, 1)
+                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, false)
 
                     // Execute watchPosition callback, store its handle in the global script var
                     watchPositionID = navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
@@ -173,9 +174,9 @@
                     // Clear watchPosition using handle
                     navigator.geolocation.clearWatch(watchPositionID);
 
-                    // Enable the route selector
+                    // Toggle disabled states of route selector,
                     routeSelect.prop('disabled', false);
-                    dfs_disable_toggle(openSeatsInterfaceParent, true, P5_OPACITY)
+                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
 
                     // Clear status message divs
                     statusMessageDiv.html('');
@@ -227,7 +228,7 @@
                 <div class="mb-3" id="latlngMessage"></div>
             </div>
         </div>
-        <div id="openSeatsInterfaceParent" class="row p-4">
+        <div id="seatAvailabilityInterfaceParent" class="row p-4">
             <h5>Open Seats</h5>
             <div class="col">
                 <button type="button" class="btn btn-success btn-lg" data-color="green">3+</button>
