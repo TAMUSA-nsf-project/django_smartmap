@@ -5,14 +5,14 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="DJANGO_SETTINGS_MODULE" value="django_smartmap.settings" />
+      <env name="DJANGO_SETTINGS_MODULE" value="django_smartmap.settings.dockerdev" />
     </envs>
-    <option name="SDK_HOME" value="docker-compose://[D:\Study\RA_PY\django_smartmap\docker-compose.yml]:smart_map/python" />
+    <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
-    <EXTENSION ID="DockerComposeSettingsRunConfigurationExtension" commandLine="up --exit-code-from smart_map --abort-on-container-exit smart_map --build" />
+    <EXTENSION ID="DockerComposeSettingsRunConfigurationExtension" commandLine="up --build --exit-code-from smart_map --abort-on-container-exit smart_map " />
     <option name="launchJavascriptDebuger" value="false" />
     <option name="port" value="8000" />
     <option name="host" value="0.0.0.0" />
