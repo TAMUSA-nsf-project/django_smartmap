@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 from pathlib import Path
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -16,7 +17,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
+
+DEBUG = False
+
+env = environ.Env(
+    DATABASE_URL=(str, os.getenv("DATABASE_URL")),
+)
 
 # Application definition
 
@@ -34,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  # for javascript, others
 ]
 
 MIDDLEWARE = [
@@ -83,7 +89,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -96,7 +101,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -114,51 +118,48 @@ Logins
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'main:index'  # needed to get the currently used login page to work
 
-
-"""
-Socket.IO
-"""
-# Note: every variable created in this file must be capitalized (must be SIO not sio)
-import socketio
-
-SIO = socketio.Server(async_mode='threading')
-
-
 """
 Security
 """
-CSRF_COOKIE_HTTPONLY = True #for httponly alert
-SESSION_COOKIE_SECURE = True #cookie secure
+CSRF_COOKIE_HTTPONLY = True  # for httponly alert
+SESSION_COOKIE_SECURE = True  # cookie secure
 SECURE_CONTENT_TYPE_NOSNIFF = True
-#CSRF_COOKIE_SECURE = True #to avoid transmitting the CSRF cookie over HTTP accidentally.
-#SECURE_BROWSER_XSS_FILTER = True
+# CSRF_COOKIE_SECURE = True  # to avoid transmitting the CSRF cookie over HTTP accidentally.
+# SECURE_BROWSER_XSS_FILTER = True
 
+CSP_DEFAULT_SRC = ("'self'", '')
 
-CSP_DEFAULT_SRC =  ("'self'", '')
+CSP_STYLE_SRC = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
+                 'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css',
+                 'polyfill.io/v3/polyfill.min.js', 'fonts.googleapis.com',
+                 'cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 'storage.googleapis.com')
 
-CSP_STYLE_SRC  = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
-                  'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css',
-                  'polyfill.io/v3/polyfill.min.js','fonts.googleapis.com', 'cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 'storage.googleapis.com')
+CSP_SCRIPT_SRC = (
+    "'self'", 'data:', 'cdnjs.cloudflare.com', 'https://maps.google.com', 'polyfill.io/v3/polyfill.min.js',
+    'maps.googleapis.com',
+    'https://storage.googleapis.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js', 'cdn.jsdelivr.net')
 
-CSP_SCRIPT_SRC  = ("'self'",'data:','cdnjs.cloudflare.com',  'https://maps.google.com','polyfill.io/v3/polyfill.min.js', 'maps.googleapis.com',
-                   'https://storage.googleapis.com','cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js', 'cdn.jsdelivr.net' )
-
-CSP_CONNECT_SRC = ( "'self'",'cdnjs.cloudflare.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js',
-                    'maps.googleapis.com', 'polyfill.io/v3/polyfill.min.js',
-                    'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js')
-CSP_FONT_SRC =  ("'self'", 'data:','fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fChc4EsA.woff2', 'maps.googleapis.com', '*.gstatic.com', 'cdnjs.cloudflare.com/', 'storage.googleapis.com')
-CSP_IMG_SRC =  ("'self'",'cdnjs.cloudflare.com','www.iconshock.com',  'maps.googleapis.com', 'maps.gstatic.com','*.googleapis.com','data:', 'blob:', '*.ggpht.com', 'storage.googleapis.com')
+CSP_CONNECT_SRC = ("'self'", 'cdnjs.cloudflare.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js',
+                   'maps.googleapis.com', 'polyfill.io/v3/polyfill.min.js',
+                   'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js')
+CSP_FONT_SRC = (
+    "'self'", 'data:', 'fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fChc4EsA.woff2', 'maps.googleapis.com',
+    '*.gstatic.com', 'cdnjs.cloudflare.com/', 'storage.googleapis.com')
+CSP_IMG_SRC = (
+    "'self'", 'cdnjs.cloudflare.com', 'www.iconshock.com', 'maps.googleapis.com', 'maps.gstatic.com',
+    '*.googleapis.com',
+    'data:', 'blob:', '*.ggpht.com', 'storage.googleapis.com')
 
 '''maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png
     cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js',
       '''
-CSP_INCLUDE_NONCE_IN = ('script-src','connect-src', 'style-src', 'font-src', 'img-src') #for inline javascript and style csss
+CSP_INCLUDE_NONCE_IN = (
+    'script-src', 'connect-src', 'style-src', 'font-src', 'img-src')  # for inline javascript and style csss
 
 CSP_FRAME_ANCESTORS = ("'none'")
 CSP_PREFETCH_SRC = ("'none'")
 CSP_FORM_ACTION = ("'self'")
-CSP_OBJECT_SRC =  ("'self'")
-CSP_FRAME_SRC =  ("'self'", 'maps.google.com', 'maps.googleapis.com')
-CSP_MANIFEST_SRC =  ("'none'")
+CSP_OBJECT_SRC = ("'self'")
+CSP_FRAME_SRC = ("'self'", 'maps.google.com', 'maps.googleapis.com')
+CSP_MANIFEST_SRC = ("'none'")
 CSP_MEDIA_SRC = ("'self'")
-

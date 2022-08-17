@@ -13,8 +13,6 @@ from django.shortcuts import render, HttpResponse
 import commons.helper
 from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry, BusSchedule
 
-# Socket IO
-sio = settings.SIO
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
