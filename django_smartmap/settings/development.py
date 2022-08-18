@@ -29,6 +29,7 @@ if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", "False") == "True":
     DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     GS_DEFAULT_ACL = "publicRead"
+    STATIC_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
 else:
     STATICFILES_FINDERS = [
         "django.contrib.staticfiles.finders.FileSystemFinder",
