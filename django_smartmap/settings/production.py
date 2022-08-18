@@ -3,9 +3,6 @@ from google.cloud import secretmanager
 from urllib.parse import urlparse
 from .defaults import *
 
-# STATIC_URL = "https://storage.googleapis.com/nsf-2131193-18902-static-files/"
-
-
 DEBUG = os.getenv("DEBUG", default="False") == "True"
 
 # Use GCP secret manager in prod mode
@@ -54,6 +51,7 @@ GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 GS_DEFAULT_ACL = "publicRead"
+STATIC_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
 
 """
 GOOGLE API KEYS GO HERE:

@@ -35,8 +35,7 @@ class Bus(models.Model):
         'yellow' = <3 open seats
         'red' = no open seats
         """
-        # TODO hardcoded hack for google cloud deployment, change STATIC_URL value in settings
-        return "https://storage.googleapis.com/nsf-2131193-18902-static-files/" + "map/icons/" + self.seat_availability + "_bus.png"
+        return settings.STATIC_URL + "map/icons/" + self.seat_availability + "_bus.png"
 
     def getLatLngTuple(self):
         return self.latitude, self.longitude
