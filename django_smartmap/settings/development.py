@@ -2,6 +2,10 @@ from .defaults import *
 
 DEBUG = True
 
+
+env.read_env(env_file=os.path.join(BASE_DIR, "env", "local.env"))
+
+
 SECRET_KEY = os.getenv("SECRET_KEY", "NoxUmTUaQ7BvTPxIlKaQTTQvHS3aQBO3aV5zBKqrHuP6gZyyYZ")
 
 INSTALLED_APPS += ['sslserver','django.contrib.staticfiles']
@@ -41,7 +45,7 @@ else:
 GOOGLE API KEYS GO HERE:
 """
 # For the map (restricted to our server's addresses)
-GOOGLE_MAP_API_KEY = os.getenv("GOOGLE_MAP_API_KEY")
+GOOGLE_MAP_API_KEY = env("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
-GOOGLE_PYTHON_API_KEY = os.getenv("GOOGLE_PYTHON_API_KEY")
+GOOGLE_PYTHON_API_KEY = env("GOOGLE_PYTHON_API_KEY")
