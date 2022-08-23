@@ -5,10 +5,7 @@ from django.shortcuts import render, HttpResponse
 from django.conf import settings
 import json
 
-# Socket IO
 import commons.helper
-
-sio = settings.SIO
 
 # Create your views here.
 

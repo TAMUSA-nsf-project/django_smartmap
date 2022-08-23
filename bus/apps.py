@@ -81,7 +81,7 @@ def addRouteDetailsIfNotExist(bus_stop: dict):
 def PopulatePreData(sender, **kwargs):
     # Read json file with all the route data (bus stops and their lat, lng, etc)
     json_data = None
-    with open(os.path.join(settings.BASE_DIR, "route_data/allRoutes.json")) as f:
+    with open(os.path.join(settings.BASE_DIR, "route_data", "allRoutes.json")) as f:
         json_data = json.load(f)
 
     # BusStop instances

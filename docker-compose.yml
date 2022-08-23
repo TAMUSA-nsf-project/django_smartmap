@@ -1,6 +1,8 @@
 version: '3.9'
 
 services:
+  # Execute "docker exec -it django-app-dev python manage.py makemigrations" and
+  # "docker exec -it django-app-dev python manage.py migrate" from terminal for database migrations.
   smart_map:
     container_name: django-app-dev
     build:
@@ -11,18 +13,7 @@ services:
       - .:/app
     env_file:
       - ./env/local.env
-    depends_on:
-      - database
-    links:
-      - database
     restart: always
-
-  database:
-    image: "postgres:14.4-bullseye"
-    env_file:
-      - ./env/local.env
-    volumes:
-      - ./database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
 
   smart_map_cloud:
     container_name: django-app-prod
