@@ -10,6 +10,7 @@ DEBUG = os.getenv("DEBUG", default="False") == "True"
 try:
     _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
 except google.auth.exceptions.DefaultCredentialsError:
+    print("DefaultCredentialsError")
     pass
 # Use GCP secret manager in prod mode
 if os.getenv("GOOGLE_CLOUD_PROJECT", None):
@@ -23,6 +24,7 @@ if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     )
 
     env.read_env(io.StringIO(payload))
+    print("Loaded secret settings")
 else:
     raise Exception(
         "No GOOGLE_CLOUD_PROJECT detected. No secrets found."
@@ -42,8 +44,7 @@ if CLOUDRUN_SERVICE_URL:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-if 'storages' not in INSTALLED_APPS:
-    INSTALLED_APPS += ['storages']
+INSTALLED_APPS += ['storages']
 
 # Database
 # Use django-environ to parse the connection string
@@ -64,7 +65,7 @@ STATIC_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
 GOOGLE API KEYS GO HERE:
 """
 # For the map (restricted to our server's addresses)
-GOOGLE_MAP_API_KEY = os.getenv("GOOGLE_MAP_API_KEY")
+GOOGLE_MAP_API_KEY = env("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
-GOOGLE_PYTHON_API_KEY = os.getenv("GOOGLE_PYTHON_API_KEY")
+GOOGLE_PYTHON_API_KEY = env("GOOGLE_PYTHON_API_KEY")
