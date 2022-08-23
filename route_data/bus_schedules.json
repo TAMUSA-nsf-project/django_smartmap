@@ -518,5 +518,1771 @@
       "day_of_week" : "F",
       "scheduled_time" : "21:27"
     }
+  ],
+  "Route 51 (reverse)": [
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "4:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "18:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "20:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "21:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "4:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "6:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "8:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:54"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:39"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:20"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "16:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "18:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "20:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "21:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "4:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "6:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "8:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:54"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:39"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:20"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "16:30"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:10"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "18:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "20:50"
+    },
+    {
+      "Stop Name": "Martin & Navarro",
+      "bus_stop": 71839,
+      "bus_route": "Route 51 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "21:50"
+    }
+  ],
+  "Route 93 (reverse)": [
+       {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:40"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:10"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:36"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:6"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:35"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:9"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:9"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:41"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:11"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:42"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:12"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:43"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "18:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "20:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "21:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "6:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "8:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "16:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "18:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "19:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "20:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "21:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "6:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "8:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:09"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "16:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "18:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "19:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "20:39"
+    },
+    {
+      "Stop Name": "Commerce & Presa",
+      "bus_stop": 91139,
+      "bus_route": "Route 93 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "21:39"
+    }
+  ],
+  "Route 672":[
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:25"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:30"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:35"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:40"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "18:45"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "20:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "W",
+      "scheduled_time" : "21:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "6:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "8:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:25"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:30"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "16:35"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:40"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "18:45"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "20:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "S",
+      "scheduled_time" : "21:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "6:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:19"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "8:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:20"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:25"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:30"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "16:35"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:40"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "18:45"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "19:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "20:50"
+    },
+    {
+      "Stop Name": "Verano Pkwy & University Way",
+      "bus_stop": 26183,
+      "bus_route": "Route 672",
+      "day_of_week" : "F",
+      "scheduled_time" : "21:50"
+    }
+
+  ],
+  "Route 672 (reverse)":[
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "5:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "6:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "7:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "8:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "9:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "10:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "11:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "12:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "13:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "14:05"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "15:10"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "16:15"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "17:20"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "18:25"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "19:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "20:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "W",
+      "scheduled_time" : "21:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "5:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "6:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "7:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "8:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "9:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "10:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "11:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "12:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "13:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "14:05"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "15:10"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "16:15"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "17:20"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "18:25"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "19:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "20:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "F",
+      "scheduled_time" : "21:30"
+    },
+    {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "5:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "6:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "7:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "8:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "9:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "10:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "11:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "12:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "13:00"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "14:05"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "15:10"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "16:15"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "17:20"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "18:25"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "19:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "20:30"
+    },
+     {
+      "Stop Name": "Madla Transit Center",
+      "bus_stop": 11137,
+      "bus_route": "Route 672 (reverse)",
+      "day_of_week" : "S",
+      "scheduled_time" : "21:30"
+    }
   ]
 }
