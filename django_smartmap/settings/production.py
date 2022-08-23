@@ -6,8 +6,8 @@ from .defaults import *
 DEBUG = os.getenv("DEBUG", default="False") == "True"
 
 # Use GCP secret manager in prod mode
-if os.getenv("GOOGLE_CLOUD_PROJECT", None):
-    project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
+if os.getenv("GCP_PROJECT", None):
+    project_id = os.getenv("GCP_PROJECT")
 
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.getenv("SETTINGS_NAME", "application_settings")
@@ -19,7 +19,7 @@ if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     env.read_env(io.StringIO(payload))
 else:
     raise Exception(
-        "No GOOGLE_CLOUD_PROJECT detected. No secrets found."
+        "No GCP_PROJECT detected. No secrets found."
     )
 
 SECRET_KEY = env("SECRET_KEY")
