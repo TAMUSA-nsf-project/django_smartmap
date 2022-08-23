@@ -18,22 +18,23 @@ steps:
       - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
     id: Push
 
-  # 2. Make migrations
-  - name: gcr.io/google-appengine/exec-wrapper
-    args:
-      - '-i'
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
-      - '-s'
-      - '${PROJECT_ID}:${_DEPLOY_REGION}:${_DB_INSTANCE}'
-      - '-e'
-      - 'SETTINGS_NAME=${_SECRET_SETTINGS_NAME}'
-      - '--'
-      - 'python'
-      - 'manage.py'
-      - 'makemigrations'
-    id: Make migrations
+# 2. Make migrations
+#  Not a good practice to run this in production. So commenting this.
+#  - name: gcr.io/google-appengine/exec-wrapper
+#    args:
+#      - '-i'
+#      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+#      - '-s'
+#      - '${PROJECT_ID}:${_DEPLOY_REGION}:${_DB_INSTANCE}'
+#      - '-e'
+#      - 'SETTINGS_NAME=${_SECRET_SETTINGS_NAME}'
+#      - '--'
+#      - 'python'
+#      - 'manage.py'
+#      - 'makemigrations'
+#    id: Make migrations
 
-  # 3. Migrate
+  # 2. Migrate
   - name: gcr.io/google-appengine/exec-wrapper
     args:
       - '-i'
@@ -42,13 +43,14 @@ steps:
       - '${PROJECT_ID}:${_DEPLOY_REGION}:${_DB_INSTANCE}'
       - '-e'
       - 'SETTINGS_NAME=${_SECRET_SETTINGS_NAME}'
+      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
       - '--'
       - 'python'
       - 'manage.py'
       - 'migrate'
     id: Migrate
 
-    # 4. Collect static
+    # 3. Collect static
   - name: gcr.io/google-appengine/exec-wrapper
     args:
       - '-i'
@@ -64,7 +66,7 @@ steps:
       - '--no-input'
     id: Collect static
 
-  # 5. Deploy to Cloud Run
+  # 4. Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
       - run
