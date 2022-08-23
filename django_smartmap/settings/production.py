@@ -1,7 +1,8 @@
+from .defaults import *
 import io
 from google.cloud import secretmanager
+import  google.auth
 from urllib.parse import urlparse
-from .defaults import *
 
 DEBUG = os.getenv("DEBUG", default="False") == "True"
 
@@ -10,7 +11,6 @@ try:
     _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
 except google.auth.exceptions.DefaultCredentialsError:
     pass
-
 # Use GCP secret manager in prod mode
 if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
