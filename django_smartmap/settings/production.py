@@ -5,6 +5,12 @@ from .defaults import *
 
 DEBUG = os.getenv("DEBUG", default="False") == "True"
 
+# Attempt to load the Project ID into the environment, safely failing on error.
+try:
+    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
+except google.auth.exceptions.DefaultCredentialsError:
+    pass
+
 # Use GCP secret manager in prod mode
 if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
@@ -36,7 +42,8 @@ if CLOUDRUN_SERVICE_URL:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-INSTALLED_APPS += ['storages']
+if 'storages' not in INSTALLED_APPS:
+    INSTALLED_APPS += ['storages']
 
 # Database
 # Use django-environ to parse the connection string

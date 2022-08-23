@@ -43,7 +43,6 @@ steps:
       - '${PROJECT_ID}:${_DEPLOY_REGION}:${_DB_INSTANCE}'
       - '-e'
       - 'SETTINGS_NAME=${_SECRET_SETTINGS_NAME}'
-      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
       - '--'
       - 'python'
       - 'manage.py'
