@@ -23,7 +23,9 @@ urlpatterns = [
     path('', include('main.urls')),
     path('', include('map.urls')),
     path('', include('bus.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('', include('communications.urls')),
+
 
 ]
 if settings.DEBUG:

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'bus',
     'users',
     'commons',
+    'communications',
 
     # Django default apps
     'django.contrib.admin',
