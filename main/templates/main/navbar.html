@@ -10,8 +10,9 @@
 
             <div class="navbar-nav">
                 <a class="nav-link" href="{% url 'map:map' %}">Map</a>
+                <a class="nav-link" href="{% url 'communications:announcements' %}">Announcements</a>
 
-                  {% if perms.bus.access_busdriver_pages %}
+                {% if perms.bus.access_busdriver_pages %}
                     <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
                 {% endif %}
                 {% if user.is_superuser %}
@@ -30,6 +31,7 @@
                             Architecture</a></li>
                     </ul>
                 </li>
+
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <style nonce="{{request.csp_nonce}}"> #nav-link{ color: whitesmoke}</style>
