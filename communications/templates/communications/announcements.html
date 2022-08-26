@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+{% endblock %}
+
+{% block page_header %}
+    <h4>Announcements</h4>
+{% endblock page_header %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="pb-2 mb-2 border-bottom">
+            <h4>Announcements</h4>
+        </div>
+        <p>What is this</p>
+        {% for announcement in announcements %}
+            <div class="card mb-3">
+                <h5 class="card-header">
+                    {{ announcement.date_added|date:'M d, Y H:i' }}
+                </h5>
+                <div class="card-body">
+                    {{ announcement.text|linebreaks }}
+                </div>
+            </div>
+        {% empty %}
+            <div class="mb-3">There are no announcements.</div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
