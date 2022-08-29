@@ -25,13 +25,42 @@
 
     <script type="text/javascript" nonce="{{request.csp_nonce}}" src="{% static 'map/js/map_index.js' %}"></script>
 
+    <!-- Front-end stuff -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'map/css/map_drawer_interactions.css' %}" />
+    <script type="text/javascript" src="{% static 'map/js/map_drawer_interactions.js' %}"></script>
+
 {% endblock %}
 
 
 {% block content %}
-
+    <button id="MapDrawerRightOpenButton">Tools</button>
     <!--The div element for the mapindex -->
     <div id="map"></div>
+    <button id="MapLeftDrawerOpenButton" class="leftDrawerOpenButton">Routes</button>
+    <div id="MapDrawerBackdrop"></div>
+    <div class="MapDrawer" id="MapDrawerLeft">
+        <div class="leftDrawerHeader">
+			<strong><b>MySmartSa Routes</b></strong>
+			<button id="MapLeftDrawerCloseButton" class="leftDrawerCloseButton"><b><</b></button>
+		</div>
+		<div class="routeButtonsContainer">
+			<div class="routeButton" id="route_123"><h4><b>Route 51 Madla Transit Center ⟶ Navarro Opposite Villita</b></h4></div>
+			<div class="routeContent" id="route_123"></div>
+			<div class="routeButton" id="route_456"><h4><b>Route 52 Here ⟶ There</b></h4></div>
+			<div class="routeContent" id="route_456"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+			<div class="routeButton"></div>
+		</div>
+    </div>
 
     <!--
      The `defer` attribute causes the callback to execute after the full HTML
@@ -45,6 +74,4 @@
     <script
             src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer nonce="{{request.csp_nonce}}">
     </script>
-
-
 {% endblock %}

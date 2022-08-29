@@ -138,7 +138,8 @@ CSP_STYLE_SRC = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/
 CSP_SCRIPT_SRC = (
     "'self'", 'data:', 'cdnjs.cloudflare.com', 'https://maps.google.com', 'polyfill.io/v3/polyfill.min.js',
     'maps.googleapis.com',
-    'https://storage.googleapis.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js', 'cdn.jsdelivr.net')
+    'https://storage.googleapis.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js', 'cdn.jsdelivr.net',
+    'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
 
 CSP_CONNECT_SRC = ("'self'", 'cdnjs.cloudflare.com', 'cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js',
                    'maps.googleapis.com', 'polyfill.io/v3/polyfill.min.js',

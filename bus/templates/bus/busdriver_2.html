@@ -6,6 +6,9 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" nonce="{{request.csp_nonce}}">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" nonce="{{request.csp_nonce}}"></script>
 
+    <!-- CSS for the bus driver buttons -->
+    <link rel="stylesheet" href="{% static 'map/css/busdriver_2.css' %}" />
+
     <script type="text/javascript" nonce="{{request.csp_nonce}}">
         $(document).ready(function () {
 
@@ -50,7 +53,7 @@
             })
 
             // Consts
-            const P5_OPACITY = 0.5
+            const P5_OPACITY = 1//0.5 // Temporarily set to 1 for testing
 
             // Broadcast toggle switch
             const toggleSwitch = $('#toggle-event')
@@ -226,9 +229,21 @@
         <div class="mb-3" id="latlngMessage"></div>
         <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
-                <button type="button" class="btn btn-success btn-lg" data-color="green">3+</button>
-                <button type="button" class="btn btn-warning btn-lg" data-color="yellow">< 3</button>
-                <button type="button" class="btn btn-danger btn-lg" data-color="red">None</button>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-success btn-lg open-seat-button" data-color="green">3+</button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-warning btn-lg open-seat-button" data-color="yellow">< 3</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-danger btn-lg open-seat-button-but-bigger" data-color="red">None</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
