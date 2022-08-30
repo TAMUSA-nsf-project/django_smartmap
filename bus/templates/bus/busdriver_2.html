@@ -6,6 +6,33 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" nonce="{{request.csp_nonce}}">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" nonce="{{request.csp_nonce}}"></script>
 
+    <!-- CSS for the bus driver buttons -->
+    <style nonce="{{request.csp_nonce}}">
+
+        .open-seat-button
+        {
+            padding-bottom: 20%;
+            padding-top: 20%;
+        }
+
+        .open-seat-button-but-bigger
+        {
+            margin-top: 3%;
+            padding-bottom: 7%;
+            padding-top: 7%;
+        }
+
+        .open-seat-button, .open-seat-button-but-bigger {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: xxx-large;
+            font-weight: bold;
+        }
+
+    </style>
+
     <script type="text/javascript" nonce="{{request.csp_nonce}}">
         $(document).ready(function () {
 
