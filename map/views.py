@@ -38,3 +38,20 @@ def getRouteDetailsAJAX(request):
     }
     return HttpResponse(json.dumps(allStops))
 
+
+def getBusColorDescriptionAJAX(request):
+    result = [
+        {
+            'icon': f'{settings.STATIC_URL}map/icons/red_bus.png',
+            'description': "No Seats Available"
+        },
+        {
+            'icon': f'{settings.STATIC_URL}map/icons/yellow_bus.png',
+            'description': "Less than 3 seats Available"
+        },
+        {
+            'icon': f'{settings.STATIC_URL}map/icons/green_bus.png',
+            'description': "More than 3 seats Available"
+        }
+    ]
+    return HttpResponse(json.dumps(result))
