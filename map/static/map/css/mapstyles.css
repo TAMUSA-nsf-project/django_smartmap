@@ -1,0 +1,31 @@
+/* Always set the mapindex height explicitly to define the size of the div
+         * element that contains the mapindex. */
+#map {
+    height: 100vh; /* Google's suggested height of 100% may prevent map from displaying */
+}
+
+#legend {
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    background-color: transparent;
+    padding: 5px;
+    margin: 5px;
+}
+#legend div{
+    background-color: #ffffff;
+    padding: 1px;
+}
+
+#legend a {
+    font-weight: bold;
+    width: 100%;
+}
+
+#legend img {
+    vertical-align: middle;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}

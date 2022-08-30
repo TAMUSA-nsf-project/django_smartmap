@@ -453,7 +453,7 @@ function initMap() {
         success: (data) => {
             console.log(data)
 
-            var legend = document.getElementById('legend');
+            var legend = document.getElementById('legendContent');
             data.forEach((item) => {
                 var div = document.createElement('div');
                 div.innerHTML = '<img src="' + getBaseUrl() + item.icon + '"> ' + item.description;
