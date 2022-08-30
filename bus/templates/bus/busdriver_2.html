@@ -6,8 +6,45 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" nonce="{{request.csp_nonce}}">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" nonce="{{request.csp_nonce}}"></script>
 
+    <!-- CSS for the bus driver buttons -->
+    <style nonce="{{request.csp_nonce}}">
+
+        .open-seat-button
+        {
+            padding-bottom: 20%;
+            padding-top: 20%;
+        }
+
+        .open-seat-button-but-bigger
+        {
+            margin-top: 3%;
+            padding-bottom: 7%;
+            padding-top: 7%;
+        }
+
+        .open-seat-button, .open-seat-button-but-bigger {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: xxx-large;
+            font-weight: bold;
+        }
+
+    </style>
+
     <script type="text/javascript" nonce="{{request.csp_nonce}}">
-        $(document).ready(function () {
+
+        /**
+         * Class to represent a document element. Contains methods to disable/enable state, etc.
+         */
+        class Element {
+
+            constructor(element, disabled_opacity=0.5) {
+                this.element = element
+                this.disabled_opacity = disabled_opacity
+                this.enabled_opacity = 1
+            }
 
             /**
              * Depth-first-search based function that recursively toggles disabled state and opacity of the descendants
@@ -17,7 +54,7 @@
              * @param disable_bool
              * @param opacity
              */
-            function dfsToggleDisabledState(element, disable_bool, opacity=1) {
+            static dfsToggleDisabledState(element, disable_bool, opacity=1) {
 
                 function _dfs_disable(element) {
                     element.children().each(function () {
@@ -28,6 +65,26 @@
 
                 _dfs_disable(element)
             }
+
+            /**
+             * Disables the element and its descendants.
+             */
+            disableElement() {
+                Element.dfsToggleDisabledState(this.element, true, this.disabled_opacity)
+            }
+
+            /**
+             * Enables the element and its descendants.
+             */
+            enableElement() {
+                Element.dfsToggleDisabledState(this.element, false, this.enabled_opacity)
+            }
+
+
+        }
+
+
+        $(document).ready(function () {
 
             // setup button on-click behavior (send data to server via ajax)
             $('.btn').each(function () {
@@ -49,18 +106,16 @@
                 })
             })
 
-            // Consts
-            const P5_OPACITY = 0.5
-
-            // Broadcast toggle switch
+            // Get handles to the elements
             const toggleSwitch = $('#toggle-event')
-            const toggleSwitchParent = $('#toggleSwitchParent')
-            const seatAvailabilityInterfaceParent = $('#seatAvailabilityInterfaceParent')
+
+            // Create ToggledElement objects
+            const toggleSwitchParent = new Element($('#toggleSwitchParent'), 0.8)
+            const seatAvailabilityInterfaceParent = new Element($('#seatAvailabilityInterfaceParent'), 0.6)
 
             // Immediately disable descendants of divs for toggle switch, seat availability interface
-            dfsToggleDisabledState(toggleSwitchParent, true, 0.8)
-            dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
-
+            toggleSwitchParent.disableElement()
+            seatAvailabilityInterfaceParent.disableElement()
 
             // Route select dropdown
             const routeSelect = $('#routeSelect');
@@ -155,7 +210,7 @@
             // Route selector on-change action
             routeSelect.on('change', function () {
                 if($(this).val() !== '') {
-                    dfsToggleDisabledState(toggleSwitchParent, false)
+                    toggleSwitchParent.enableElement()
                 }
             })
 
@@ -165,7 +220,7 @@
                 if( $(this).prop('checked') ) {
                     // Immediately disable the route selector
                     routeSelect.prop('disabled', true);
-                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, false)
+                    seatAvailabilityInterfaceParent.enableElement()
 
                     // Execute watchPosition callback, store its handle in the global script var
                     watchPositionID = navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
@@ -176,7 +231,8 @@
 
                     // Toggle disabled states of route selector,
                     routeSelect.prop('disabled', false);
-                    dfsToggleDisabledState(seatAvailabilityInterfaceParent, true, P5_OPACITY)
+                    seatAvailabilityInterfaceParent.disableElement()
+
 
                     // Clear status message divs
                     statusMessageDiv.html('');
@@ -226,9 +282,19 @@
         <div class="mb-3" id="latlngMessage"></div>
         <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
-                <button type="button" class="btn btn-success btn-lg" data-color="green">3+</button>
-                <button type="button" class="btn btn-warning btn-lg" data-color="yellow">< 3</button>
-                <button type="button" class="btn btn-danger btn-lg" data-color="red">None</button>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-success btn-lg open-seat-button" data-color="green">3+</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-warning btn-lg open-seat-button" data-color="yellow">< 3</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-danger btn-lg open-seat-button-but-bigger" data-color="red">None</button>
+                </div>
+            </div>
         </div>
     </div>
 
