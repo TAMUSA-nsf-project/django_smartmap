@@ -434,7 +434,7 @@ function initMap() {
     right = new google.maps.Polyline({
         strokeColor: "#000000",
         strokeOpacity: 1,
-        strokeWeight: 5,
+        strokeWeight: 3,
     });
 
 

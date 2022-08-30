@@ -9,6 +9,7 @@ env.read_env(env_file=os.path.join(BASE_DIR, "env", "local.env"))
 SECRET_KEY = os.getenv("SECRET_KEY", "NoxUmTUaQ7BvTPxIlKaQTTQvHS3aQBO3aV5zBKqrHuP6gZyyYZ")
 
 INSTALLED_APPS += ['sslserver']
+ALLOWED_HOSTS = ['*']
 
 # Database
 DATABASES = {
