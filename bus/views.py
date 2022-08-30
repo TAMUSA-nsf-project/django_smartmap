@@ -6,7 +6,6 @@ from .distancematrixcalcs import calc_duration
 from datetime import datetime
 
 import pytz
-from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, HttpResponse
 
