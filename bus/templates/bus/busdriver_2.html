@@ -9,24 +9,20 @@
     <!-- CSS for the bus driver buttons -->
     <style nonce="{{request.csp_nonce}}">
 
-        .open-seat-button
-        {
-            padding-bottom: 20%;
-            padding-top: 20%;
+        .open-seats-btn-group > .btn {
+            padding-bottom: 40px;
+            padding-top: 40px;
         }
 
-        .open-seat-button-but-bigger
+        .no-seats-btn
         {
-            margin-top: 3%;
-            padding-bottom: 7%;
-            padding-top: 7%;
-        }
-
-        .open-seat-button, .open-seat-button-but-bigger {
-            display: flex;
+            margin-top: 10px;
+            padding-bottom: 20px;
+            padding-top: 20px;
             width: 100%;
-            justify-content: center;
-            align-items: center;
+        }
+
+        .no-seats-btn, .open-seats-btn-group > .btn {
             font-size: xxx-large;
             font-weight: bold;
         }
@@ -87,7 +83,7 @@
         $(document).ready(function () {
 
             // setup button on-click behavior (send data to server via ajax)
-            $('.btn').each(function () {
+            $('.seat-availability-btn').each(function () {
                 $(this).on("click", function () {
                     const toSend = {choice: $(this).data('color')}
                     jQuery.ajax({
@@ -283,16 +279,14 @@
         <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
             <div class="row">
-                <div class="col">
-                    <button type="button" class="btn btn-success btn-lg open-seat-button" data-color="green">3+</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-warning btn-lg open-seat-button" data-color="yellow">< 3</button>
+                <div class="btn-group btn-group-lg open-seats-btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button type="button" class="btn btn-success seat-availability-btn" data-color="green">3+</button>
+                  <button type="button" class="btn btn-warning seat-availability-btn" data-color="yellow"><3</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-danger btn-lg open-seat-button-but-bigger" data-color="red">None</button>
+                    <button type="button" class="btn btn-danger btn-lg no-seats-btn seat-availability-btn" data-color="red">None</button>
                 </div>
             </div>
         </div>
