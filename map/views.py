@@ -40,17 +40,21 @@ def getRouteDetailsAJAX(request):
 
 
 def getBusColorDescriptionAJAX(request):
+    static_base_url = settings.STATIC_URL
+    if settings.DEBUG:
+        static_base_url = request.build_absolute_uri('/')[:-1].strip("/") + '/static/'
+
     result = [
         {
-            'icon': f'{settings.STATIC_URL}map/icons/red_bus.png',
+            'icon': f'{static_base_url}map/icons/red_bus.png',
             'description': "No Seats Available"
         },
         {
-            'icon': f'{settings.STATIC_URL}map/icons/yellow_bus.png',
+            'icon': f'{static_base_url}map/icons/yellow_bus.png',
             'description': "Less than 3 seats Available"
         },
         {
-            'icon': f'{settings.STATIC_URL}map/icons/green_bus.png',
+            'icon': f'{static_base_url}map/icons/green_bus.png',
             'description': "More than 3 seats Available"
         }
     ]

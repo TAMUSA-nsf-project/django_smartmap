@@ -399,9 +399,6 @@ function initRouteMarkers(route_id) {
 
 }
 
-function getBaseUrl() {
-    return window.location.origin;
-}
 
 /**
  * Initializes embedded google map. Passed to google maps API via script tag in map_index.html.
@@ -456,7 +453,7 @@ function initMap() {
             var legend = document.getElementById('legendContent');
             data.forEach((item) => {
                 var div = document.createElement('div');
-                div.innerHTML = '<img src="' + getBaseUrl() + item.icon + '"> ' + item.description;
+                div.innerHTML = '<img src="' + item.icon + '"> ' + item.description;
                 legend.appendChild(div);
             })
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push
