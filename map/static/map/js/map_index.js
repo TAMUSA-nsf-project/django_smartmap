@@ -236,7 +236,7 @@ class BusStop {
             'calc_schedule': this.scheduled_arrival === defaultTimeString ? 1 : 0
         }
         jQuery.ajax({
-            url: AJAX_EST_ARRIVAL_URL, //TODO setup url
+            url: AJAX_URL_EST_ARRIVAL,
             data: {'data': JSON.stringify(toSend)},
             // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
             // server-side, hence the object defined here
@@ -374,7 +374,7 @@ setInterval(function () {
 function initRouteMarkers(route_id) {
     return new Promise((resolve, reject) => {
             jQuery.ajax({
-                url: ROUTE_DETAILS,
+                url: AJAX_URL_ROUTE_DETAILS,
                 data: {'data': JSON.stringify(route_id)},
                 type: "GET",
                 dataType: 'json',
@@ -437,14 +437,29 @@ function initMap() {
         strokeWeight: 3,
     });
 
-
-
-
     // Create the div to hold the route-selection dropdown.
     const routeDropdownDiv = RouteDropdown(map);
 
     // Push control divs to the map.
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(routeDropdownDiv)
+
+    jQuery.ajax({
+        url: AJAX_URL_BUS_OCCUPANCY_STATUS,
+        type: "GET",
+        dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
+        success: (data) => {
+            console.log(data)
+
+            var legend = document.getElementById('legendContent');
+            data.forEach((item) => {
+                var div = document.createElement('div');
+                div.innerHTML = '<img src="' + item.icon + '"> ' + item.description;
+                legend.appendChild(div);
+            })
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push
+            (document.getElementById('legend'));
+        },
+    });
 }
 
 window.initMap = initMap;
