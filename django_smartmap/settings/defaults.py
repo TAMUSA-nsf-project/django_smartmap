@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'bus',
     'users',
     'commons',
+    'communications',
+    'phonenumber_field',
 
     # Django default apps
     'django.contrib.admin',
@@ -118,6 +120,8 @@ Logins
 """
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'main:index'  # needed to get the currently used login page to work
+
+PHONENUMBER_DEFAULT_REGION = "US"
 
 """
 Security
