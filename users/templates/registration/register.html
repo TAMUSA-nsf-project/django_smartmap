@@ -1,33 +1,99 @@
 {% extends "main/base.html" %}
-
+{% load static %}
 {% block extend_head %}
-    <style nonce="{{request.csp_nonce}}">
+    <link href="{% static 'users/css/style.css' %}" nonce="{{ request.csp_nonce }}" rel="stylesheet"/>
+    <style nonce="{{ request.csp_nonce }}">
         #wrapper {
-            height: 100%;
-            display: flex;
-            justify-content: left;
-            align-items: center;
+            background-image: url("{% static 'main/img/background_image.jpeg' %}");
         }
-
-        .errorlist { /* this actually works despite pycharm not seeing what it's linked to */
-            color: red;
-        }
-
     </style>
 {% endblock %}
 
 
 {% block content %}
-    <div id="wrapper" class="container">
+    {#        <div id="wrapper" class="container">#}
+    {#            <div class="container">#}
+    {#                <div class="row">#}
+    {#                    <form method="post" action="{% url 'users:register' %}">#}
+    {#                        {% csrf_token %}#}
+    {#                        {{ form.as_p }}#}
+    {#                        <button name="submit">Register</button>#}
+    {#                        <input type="hidden" name="next" value="{% url 'main:index' %}">#}
+    {#                    </form>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    <div id="wrapper">
         <div class="container">
             <div class="row">
-                <form method="post" action="{% url 'users:register' %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button name="submit">Register</button>
-                    <input type="hidden" name="next" value="{% url 'main:index' %}">
-                </form>
+                <section class="form-02-main">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="inner-white-box">
+                                    <div class="form-03-main">
+                                        <div class="logo">
+                                            <img src="{% static 'users/images/user.png' %}">
+                                        </div>
+                                        <form method="post" action="{% url 'users:register' %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <input type="text" id="form.id_username" class="form-control _ge_de_ol"
+                                                       name="{{ form.username.html_name }}" placeholder="Username"
+                                                       required autofocus>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="email" id="form.id_email" class="form-control _ge_de_ol"
+                                                       name="{{ form.email.html_name }}" placeholder="Email Address"
+                                                       required autofocus>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="password" id="form.id_password2"
+                                                       class="form-control _ge_de_ol" placeholder="Password" required
+                                                       name="{{ form.password1.html_name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" id="form.id_password1"
+                                                       class="form-control _ge_de_ol" placeholder="Confirm Password"
+                                                       required
+                                                       name="{{ form.password2.html_name }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="text" id="form.id_phone"
+                                                       class="form-control _ge_de_ol" placeholder="Enter Phone Number"
+                                                       required
+                                                       name="{{ form.id_phone.html_name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="form.id_is_driver"
+                                                       value="1"
+                                                       required
+                                                       name="{{ form.is_driver.html_name }}">
+                                                <label for="form.id_is_driver">{{ form.is_driver.label }}</label>
+                                            </div>
+                                            <div class="error-list">
+                                                {% for error in form.errors %}
+                                                    <p style="color: red">{{ error }}</p>
+                                                {% endfor %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="btn_submit" type="submit">Register</button>
+                                                <input type="hidden" name="next" value="{{ next }}">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
+
         </div>
+
     </div>
 {% endblock content %}

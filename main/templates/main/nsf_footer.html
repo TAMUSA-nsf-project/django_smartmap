@@ -1,9 +1,18 @@
 {% load static %}
+{% block extend_head %}
+<style nonce="{{request.csp_nonce}}">
+@media screen and (max-width: 600px) {
+        #nsf-log {
+                display: none;
+        }
+}
+    </style>
+{% endblock %}
 <footer class="bg-dark">
     <!-- Grid container -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-auto">
+            <div class="col-sm-auto" id="nsf-log">
                 <img class="img-fluid" src="{% static 'main/img/NSF100.png' %}" alt="NSF logo" style="width: 60px">
             </div>
             <div class="col">
