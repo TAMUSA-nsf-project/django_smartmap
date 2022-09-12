@@ -10,3 +10,4 @@ google-cloud-secret-manager==2.6.0
 django-storages[google]==1.11.1
 django-csp==3.6
 pytz==2022.2.1
+django-phonenumber-field[phonenumberslite]==7.0.0

@@ -11,18 +11,6 @@
 
 
 {% block content %}
-    {#        <div id="wrapper" class="container">#}
-    {#            <div class="container">#}
-    {#                <div class="row">#}
-    {#                    <form method="post" action="{% url 'users:register' %}">#}
-    {#                        {% csrf_token %}#}
-    {#                        {{ form.as_p }}#}
-    {#                        <button name="submit">Register</button>#}
-    {#                        <input type="hidden" name="next" value="{% url 'main:index' %}">#}
-    {#                    </form>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
     <div id="wrapper">
         <div class="container">
             <div class="row">
@@ -32,9 +20,10 @@
                             <div class="col-md-12">
                                 <div class="inner-white-box">
                                     <div class="form-03-main">
-                                        <div class="logo">
-                                            <img src="{% static 'users/images/user.png' %}">
-                                        </div>
+{#                                        <div class="logo">#}
+{#                                            <img src="{% static 'users/images/user.png' %}">#}
+{#                                        </div>#}
+
                                         <form method="post" action="{% url 'users:register' %}">
                                             {% csrf_token %}
                                             <div class="form-group">
@@ -50,27 +39,26 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="password" id="form.id_password2"
+                                                <input type="password" id="form.id_password1"
                                                        class="form-control _ge_de_ol" placeholder="Password" required
                                                        name="{{ form.password1.html_name }}">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" id="form.id_password1"
+                                                <input type="password" id="form.id_password2"
                                                        class="form-control _ge_de_ol" placeholder="Confirm Password"
                                                        required
                                                        name="{{ form.password2.html_name }}">
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="text" id="form.id_phone"
+{#                                                <input type="tel" name="phone_number" required id="id_phone_number"#}
+                                                <input type="tel" id="form.id_phone_number"
                                                        class="form-control _ge_de_ol" placeholder="Enter Phone Number"
-                                                       required
-                                                       name="{{ form.id_phone.html_name }}">
+                                                       name="{{ form.phone_number.html_name }}">
                                             </div>
                                             <div class="form-group">
                                                 <input type="checkbox" id="form.id_is_driver"
                                                        value="1"
-                                                       required
                                                        name="{{ form.is_driver.html_name }}">
                                                 <label for="form.id_is_driver">{{ form.is_driver.label }}</label>
                                             </div>
