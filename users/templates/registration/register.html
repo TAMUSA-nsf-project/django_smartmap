@@ -23,7 +23,18 @@
             <div class="row">
                 <form method="post" action="{% url 'users:register' %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <div class="mb-3">
+                        {{ user_form.username.label_tag }} {{ user_form.username }}
+                    </div>
+                    <div class="mb-3">
+                        {{ profile_form.phone.label_tag }} {{ profile_form.phone }}
+                    </div>
+                    <div class="mb-3">
+                        {{ user_form.password1.label_tag }} {{ user_form.password1 }}
+                    </div>
+                    <div class="mb-3">
+                        {{ user_form.password2.label_tag }} {{ user_form.password2 }}
+                    </div>
                     <button name="submit">Register</button>
                     <input type="hidden" name="next" value="{% url 'main:index' %}">
                 </form>
