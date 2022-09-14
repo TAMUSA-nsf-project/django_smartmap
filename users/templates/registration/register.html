@@ -37,7 +37,15 @@
                                                     </ul>
                                                 </small>
                                             </div>
-
+                                            <div class="form-group">
+                                                <div class="errorlist"><p>{{ form.errors.phone_number }}</p></div>
+                                                <input type="tel" id="form.id_phone_number"
+                                                       class="form-control" placeholder="Enter Phone Number"
+                                                        {% if form.phone_number.value is not None and not form.errors.phone_number %}
+                                                       value="{{ form.phone_number.value }}"
+                                                        {% endif %}
+                                                       name="{{ form.phone_number.html_name }}">
+                                            </div>
                                             <div class="form-group">
                                                 <input type="email" id="{{ form.email.id_for_label }}"
                                                        class="form-control"
@@ -68,16 +76,6 @@
                                                        value="{{ form.password2.value }}"
                                                         {% endif %}
                                                        name="{{ form.password2.html_name }}">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="errorlist"><p>{{ form.errors.phone_number }}</p></div>
-                                                <input type="tel" id="form.id_phone_number"
-                                                       class="form-control" placeholder="Enter Phone Number"
-                                                        {% if form.phone_number.value is not None and not form.errors.phone_number %}
-                                                       value="{{ form.phone_number.value }}"
-                                                        {% endif %}
-                                                       name="{{ form.phone_number.html_name }}">
                                             </div>
                                             <div class="form-group">
                                                 <div class="errorlist"><p>{{ form.errors.is_driver }}</p></div>
