@@ -1,0 +1,92 @@
+
+#wrapper {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.form-02-main {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.inner-white-box {
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 40px 0px;
+    position: relative;
+
+}
+
+.form-03-main {
+    width: 75%;
+    display: block;
+    margin: 10px auto;
+    padding: 10px 25px 10px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    z-index: 9;
+}
+
+.logo {
+    display: block;
+    margin: 20px auto;
+    width: 100px;
+    height: 100px;
+}
+
+.form-group {
+    padding: 5px 0px;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.form-control {
+    min-height: 45px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #2b3990;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn_submit {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 0px;
+    background: #2b3990;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+}
+
+.errorlist{
+    color: #8b0000;
+}
+
+@media screen and (max-width: 600px) {
+  .form-03-main{
+    width: 100%;
+  }
+}

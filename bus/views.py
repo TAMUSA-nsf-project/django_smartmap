@@ -1,18 +1,16 @@
 import ast
 import datetime
 import json
-from datetime import timedelta
-from .distancematrixcalcs import calc_duration
 from datetime import datetime
+from datetime import timedelta
 
 import pytz
-from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, HttpResponse
 
 import commons.helper
+from .distancematrixcalcs import calc_duration
 from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry, BusSchedule
-
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
