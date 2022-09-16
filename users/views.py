@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .custom_forms import SignUpForm
 
-
 # Create your views here.
 from .models import Profile
 
@@ -16,18 +15,14 @@ def register(request):
         # Process completed form
         form = SignUpForm(data=request.POST)
         if form.is_valid():
-            # Get phone number
-            phone = form.cleaned_data.get('phone_number')
-            isDriver = form.cleaned_data.get('is_driver')
-
-            # Save new user to db, post_save signal creates Profile instance
             new_user = form.save()
 
-            # # Get Profile instance
-            new_profile = Profile.objects.get(user=new_user)
-            new_profile.phone_number = phone
-            new_profile.is_driver = isDriver
-            new_profile.save()
+            # Get Profile instance
+            user_profile = Profile.objects.get(user=new_user)
+            user_profile.phone = form.cleaned_data.get('phone_number')
+            user_profile.is_driver = form.cleaned_data.get('is_driver')
+            user_profile.save()
+
             # Log the user in and redirect to home page
             login(request, new_user)
             return redirect('main:index')

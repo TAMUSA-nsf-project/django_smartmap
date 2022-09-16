@@ -12,6 +12,7 @@ class UsersConfig(AppConfig):
     def ready(self):
         # print("Connecting post_migrate signal for superuser creation.")
         post_migrate.connect(CreateSuperUserIfNotExist, sender=self, weak=False)
+        import users.signals
 
 
 def CreateSuperUserIfNotExist(sender, **kwargs):
