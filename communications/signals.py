@@ -32,5 +32,5 @@ def send_announcement_as_sms(sender, instance, created, **kwargs):
                 to=str(profile.phone)
             )
 
-        if profiles_with_phone:
+        if settings.DEBUG and profiles_with_phone:
             print(f"announcement sent via SMS: '{instance}'")
