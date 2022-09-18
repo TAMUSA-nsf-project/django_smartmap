@@ -1,33 +1,104 @@
 {% extends "main/base.html" %}
-
+{% load static %}
 {% block extend_head %}
-    <style nonce="{{request.csp_nonce}}">
+    <link href="{% static 'users/css/style.css' %}" nonce="{{ request.csp_nonce }}" rel="stylesheet"/>
+    <style nonce="{{ request.csp_nonce }}">
         #wrapper {
-            height: 100%;
-            display: flex;
-            justify-content: left;
-            align-items: center;
+            background-image: url("{% static 'main/img/background_image.jpeg' %}");
         }
-
-        .errorlist { /* this actually works despite pycharm not seeing what it's linked to */
-            color: red;
-        }
-
     </style>
 {% endblock %}
 
 
 {% block content %}
-    <div id="wrapper" class="container">
+    <div id="wrapper">
         <div class="container">
             <div class="row">
-                <form method="post" action="{% url 'users:register' %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button name="submit">Register</button>
-                    <input type="hidden" name="next" value="{% url 'main:index' %}">
-                </form>
+                <section class="form-02-main">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="inner-white-box">
+                                    <div class="form-03-main">
+                                        <form method="post" action="{% url 'users:register' %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <div class="errorlist"><p>{{ form.errors.username }}</p></div>
+                                                <input type="text" id="{{ form.username.id_for_label }}"
+                                                       class="form-control"
+                                                       name="{{ form.username.html_name }}" placeholder="{{ form.username.label }}"
+                                                        {% if form.username.value is not None and not form.errors.username %}
+                                                       value="{{ form.username.value }}"
+                                                        {% endif %}
+                                                       required autofocus>
+                                                <small>
+                                                    <ul>
+                                                        <li>{{ form.username.help_text }}</li>
+                                                    </ul>
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="errorlist"><p>{{ form.errors.phone_number }}</p></div>
+                                                <input type="tel" id="form.id_phone_number"
+                                                       class="form-control" placeholder="{{ form.phone_number.label }}"
+                                                        {% if form.phone_number.value is not None and not form.errors.phone_number %}
+                                                       value="{{ form.phone_number.value }}"
+                                                        {% endif %}
+                                                       name="{{ form.phone_number.html_name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="email" id="{{ form.email.id_for_label }}"
+                                                       class="form-control"
+                                                       name="{{ form.email.html_name }}" placeholder="{{ form.email.label }}"
+                                                        {% if form.email.value is not None and not form.errors.email %}
+                                                       value="{{ form.email.value }}"
+                                                        {% endif %}
+
+                                                       required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="password" id="{{ form.password1.id_for_label }}"
+                                                       class="form-control" placeholder="{{ form.password1.label }}" required
+                                                        {% if form.password1.value is not None and not form.errors.password1 %}
+                                                       value="{{ form.password1.value }}"
+                                                        {% endif %}
+
+                                                       name="{{ form.password1.html_name }}">
+                                                <small>{{ form.password1.help_text }}</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="errorlist"><p>{{ form.errors.password2 }}</p></div>
+                                                <input type="password" id="{{ form.password2.id_for_label }}"
+                                                       class="form-control" placeholder="{{ form.password2.label }}"
+                                                       required
+                                                        {% if form.password2.value is not None and not form.errors.password2 %}
+                                                       value="{{ form.password2.value }}"
+                                                        {% endif %}
+                                                       name="{{ form.password2.html_name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="errorlist"><p>{{ form.errors.is_driver }}</p></div>
+                                                <input type="checkbox" id="form.id_is_driver"
+                                                       value="0"
+                                                       name="{{ form.is_driver.html_name }}">
+                                                <label for="form.id_is_driver">{{ form.is_driver.label }}</label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="btn_submit" type="submit">Register</button>
+                                                <input type="hidden" name="next" value="{{ next }}">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
+
         </div>
+
     </div>
 {% endblock content %}
