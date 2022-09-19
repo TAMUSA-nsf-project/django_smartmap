@@ -533,6 +533,8 @@ function updateBusMarkers(data) {
             map: map,
             title: busID,
             icon: busIcon,
+            optimized: false,
+            zIndex: 99999999
         })
 
         busMarkers.push(sidMarker);
