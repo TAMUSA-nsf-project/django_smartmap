@@ -69,3 +69,10 @@ GOOGLE_MAP_API_KEY = env("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
 GOOGLE_PYTHON_API_KEY = env("GOOGLE_PYTHON_API_KEY")
+
+
+"""
+TWILIO API KEYS
+"""
+TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")
