@@ -68,7 +68,7 @@ function RouteDropdown(map) {
         // define the button's onclick behavior
         li_button.onclick = () => {
             button.innerHTML = ALL_ACTIVE_ROUTES[key];
-            RefreshRouteMarkers(key);
+            refreshBusRouteElements(key);
         }
 
         li.appendChild(li_button);
@@ -81,9 +81,9 @@ function RouteDropdown(map) {
 
 
 /**
- * Initializes the given mapRouteMarkers object that will contain google.maps.Marker instances.
+ * Hides bus route markers, polyline, gets (either from cache or server) and displays new bus route markers
  */
-async function RefreshRouteMarkers(route) {
+async function refreshBusRouteElements(route) {
 
     // Check whether the route is already cached
     if (!mapRouteMarkers[route]) {
