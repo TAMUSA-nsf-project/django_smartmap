@@ -68,19 +68,7 @@ function RouteDropdown(map) {
         // define the button's onclick behavior
         li_button.onclick = () => {
             button.innerHTML = ALL_ACTIVE_ROUTES[key];
-            // Check whether the route is already cached
-            if (mapRouteMarkers[key]) {
-                hideDisplayedMarkers()
-                showRouteMarkers(key)
-                getActiveBussesOnSelectedRoute()
-            } else {
-                initRouteMarkers(key).then((res) => {
-                    hideDisplayedMarkers()
-                    showRouteMarkers(key)
-                    getActiveBussesOnSelectedRoute()
-                });
-            }
-
+            RefreshRouteMarkers(key);
         }
 
         li.appendChild(li_button);
@@ -91,11 +79,48 @@ function RouteDropdown(map) {
 }
 
 
+
+/**
+ * Initializes the given mapRouteMarkers object that will contain google.maps.Marker instances.
+ */
+async function RefreshRouteMarkers(route) {
+
+    // Check whether the route is already cached
+    if (!mapRouteMarkers[route]) {
+
+        // Await data from server before continuing
+        await jQuery.ajax({
+            url: AJAX_URL_ROUTE_DETAILS,
+            data: {'data': JSON.stringify(route)},
+            type: "GET",
+            dataType: 'json',
+            success: (data) => {
+                if (data) {
+                    // console.log(data)
+                    mapRouteMarkers[route] = []
+                    data.all_stops.forEach((busStop) => {
+                        mapRouteMarkers[route].push(new BusStop(busStop));
+                    })
+                } else
+                    console.log("No stops found for the given route.")
+            },
+            error: (e) => {
+                console.log(e.message)
+            }
+        });
+
+    }
+
+    hideDisplayedMarkers()
+    showRouteMarkers(route)
+    getActiveBussesOnSelectedRoute()
+
+}
+
 /**
  * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
  */
-function showRouteMarkers(route /*string*/) {
-    route = parseInt(route)
+async function showRouteMarkers(route /*string*/) {
 
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
@@ -325,36 +350,7 @@ setInterval(function () {
 }, 10000);
 
 
-/**
- * Initializes the given mapRouteMarkers object that will contain google.maps.Marker instances.
- */
-function initRouteMarkers(route_id) {
-    return new Promise((resolve, reject) => {
-            jQuery.ajax({
-                url: AJAX_URL_ROUTE_DETAILS,
-                data: {'data': JSON.stringify(route_id)},
-                type: "GET",
-                dataType: 'json',
-                success: (data) => {
-                    if (data) {
-                        // console.log(data)
-                        mapRouteMarkers[route_id] = []
-                        data.all_stops.forEach((busStop) => {
-                            mapRouteMarkers[route_id].push(new BusStop(busStop));
-                        })
-                    } else
-                        console.log("No stops found for the given route.")
-                    resolve("Resolved")
-                },
-                error: (e) => {
-                    console.log(e.message)
-                    reject("rejected")
-                }
-            });
-        }
-    )
 
-}
 
 
 /**
