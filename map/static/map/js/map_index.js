@@ -508,32 +508,29 @@ async function DrawRoutePolyline(route) {
     // Check whether the route is already cached
     if (!mapRoutePolylinePaths[route]) {
 
-        // Create a Promise for fetching the polyline encoding from the server
-        let promise = new Promise(function (resolve) {
-            const toSend = {'route': route}
-            jQuery.ajax({
-                url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
-                data: {'data': JSON.stringify(toSend)},
-                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                // server-side, hence the object defined here
-                type: "GET",
-                dataType: 'json',  // data returned by server is json in this case
-                success: (data) => {
-                    // Cache the path
-                    mapRoutePolylinePaths[route] = {}
+        const toSend = {'route': route}
 
-                    mapRoutePolylinePaths[route]['polyline'] = {}
-                    mapRoutePolylinePaths[route]['polyline'] = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
+        // Ensure "await" is in front of ajax call, data must be received back from server before continuing
+        await jQuery.ajax({
+            url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                // Cache the path
+                mapRoutePolylinePaths[route] = {}
 
-                    mapRoutePolylinePaths[route]['bounds'] = {}
-                    mapRoutePolylinePaths[route]['bounds'] = data.polyline_bounds
-                    resolve("Resolved");  // Lets await call know it can continue
-                },
-            });
-        })
+                mapRoutePolylinePaths[route]['polyline'] = {}
+                mapRoutePolylinePaths[route]['polyline'] = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
 
-        // Wait for the data to come back from the server
-        await promise;  // waits for a resolve to be executed within this Promise instance
+                mapRoutePolylinePaths[route]['bounds'] = {}
+                mapRoutePolylinePaths[route]['bounds'] = data.polyline_bounds
+
+            },
+        });
+
     }
     // Clear the polylines from the previous route
     left.setMap(null)
