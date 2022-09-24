@@ -111,6 +111,7 @@ async function RefreshRouteMarkers(route) {
 
     }
 
+    hideBusRoutePolyline()
     hideDisplayedMarkers()
     showRouteMarkers(route)
     getActiveBussesOnSelectedRoute()
@@ -139,6 +140,14 @@ async function showRouteMarkers(route /*string*/) {
 
 }
 
+/**
+ * Hides polyline of entire bus route.
+ */
+function hideBusRoutePolyline() {
+    // Polyline
+    poly.setPath([]);
+}
+
 
 /**
  * Hides currently displayed markers by setting their map property to null.
@@ -155,8 +164,6 @@ function hideDisplayedMarkers() {
         // reset script var
         displayedRoute = ""
 
-        // Polyline
-        poly.setPath([]);
     }
 }
 
