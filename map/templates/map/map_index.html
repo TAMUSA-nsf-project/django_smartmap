@@ -28,38 +28,40 @@
     <!-- Front-end stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'map/css/map_drawer_interactions.css' %}" />
-    <script type="text/javascript" src="{% static 'map/js/map_drawer_interactions.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'map/css/map_sidenav.css' %}" />
+    <script type="text/javascript" src="{% static 'map/js/map_sidenav.js' %}"></script>
 
 {% endblock %}
 
 
 {% block content %}
-    <button id="MapDrawerRightOpenButton">Tools</button>
     <!--The div element for the mapindex -->
     <div id="map"></div>
-    <button id="MapLeftDrawerOpenButton" class="leftDrawerOpenButton">Routes</button>
-    <div id="MapDrawerBackdrop"></div>
-    <div class="MapDrawer" id="MapDrawerLeft">
-        <div class="leftDrawerHeader">
-			<strong><b>MySmartSa Routes</b></strong>
-			<button id="MapLeftDrawerCloseButton" class="leftDrawerCloseButton"><b><</b></button>
-		</div>
-		<div class="routeButtonsContainer">
-			<div class="routeButton" id="route_123"><h4><b>Route 51 Madla Transit Center ⟶ Navarro Opposite Villita</b></h4></div>
-			<div class="routeContent" id="route_123"></div>
-			<div class="routeButton" id="route_456"><h4><b>Route 52 Here ⟶ There</b></h4></div>
-			<div class="routeContent" id="route_456"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-			<div class="routeButton"></div>
-		</div>
+
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      Button with data-bs-target
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div>
+          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        </div>
+        <div class="dropdown mt-3">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!--
