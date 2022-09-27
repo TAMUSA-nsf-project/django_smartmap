@@ -18,3 +18,7 @@ def mobile_architecture_view(request):
 
 def security_privacy_view(request):
     return render(request, "main/security_privacy.html")
+
+
+def arrival_time_accuracy_research_view(request):
+    return render(request, "main/arrival_time_accuracy_research.html")

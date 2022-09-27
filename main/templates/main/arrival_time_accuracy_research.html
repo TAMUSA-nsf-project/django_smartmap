@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <style nonce="{{request.csp_nonce}}">
+        #content-main {
+            height: 100%;
+            color: black;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-main" class="container-fluid">
+        <div id="intro" class="bg-image shadow-2-strong">
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+                <div class="container-md p-3 mb-2 bg-white text-dark ">
+                   <br><h3 style="text-align: center; ">Arrival Time Accuracy Research</h3>
+                   <p> Providing accurate, real-time bus location information reduces riders’ wait times and thus the length of
+                    their daily commutes, leaving more time for vocational, educational, and leisure activities. Our SmartSAT
+                    mobile web app will track bus location using a combination of Google APIs, Google Live Transit Updates
+                    service, and bus Global Positioning System (GPS) to improve the prediction accuracy of bus arrival time.
+                  </p>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Proposed Work</h5>
+                            <p>Existing approaches use GPS to collect real time location information of a vehicle to
+                                predict public transport arrival times on bus stops. However, the evaluation of the proposed algorithm
+                                shows errors in predicted times. In addition, issues related to GPS outages and location errors have not
+                                been addressed. To address such issues, other approaches used the historical and real time location data to
+                                determine the current location of a bus and to predict arrival time at a bus-stop. Results,
+                                however, show mean error of 5 minutes in the arrival time prediction. To improve the arrival time
+                                accuracy, we will use information provided by Direction API and Distance Matrix API of Google Maps,
+                                Google's Live Transit Updates service, and Bus GPS to calculate bus travel times based on real-time
+                                traffic data to obtain accurate real-time traffic data, compute travel times and predict the arrival time at a
+                                bus-stop. Data analytics will then be used to assess the accuracy of the predicted arrival time by comparing
+                                it with the actual bus arrival time. The study will also assess the accuracy of the current scheduled time by
+                                comparing it with the actual bus arrival time. </p>
+                        </div>
+                    </div>
+                    <h5>Methodology</h5>
+                        <p> The primary outcome measure that will be used to evaluate our hypothesis is the arrival
+                            time prediction error (i.e., the difference between the actual and predicted bus arrival times). The outcome
+                            will be evaluated using multiple-trip data collected over the six VIA bus routes selected for this
+                            project. We will measure the mean error (difference in time) between the actual arrival time and the
+                            predicted one. Results will show the accuracy of predicted times, and whether this accuracy can be
+                            improved. If the accuracy is improved, we will determine the accuracy of the scheduled times and if they
+                            need to be changed.
+                        </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
