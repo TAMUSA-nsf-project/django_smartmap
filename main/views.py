@@ -28,4 +28,6 @@ def social_impact_research_view(request):
     return render(request, "main/social_impact.html")
 
 
+def management_dev_teams_view(request):
+    return render(request, "main/management_dev_teams.html")
 
