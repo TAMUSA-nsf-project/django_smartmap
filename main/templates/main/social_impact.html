@@ -1,0 +1,67 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <style nonce="{{request.csp_nonce}}">
+        #content-main {
+            height: 100%;
+            color: black;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-main" class="container-fluid">
+        <div class="container d-flex justify-content-center" style="color: black;">
+                <div class="row">
+
+                    <div class="col-md-5 align-self-center">
+                        <a href="https://tamusa.co1.qualtrics.com/jfe/form/SV_7WF9vwgK7BUyoxE">
+                            <style nonce="{{request.csp_nonce}}"> #survey-image{max-width: 100%;}</style>
+                            <img src="{% static 'main/img/qrcode_survey_interiorbusbg.png' %}" alt="Mobile Architecture" id="survey-image">
+                        </a>
+                    </div>
+
+                    <div class="col-md-7">
+
+                        <article class="container d-flex flex-column align-items-start justify-content-md-start"
+                            style="margin-bottom: 5%; margin-top: 5%;">
+                            <h3 style="text-align: center; ">Social Impact Research</h3>
+                            <!-- <article class="text-white mb-0"> -->
+                                <!-- <article class="text-white mb-0" style="background-color: rgba(51, 46, 112, 0.02);"> -->
+
+                                <p> In San Antonio, there is a significant digital divide separating much of the community's access to the internet, however, a significant portion of those who do
+                                    not have internet access in their homes do have access through their smart phones. Moreover, it's
+                                    through their smart phones that those in poverty access the internet and in San Antonio its these individuals
+                                    who represent a significant portion of ridership on VIA transit. Targeting these riders' experiences and likelihood to ride will be the primary
+                                    focus for understanding the importance of via buses in the lives of those living in poverty in San
+                                    Antonio. This application will provide a real-world impact on these communities by providing them with
+                                    updated data on arrivals, departures, and capacity of buses thus enabling efficient use of bus systems in
+                                    their daily lives. Ultimately enabling those who are poor greater access to previously difficult-to-access
+                                    parts of San Antonio. The reduction of barriers to spatial access by providing greater accuracy in
+                                    scheduling and other commuting data represents significant strides in the reduction of class and racial
+                                    inequalities overall. Those in poverty will not be the only users addressed as our project also aims to increase ridership across the city and hope to expand the
+                                    ridership among all socioeconomic strata and racial/ethnic demographics with increased reliability in data
+                                    for commuting. </p>
+
+                                <h5>Research Questions</h5>
+                                <p>(1) How do racial/ethnic and class stratified communities in San Antonio access buses?     </p>
+                                <p>(2) How will issues of race and class be reduced by the introduction of applications, such as SmartSAT,
+                                    aimed at clearer and more functional schedules for buses?</p>
+                                <p>(3) How will greater accuracy in bus arrival times and other transit information increase reliability for
+                                    riders? </p>
+                                <p>(4) What will this mean for the overall facilitation of greater equity and access throughout the city of
+                                    San Antonio? </p>
+
+                        </article>
+                </div>
+
+            </div>
+            </div>
+    </div>
+
+{% endblock %}
