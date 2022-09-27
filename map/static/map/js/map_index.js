@@ -111,6 +111,7 @@ async function refreshBusRouteElements(route) {
 
     }
 
+    // Hide currently displayed elements, show the new ones
     hideBusRoutePolyline()
     hideDisplayedMarkers()
     showRouteMarkers(route)
