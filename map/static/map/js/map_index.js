@@ -121,7 +121,7 @@ async function refreshBusRouteElements(route) {
 /**
  * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
  */
-async function showRouteMarkers(route /*string*/) {
+function showRouteMarkers(route /*string*/) {
 
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
