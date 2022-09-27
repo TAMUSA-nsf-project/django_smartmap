@@ -1,0 +1,74 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <style nonce="{{request.csp_nonce}}">
+        #content-main {
+            height: 100%;
+            color: black;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            justify-content: center;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-main" class="container-fluid">
+        <div id="intro" class="bg-image shadow-2-strong">
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+                <div class="container-md p-3 mb-2 bg-white text-dark ">
+                   <br><h3 style="text-align: center; ">Security Testing and Rider Privacy</h3>
+                   <p>Security testing for this project is based on threat
+                    models that candidate attackers may use to
+                    interrupt the application and its functions.
+                    We will consider all types of attacks and
+                    build security testing experiments
+                    throughout the development of the
+                    SmartSAT app. The security team will
+                    develop an up-to-date threat model, conduct
+                    static analysis and a dependency check,
+                    setup a monthly SAST scan and configure a
+                    regularly scheduled dynamic scan. We will
+                    adopt different state of the assessment
+                    models and standards and conduct intrusive
+                    and non-intrusive security tests. We will use an agile test-driven approach to ensure the app's modules are
+                    thoroughly tested at each stage of development.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Security Testing</h5>
+                            <p>In every testing model, the following steps are involved: <br>
+                             (1) Testing security goals will be identified based on specific security target goals derived from security
+                                goals (e.g., Confidentiality, Integrity and Availability: CIA), threat models (e.g., Microsoft STRIDE
+                                threat model) or specific testing tools. <br>
+                            (2) Test cases will be generated, executed, and verified as to whether they pass or fail.<br>
+                            (3) After each test, security goals will be reevaluated. Cycles will be repeated until goals are met. <br>
+                            (4) We aim to eliminate all known vulnerabilities and have all test cases passed on their expected goals. </p>
+
+                        </div>
+                        <div class="col-md-6 align-self-center">
+                            <a href="{% static 'main/img/security_privacy_testing_flowdiagram.png' %}">
+                                <style nonce="{{request.csp_nonce}}"> #security_privacy_testing_flowdiagram{max-width: 100%;}</style>
+                                <img src="{% static 'main/img/security_privacy_testing_flowdiagram.png' %}" alt="Mobile Architecture" id="security_privacy_testing_flowdiagram">
+                            </a>
+                        </div>
+                    </div>
+                    <h5>Rider Data Protection and Authentication</h5>
+                            <p> Users data privacy and user authentication are very important for mobile/web applications. We will protect the user's private data by encryption and protecting the encryption keys using
+                                solutions like Web Crypto API, which provides cryptographic functions to JavaScript web apps. Also, we
+                                propose a lightweight crypto algorithm to secure private user data in the developed web application. In
+                                terms of the user's authentication, we will provide a multi-factor authentication process and force strong
+                                passwords usage, accruing to best practices.
+                            </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

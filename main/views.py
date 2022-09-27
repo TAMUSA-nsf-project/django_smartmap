@@ -14,3 +14,7 @@ def goals_objectives_view(request):
 
 def mobile_architecture_view(request):
     return render(request, "main/mobilearchitecture.html")
+
+
+def security_privacy_view(request):
+    return render(request, "main/security_privacy.html")
