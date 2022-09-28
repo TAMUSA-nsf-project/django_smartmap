@@ -11,49 +11,6 @@ const defaultTimeString = "TBD";
 let poly, left, right;
 let directionsService;
 
-/**
- * The CenterControl adds a control to the map that recenters the map on marker_coords
- * This constructor takes the control DIV as an argument.
- * 4 Aug 2022: no longer being displayed, TODO delete?
- */
-function CenterControl(map) {
-    // Create the DIV to hold the control and call the CenterControl()
-    // constructor passing in this DIV.
-    const controlDiv = document.createElement("div")
-
-
-    // Set CSS for the control border.
-    const controlUI = document.createElement("div");
-
-    controlUI.style.backgroundColor = "#fff";
-    controlUI.style.border = "2px solid #fff";
-    controlUI.style.borderRadius = "3px";
-    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-    controlUI.style.cursor = "pointer";
-    controlUI.style.marginTop = "8px";
-    controlUI.style.marginBottom = "22px";
-    controlUI.style.textAlign = "center";
-    controlUI.title = "Click to recenter the map";
-    controlDiv.appendChild(controlUI);
-
-    // Set CSS for the control interior.
-    const controlText = document.createElement("div");
-
-    controlText.style.color = "rgb(25,25,25)";
-    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-    controlText.style.fontSize = "16px";
-    controlText.style.lineHeight = "38px";
-    controlText.style.paddingLeft = "5px";
-    controlText.style.paddingRight = "5px";
-    controlText.innerHTML = "Center Map";
-    controlUI.appendChild(controlText);
-    // Setup the click event listeners: simply set the map to marker_coords.
-    controlUI.addEventListener("click", () => {
-        map.setCenter(MAP_CENTER);
-    });
-
-    return controlDiv;
-}
 
 function RouteDropdown(map) {
     /**
@@ -111,19 +68,7 @@ function RouteDropdown(map) {
         // define the button's onclick behavior
         li_button.onclick = () => {
             button.innerHTML = ALL_ACTIVE_ROUTES[key];
-            // Check whether the route is already cached
-            if (mapRouteMarkers[key]) {
-                hideDisplayedMarkers()
-                showRouteMarkers(key)
-                getActiveBussesOnSelectedRoute()
-            } else {
-                initRouteMarkers(key).then((res) => {
-                    hideDisplayedMarkers()
-                    showRouteMarkers(key)
-                    getActiveBussesOnSelectedRoute()
-                });
-            }
-
+            refreshBusRouteElements(key);
         }
 
         li.appendChild(li_button);
@@ -134,11 +79,50 @@ function RouteDropdown(map) {
 }
 
 
+
+/**
+ * Hides bus route markers, polyline, gets (either from cache or server) and displays new bus route markers
+ */
+async function refreshBusRouteElements(route) {
+
+    // Check whether the route is already cached
+    if (!mapRouteMarkers[route]) {
+
+        // Await data from server before continuing
+        await jQuery.ajax({
+            url: AJAX_URL_ROUTE_DETAILS,
+            data: {'data': JSON.stringify(route)},
+            type: "GET",
+            dataType: 'json',
+            success: (data) => {
+                if (data) {
+                    // console.log(data)
+                    mapRouteMarkers[route] = []
+                    data.all_stops.forEach((busStop) => {
+                        mapRouteMarkers[route].push(new BusStop(busStop));
+                    })
+                } else
+                    console.log("No stops found for the given route.")
+            },
+            error: (e) => {
+                console.log(e.message)
+            }
+        });
+
+    }
+
+    // Hide currently displayed elements, show the new ones
+    hideBusRoutePolyline()
+    hideDisplayedMarkers()
+    showRouteMarkers(route)
+    getActiveBussesOnSelectedRoute()
+
+}
+
 /**
  * Displays the markers of the user-selected route by setting their map property to the map var used in this script.
  */
 function showRouteMarkers(route /*string*/) {
-    route = parseInt(route)
 
     // bus_stop is a BusStop instance
     mapRouteMarkers[route].forEach(bus_stop => {
@@ -157,6 +141,14 @@ function showRouteMarkers(route /*string*/) {
 
 }
 
+/**
+ * Hides polyline of entire bus route.
+ */
+function hideBusRoutePolyline() {
+    // Polyline
+    poly.setPath([]);
+}
+
 
 /**
  * Hides currently displayed markers by setting their map property to null.
@@ -173,8 +165,6 @@ function hideDisplayedMarkers() {
         // reset script var
         displayedRoute = ""
 
-        // Polyline
-        poly.setPath([]);
     }
 }
 
@@ -368,36 +358,7 @@ setInterval(function () {
 }, 10000);
 
 
-/**
- * Initializes the given mapRouteMarkers object that will contain google.maps.Marker instances.
- */
-function initRouteMarkers(route_id) {
-    return new Promise((resolve, reject) => {
-            jQuery.ajax({
-                url: AJAX_URL_ROUTE_DETAILS,
-                data: {'data': JSON.stringify(route_id)},
-                type: "GET",
-                dataType: 'json',
-                success: (data) => {
-                    if (data) {
-                        // console.log(data)
-                        mapRouteMarkers[route_id] = []
-                        data.all_stops.forEach((busStop) => {
-                            mapRouteMarkers[route_id].push(new BusStop(busStop));
-                        })
-                    } else
-                        console.log("No stops found for the given route.")
-                    resolve("Resolved")
-                },
-                error: (e) => {
-                    console.log(e.message)
-                    reject("rejected")
-                }
-            });
-        }
-    )
 
-}
 
 
 /**
@@ -551,32 +512,29 @@ async function DrawRoutePolyline(route) {
     // Check whether the route is already cached
     if (!mapRoutePolylinePaths[route]) {
 
-        // Create a Promise for fetching the polyline encoding from the server
-        let promise = new Promise(function (resolve) {
-            const toSend = {'route': route}
-            jQuery.ajax({
-                url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
-                data: {'data': JSON.stringify(toSend)},
-                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                // server-side, hence the object defined here
-                type: "GET",
-                dataType: 'json',  // data returned by server is json in this case
-                success: (data) => {
-                    // Cache the path
-                    mapRoutePolylinePaths[route] = {}
+        const toSend = {'route': route}
 
-                    mapRoutePolylinePaths[route]['polyline'] = {}
-                    mapRoutePolylinePaths[route]['polyline'] = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
+        // Ensure "await" is in front of ajax call, data must be received back from server before continuing
+        await jQuery.ajax({
+            url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
+            data: {'data': JSON.stringify(toSend)},
+            // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+            // server-side, hence the object defined here
+            type: "GET",
+            dataType: 'json',  // data returned by server is json in this case
+            success: (data) => {
+                // Cache the path
+                mapRoutePolylinePaths[route] = {}
 
-                    mapRoutePolylinePaths[route]['bounds'] = {}
-                    mapRoutePolylinePaths[route]['bounds'] = data.polyline_bounds
-                    resolve("Resolved");  // Lets await call know it can continue
-                },
-            });
-        })
+                mapRoutePolylinePaths[route]['polyline'] = {}
+                mapRoutePolylinePaths[route]['polyline'] = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
 
-        // Wait for the data to come back from the server
-        await promise;  // waits for a resolve to be executed within this Promise instance
+                mapRoutePolylinePaths[route]['bounds'] = {}
+                mapRoutePolylinePaths[route]['bounds'] = data.polyline_bounds
+
+            },
+        });
+
     }
     // Clear the polylines from the previous route
     left.setMap(null)
