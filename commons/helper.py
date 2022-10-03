@@ -10,7 +10,7 @@ def getAllActiveRoutesDropDown():
     """
     allRoutes = {}
     for route in BusRoute.objects.filter(active=True).all():
-        allRoutes[route.pk] = f"{route.name}  {route.first_stop} → {route.last_stop}"
+        allRoutes[route.pk] = f"{route.getDisplayName()}  {route.first_stop} → {route.last_stop}"
     return allRoutes
 
 
