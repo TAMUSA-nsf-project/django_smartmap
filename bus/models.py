@@ -1,5 +1,5 @@
 import datetime
-
+import re
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -75,6 +75,16 @@ class BusRoute(models.Model):
     color_code = models.CharField(max_length=10, default=DEFAULT_COLOR_CODE)
     gmaps_polyline_encoding = models.TextField(default="")
     gmaps_polyline_bounds = models.CharField(default="", max_length=200)
+
+    def getDisplayName(self):
+        """
+        Because route names in the JSON file may contain undesirable text (like "(reverse)") for displaying in the UI,
+        this method is used to clean it up.
+        """
+        display_name = self.name
+        if "reverse" in display_name:
+            display_name = re.sub(r"\s*\(reverse\)", "", display_name)
+        return display_name
 
     def getGmapsDirectionsServiceResult(self):
         """
