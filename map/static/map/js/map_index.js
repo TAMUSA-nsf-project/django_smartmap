@@ -13,49 +13,11 @@ let directionsService;
 
 
 function RouteDropdown(map) {
-    /**
-     * This function creates and returns a div that contains a route-selection dropdown.
-     */
+    /* This function will Dynamically Add the available Route Options to the dropdown List.*/
+    const routeDropdown = document.getElementById("routeDropdown")
+    const button = document.getElementById("dropDownButton")
 
-    /*
-        The following html was copied from https://getbootstrap.com/docs/5.2/components/dropdowns/.
-        This was converted to javascript using the document.createElement method.
-     */
-    // <div id="route-dropdown" className="dropdown">
-    //     <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-    //             data-bs-toggle="dropdown" aria-expanded="false">
-    //         Dropdown button
-    //     </button>
-    //     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    //         <li><a className="dropdown-item" href="#">Action</a></li>
-    //         <li><a className="dropdown-item" href="#">Another action</a></li>
-    //         <li><a className="dropdown-item" href="#">Something else here</a></li>
-    //     </ul>
-    // </div>
-
-    const routeDropdown = document.createElement("div")
-
-    routeDropdown.id = "route-dropdown"
-    routeDropdown.className = "dropdown"
-    routeDropdown.style.marginTop = "10px";
-    routeDropdown.style.marginLeft = "10px";
-
-    const button = document.createElement("button")
-    button.className = "btn btn-secondary dropdown-toggle"
-    button.type = "button"
-    button.id = "dropdownMenuButton1"
-    button.setAttribute("data-bs-toggle", "dropdown")
-    button.setAttribute("aria-expanded", "false")
-    button.innerHTML = "Select Route"
-    routeDropdown.appendChild(button)
-
-    const listItems = document.createElement("ul")
-    listItems.className = "dropdown-menu"
-    listItems.setAttribute("aria-labelledby", "dropdownMenuButton1")
-    // listItems.innerHTML = '<li><a className="dropdown-item" href="#">Action</a></li>'
-
-    const arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
-
+    const dropdownControls = document.getElementById("dropDownControls")
     for (let key in ALL_ACTIVE_ROUTES) {
 
         const li = document.createElement('li');     // create li element.
@@ -67,14 +29,18 @@ function RouteDropdown(map) {
 
         // define the button's onclick behavior
         li_button.onclick = () => {
-            button.innerHTML = ALL_ACTIVE_ROUTES[key];
+            var buttonText = ALL_ACTIVE_ROUTES[key];
+            // if (window.matchMedia("(max-width: 400px)"))
+            // {
+            //     buttonText = "51";
+            // }
+            button.innerHTML = buttonText
             refreshBusRouteElements(key);
         }
 
         li.appendChild(li_button);
-        listItems.appendChild(li);     // append li to ul.
+        dropdownControls.appendChild(li);     // append li to ul.
     }
-    routeDropdown.appendChild(listItems)
     return routeDropdown;
 }
 
