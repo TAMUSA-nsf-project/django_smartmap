@@ -130,7 +130,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CSP_DEFAULT_SRC = ("'self'", '')
 
-CSP_STYLE_SRC = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css',  # 26 Sept 2022 - Changed from 5.2.0-beta1 to 5.2.1
+CSP_STYLE_SRC = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css',  # 26 Sept 2022 - Changed from 5.2.0-beta1 to 5.2.1 - Emmer
                  'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css',
                  'polyfill.io/v3/polyfill.min.js', 'fonts.googleapis.com',
                  'cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 'storage.googleapis.com')
