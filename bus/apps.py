@@ -14,6 +14,8 @@ std_color_codes = {
     "Route 660 (reverse)": "#9A2A99",
     "Route 672": "#9A2A99",
     "Route 672 (reverse)": "#9A2A99",
+    "Route 64": "#f28120",
+    "Route 64 (reverse)": "#f28120",
 }
 
 

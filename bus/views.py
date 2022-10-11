@@ -10,7 +10,7 @@ from django.shortcuts import render, HttpResponse
 
 import commons.helper
 from .distancematrixcalcs import calc_duration
-from .models import Bus, BusStop, BusRoute, TransitLog, TransitLogEntry, BusSchedule
+from .models import Bus, BusRouteDetails, BusRoute, TransitLog, TransitLogEntry, BusSchedule
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
@@ -75,7 +75,7 @@ def getEstimatedArrivalAJAX(request):
     # TODO filter BusRoute models
 
     # get BusStop instance
-    busStop = BusStop.objects.get(stop_id=int(user_selected_bus_stop))
+    busStop = BusRouteDetails.objects.get(parent_route=user_selected_route, bus_stop__stop_id=int(user_selected_bus_stop)).bus_stop
     busStopCoord = busStop.getCoordinates()
 
     # filter Bus models by route (for now)

@@ -1,0 +1,52 @@
+Stop Name,Stop Number,Order on Route,Lat,Lng,bus_route
+Northwest Vista College,83439,1,29.46990464,-98.70658862,Route 64
+Ellison Dr. & Wiseman Blvd.,84643,2,29.46752147,-98.70496495,Route 64
+Ellison Dr. Opp. Westover Link,84733,3,29.46594076,-98.70067573,Route 64
+Ellison Dr. & Westover Hills,16327,4,29.46173721,-98.69729615,Route 64
+Sea World Main Entrance,15333,5,29.45891606,-98.70068646,Route 64
+Ellison Opp. Vale Middle School,98857,6,29.45491773,-98.69515038,Route 64
+Military & Dugas,96553,7,29.44891996,-98.68755437,Route 64
+Military Dr & Hwy. 151 E. Acess Rd,57253,8,29.44977875,-98.68539613,Route 64
+Hwy. 151 E. Access Rd. & Classic,42563,9,29.44611296,-98.67759225,Route 64
+Hwy. 151 W. Acess Rd. & Hunt Lane,57243,10,29.44607506,-98.67111551,Route 64
+Potranco & TX 151 W. Access Rd.,47199,11,29.44357062,-98.66262853,Route 64
+Potranco & Richland Hills,72263,12,29.44471436,-98.65922398,Route 64
+Ingram & Richland Hills,72256,13,29.4424789,-98.65631199,Route 64
+Ingram & Midhurst,72246,14,29.44500008,-98.65301367,Route 64
+Potranco in Front of 8330,96243,15,29.44778643,-98.65157473,Route 64
+Potranco & Military,96233,16,29.44950443,-98.64709239,Route 64
+Military & Entrance to Walmart,72183,17,29.44447301,-98.6412545,Route 64
+Kel-Lac Transit Center,46473,18,29.40261724,-98.63196336,Route 64
+Kel-Lac Park & Ride,48499,19,29.40307596,-98.62309228,Route 64
+Santa Rosa & Nueva,97296,20,29.42323988,-98.49828646,Route 64
+Santa Rosa & Dolorosa,87996,21,29.42436451,-98.49809546,Route 64
+Dolorosa Opp. Plaza De Armas,88953,22,29.42427807,-98.49554228,Route 64
+Dolorosa & S. Main,89913,23,29.42420734,-98.49403563,Route 64
+Dolorosa & S. Main,89913,1,29.42434657,-98.49405305,Route 64 (reverse)
+Market & S. St. Mary's,89963,2,29.42405214,-98.49170282,Route 64 (reverse)
+Market & Presa,91223,3,29.423408,-98.48936692,Route 64 (reverse)
+Market & Alamo - 150 ft. West,91383,4,29.42314888,-98.4878963,Route 64 (reverse)
+Market/ Front of Convention Center,92453,5,29.42246383,-98.48589665,Route 64 (reverse)
+Hwy. 90W Access Rd. & Pinn Rd.,48379,6,29.40358461,-98.62445682,Route 64 (reverse)
+Kel-Lac Transit Center,46489,7,29.4026247,-98.63164783,Route 64 (reverse)
+Loop 410 S. Acc. Past Walmart Gas,72197,8,29.44138891,-98.64027293,Route 64 (reverse)
+Richland Hills & L410S Access Rd.,72199,9,29.44030254,-98.64196161,Route 64 (reverse)
+Richland Hills Opp De La Cruz Place,72219,10,29.44164976,-98.64403811,Route 64 (reverse)
+Richland Hills & Edenbridge,72239,11,29.44303309,-98.64685781,Route 64 (reverse)
+Richland Hills & Ingram,72259,12,29.44192792,-98.65560372,Route 64 (reverse)
+Potranco & Richland Hills,72269,13,29.44488657,-98.65933697,Route 64 (reverse)
+Potranco & Hwy. 151 Access Rd.,47199,14,29.44357247,-98.66257865,Route 64 (reverse)
+Hwy. 151 W. Access Rd. & Hunt Lane,57249,15,29.44716763,-98.67129832,Route 64 (reverse)
+Hwy 151 Access Rd btwn Hunt Ln & Rogers Rd,57219,16,29.44696364,-98.67626415,Route 64 (reverse)
+Hwy. 151 w Access Rd. & Military Dr,57259,17,29.44883748,-98.68266962,Route 64 (reverse)
+Military Dr & Hwy 151 E Access Rd,57289,18,29.44943307,-98.68628879,Route 64 (reverse)
+Military Dr. W. & Ellison Dr.,38869,19,29.44901065,-98.69005885,Route 64 (reverse)
+Military Opposite Seascape,96539,20,29.44923263,-98.69542245,Route 64 (reverse)
+Military Between Seascape & Bobcat Pass,96529,21,29.44836269,-98.70052981,Route 64 (reverse)
+Military at Employee Ent. to Sea.,96509,22,29.44860352,-98.70408226,Route 64 (reverse)
+Military & Rousseau,96479,23,29.44811255,-98.70726262,Route 64 (reverse)
+Northbound Loop 1604 & Military,96456,24,29.4488788,-98.71070613,Route 64 (reverse)
+Northbound Loop 1604 & Reed,96476,25,29.45962973,-98.71092874,Route 64 (reverse)
+Wiseman & Loop 1604,83963,26,29.46530832,-98.71024377,Route 64 (reverse)
+Wiseman Blvd. Opposite 4611,83973,27,29.46565252,-98.70689458,Route 64 (reverse)
+Northwest Vista College,83439,28,29.46993438,-98.70659804,Route 64 (reverse)
