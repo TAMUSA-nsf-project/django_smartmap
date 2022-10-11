@@ -49,6 +49,7 @@ class RouteSchedule:
         self.reverse = reverse
         self.file_prefix = route_name + "_" + day_of_week
         self.bus_stop_schedules = []
+        self.bus_stop_names = []
 
     def __repr__(self):
         return f"{self.route_name}, {self.day_of_week}"
@@ -75,6 +76,9 @@ class RouteSchedule:
         return x
 
     def addSchedule(self, bus_stop: BusStop, scheduled_times: List):
+        if bus_stop.name not in self.bus_stop_names:
+            self.bus_stop_names.append(bus_stop.name)
+
         self.bus_stop_schedules.append((bus_stop, scheduled_times))
 
     def getRouteSchedule(self):
