@@ -2254,5 +2254,417 @@
       "route": "Route 672 (reverse)",
       "Order on Route": 23
     }
+  ],
+  "Route 64": [
+    {
+      "Stop Name": "Northwest Vista College",
+      "Stop Number": "83439",
+      "Lat": 29.46990464,
+      "Lng": -98.70658862,
+      "route": "Route 64",
+      "Order on Route": "1"
+    },
+    {
+      "Stop Name": "Ellison Dr. & Wiseman Blvd.",
+      "Stop Number": "84643",
+      "Lat": 29.46752147,
+      "Lng": -98.70496495,
+      "route": "Route 64",
+      "Order on Route": "2"
+    },
+    {
+      "Stop Name": "Ellison Dr. Opp. Westover Link",
+      "Stop Number": "84733",
+      "Lat": 29.46594076,
+      "Lng": -98.70067573,
+      "route": "Route 64",
+      "Order on Route": "3"
+    },
+    {
+      "Stop Name": "Ellison Dr. & Westover Hills",
+      "Stop Number": "16327",
+      "Lat": 29.46173721,
+      "Lng": -98.69729615,
+      "route": "Route 64",
+      "Order on Route": "4"
+    },
+    {
+      "Stop Name": "Sea World Main Entrance",
+      "Stop Number": "15333",
+      "Lat": 29.45891606,
+      "Lng": -98.70068646,
+      "route": "Route 64",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "Ellison Opp. Vale Middle School",
+      "Stop Number": "98857",
+      "Lat": 29.45491773,
+      "Lng": -98.69515038,
+      "route": "Route 64",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "Military & Dugas",
+      "Stop Number": "96553",
+      "Lat": 29.44891996,
+      "Lng": -98.68755437,
+      "route": "Route 64",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "Military Dr & Hwy. 151 E. Acess Rd",
+      "Stop Number": "57253",
+      "Lat": 29.44977875,
+      "Lng": -98.68539613,
+      "route": "Route 64",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "Hwy. 151 E. Access Rd. & Classic",
+      "Stop Number": "42563",
+      "Lat": 29.44611296,
+      "Lng": -98.67759225,
+      "route": "Route 64",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "Hwy. 151 W. Acess Rd. & Hunt Lane",
+      "Stop Number": "57243",
+      "Lat": 29.44607506,
+      "Lng": -98.67111551,
+      "route": "Route 64",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "Potranco & TX 151 W. Access Rd.",
+      "Stop Number": "47199",
+      "Lat": 29.44357062,
+      "Lng": -98.66262853,
+      "route": "Route 64",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "Potranco & Richland Hills",
+      "Stop Number": "72263",
+      "Lat": 29.44471436,
+      "Lng": -98.65922398,
+      "route": "Route 64",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "Ingram & Richland Hills",
+      "Stop Number": "72256",
+      "Lat": 29.4424789,
+      "Lng": -98.65631199,
+      "route": "Route 64",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "Ingram & Midhurst",
+      "Stop Number": "72246",
+      "Lat": 29.44500008,
+      "Lng": -98.65301367,
+      "route": "Route 64",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "Potranco in Front of 8330",
+      "Stop Number": "96243",
+      "Lat": 29.44778643,
+      "Lng": -98.65157473,
+      "route": "Route 64",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "Potranco & Military",
+      "Stop Number": "96233",
+      "Lat": 29.44950443,
+      "Lng": -98.64709239,
+      "route": "Route 64",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "Military & Entrance to Walmart",
+      "Stop Number": "72183",
+      "Lat": 29.44447301,
+      "Lng": -98.6412545,
+      "route": "Route 64",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "Kel-Lac Transit Center",
+      "Stop Number": "46473",
+      "Lat": 29.40261724,
+      "Lng": -98.63196336,
+      "route": "Route 64",
+      "Order on Route": "18"
+    },
+    {
+      "Stop Name": "Kel-Lac Park & Ride",
+      "Stop Number": "48499",
+      "Lat": 29.40307596,
+      "Lng": -98.62309228,
+      "route": "Route 64",
+      "Order on Route": "19"
+    },
+    {
+      "Stop Name": "Santa Rosa & Nueva",
+      "Stop Number": "97296",
+      "Lat": 29.42323988,
+      "Lng": -98.49828646,
+      "route": "Route 64",
+      "Order on Route": "20"
+    },
+    {
+      "Stop Name": "Santa Rosa & Dolorosa",
+      "Stop Number": "87996",
+      "Lat": 29.42436451,
+      "Lng": -98.49809546,
+      "route": "Route 64",
+      "Order on Route": "21"
+    },
+    {
+      "Stop Name": "Dolorosa Opp. Plaza De Armas",
+      "Stop Number": "88953",
+      "Lat": 29.42427807,
+      "Lng": -98.49554228,
+      "route": "Route 64",
+      "Order on Route": "22"
+    },
+    {
+      "Stop Name": "Dolorosa & S. Main",
+      "Stop Number": "89913",
+      "Lat": 29.42420734,
+      "Lng": -98.49403563,
+      "route": "Route 64",
+      "Order on Route": "23"
+    }
+  ],
+  "Route 64 (reverse)": [
+    {
+      "Stop Name": "Dolorosa & S. Main",
+      "Stop Number": "89913",
+      "Lat": 29.42434657,
+      "Lng": -98.49405305,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "1"
+    },
+    {
+      "Stop Name": "Market & S. St. Mary's",
+      "Stop Number": "89963",
+      "Lat": 29.42405214,
+      "Lng": -98.49170282,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "2"
+    },
+    {
+      "Stop Name": "Market & Presa",
+      "Stop Number": "91223",
+      "Lat": 29.423408,
+      "Lng": -98.48936692,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "3"
+    },
+    {
+      "Stop Name": "Market & Alamo - 150 ft. West",
+      "Stop Number": "91383",
+      "Lat": 29.42314888,
+      "Lng": -98.4878963,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "4"
+    },
+    {
+      "Stop Name": "Market/ Front of Convention Center",
+      "Stop Number": "92453",
+      "Lat": 29.42246383,
+      "Lng": -98.48589665,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "Hwy. 90W Access Rd. & Pinn Rd.",
+      "Stop Number": "48379",
+      "Lat": 29.40358461,
+      "Lng": -98.62445682,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "Kel-Lac Transit Center",
+      "Stop Number": "46489",
+      "Lat": 29.4026247,
+      "Lng": -98.63164783,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "Loop 410 S. Acc. Past Walmart Gas",
+      "Stop Number": "72197",
+      "Lat": 29.44138891,
+      "Lng": -98.64027293,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "Richland Hills & L410S Access Rd.",
+      "Stop Number": "72199",
+      "Lat": 29.44030254,
+      "Lng": -98.64196161,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "Richland Hills Opp De La Cruz Place",
+      "Stop Number": "72219",
+      "Lat": 29.44164976,
+      "Lng": -98.64403811,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "Richland Hills & Edenbridge",
+      "Stop Number": "72239",
+      "Lat": 29.44303309,
+      "Lng": -98.64685781,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "Richland Hills & Ingram",
+      "Stop Number": "72259",
+      "Lat": 29.44192792,
+      "Lng": -98.65560372,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "Potranco & Richland Hills",
+      "Stop Number": "72269",
+      "Lat": 29.44488657,
+      "Lng": -98.65933697,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "Potranco & Hwy. 151 Access Rd.",
+      "Stop Number": "47199",
+      "Lat": 29.44357247,
+      "Lng": -98.66257865,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "Hwy. 151 W. Access Rd. & Hunt Lane",
+      "Stop Number": "57249",
+      "Lat": 29.44716763,
+      "Lng": -98.67129832,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "Hwy 151 Access Rd btwn Hunt Ln & Rogers Rd",
+      "Stop Number": "57219",
+      "Lat": 29.44696364,
+      "Lng": -98.67626415,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "Hwy. 151 w Access Rd. & Military Dr",
+      "Stop Number": "57259",
+      "Lat": 29.44883748,
+      "Lng": -98.68266962,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "Military Dr & Hwy 151 E Access Rd",
+      "Stop Number": "57289",
+      "Lat": 29.44943307,
+      "Lng": -98.68628879,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "18"
+    },
+    {
+      "Stop Name": "Military Dr. W. & Ellison Dr.",
+      "Stop Number": "38869",
+      "Lat": 29.44901065,
+      "Lng": -98.69005885,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "19"
+    },
+    {
+      "Stop Name": "Military Opposite Seascape",
+      "Stop Number": "96539",
+      "Lat": 29.44923263,
+      "Lng": -98.69542245,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "20"
+    },
+    {
+      "Stop Name": "Military Between Seascape & Bobcat Pass",
+      "Stop Number": "96529",
+      "Lat": 29.44836269,
+      "Lng": -98.70052981,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "21"
+    },
+    {
+      "Stop Name": "Military at Employee Ent. to Sea.",
+      "Stop Number": "96509",
+      "Lat": 29.44860352,
+      "Lng": -98.70408226,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "22"
+    },
+    {
+      "Stop Name": "Military & Rousseau",
+      "Stop Number": "96479",
+      "Lat": 29.44811255,
+      "Lng": -98.70726262,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "23"
+    },
+    {
+      "Stop Name": "Northbound Loop 1604 & Military",
+      "Stop Number": "96456",
+      "Lat": 29.4488788,
+      "Lng": -98.71070613,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "24"
+    },
+    {
+      "Stop Name": "Northbound Loop 1604 & Reed",
+      "Stop Number": "96476",
+      "Lat": 29.45962973,
+      "Lng": -98.71092874,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "25"
+    },
+    {
+      "Stop Name": "Wiseman & Loop 1604",
+      "Stop Number": "83963",
+      "Lat": 29.46530832,
+      "Lng": -98.71024377,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "26"
+    },
+    {
+      "Stop Name": "Wiseman Blvd. Opposite 4611",
+      "Stop Number": "83973",
+      "Lat": 29.46565252,
+      "Lng": -98.70689458,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "27"
+    },
+    {
+      "Stop Name": "Northwest Vista College",
+      "Stop Number": "83439",
+      "Lat": 29.46993438,
+      "Lng": -98.70659804,
+      "route": "Route 64 (reverse)",
+      "Order on Route": "28"
+    }
   ]
 }

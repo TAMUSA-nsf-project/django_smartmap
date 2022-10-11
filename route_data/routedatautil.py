@@ -1,56 +1,103 @@
-from typing import List, Tuple
+import csv
 import json
 import re
+from enum import Enum
+
+ROUTE_DATA_FILE = 'route-data.csv'
+ROUTE_SCHEDULE_FILE = 'route-schedule.csv'
 
 
-# if today == 6:  # Sunday
-#     return "F"
-# elif today == 5:  # Saturday
-#     return "S"
-# else:  # Weekday
-#     return "W"
+class InputDataType(Enum):
+    ROUTE = 1
+    SCHEDULE = 2
 
 
-# "Stop Name": "Martin & Navarro",
-# "bus_stop": 71839,
-# "bus_route": "Route 51 (reverse)",
-# "day_of_week": "W",
-# "scheduled_time": "9:50"
+def GenerateJsonFile(file_type: InputDataType):
+    manager = RouteManager(file_type)
+    filename = ''
+    if file_type == InputDataType.ROUTE:
+        filename = ROUTE_DATA_FILE
+    elif file_type == InputDataType.SCHEDULE:
+        filename = ROUTE_SCHEDULE_FILE
+    with open(filename, "r") as file:
+        fileContents = csv.DictReader(file)
+        for item in fileContents:
+            r_name = item['bus_route']
+            manager.AddRouteIfNotExist(r_name)
+            manager.ProcessData(r_name, item)
+        if file_type == InputDataType.ROUTE:
+            manager.exportRouteToJSON()
+        elif file_type == InputDataType.SCHEDULE:
+            manager.exportRouteScheduleToJSON()
 
 
 class BusStop:
-    counter = 0
 
-    def __init__(self, name: str, coords: Tuple[float, float], number=None):
-        self.name = name
-        self.latitude, self.longitude = coords
-
-        if number:
-            self.number = number
-        else:
-            # otherwise use the class counter
-            self.number = BusStop.counter
-            BusStop.counter += 1
+    # Stop Name and Stop Number/ID are mandatory
+    def __init__(self, name: str, stop_id):
+        self.stopName = name
+        self.latitude = None
+        self.longitude = None
+        self.stopNumber = stop_id
+        self.route = None
+        self.orderOnRoute = None
+        self.schedule = None
 
     def __str__(self):
-        return self.name
+        return self.stopName
 
     def __int__(self):
-        return self.number
+        return self.stopNumber
 
     def __repr__(self):
-        return self.name
+        return self.stopName
 
 
-class RouteSchedule:
-    def __init__(self, route_name: str, day_of_week: str, reverse=False):
-        self.route_name = route_name  # + " (reverse)" if reverse else route_name
-        self.day_of_week = day_of_week
-        self.reverse = reverse
-        self.bus_stop_schedules = []
+class RouteManager:
 
-    def __repr__(self):
-        return f"{self.route_name}, {self.day_of_week}"
+    def __init__(self, d_type: InputDataType):
+        self.type = d_type
+        self.busSchedules = {}
+        self.busRoutes = {}
+
+    def AddBusStopsForRoute(self, data):
+        route = data['bus_route']
+        self.busRoutes[route].append(
+            {"Stop Name": data['Stop Name'],
+             "Stop Number": data['Stop Number'],
+             "Lat": float(data['Lat']),
+             "Lng": float(data['Lng']),
+             "route": route,
+             "Order on Route": data['Order on Route']}
+        )
+
+    def AddScheduleForBusStops(self, data):
+        route = data['bus_route']
+        day_of_week = data['day_of_week']
+        del data['bus_route']
+        del data['day_of_week']
+        for key in data.keys():
+            val = data[key]
+            if val:
+                stopName, stopNumber = key.split('#')
+                # Todo: fix later
+                stopName = stopName.strip('ï»¿')
+                self.busSchedules[route].append(
+                    {"Stop Name": stopName,
+                     "bus_stop": int(stopNumber),
+                     "bus_route": route,
+                     "day_of_week": day_of_week,
+                     "scheduled_time": self._convert_time(val),
+                     }
+                )
+
+    def AddRouteIfNotExist(self, route_name):
+        if self.type == InputDataType.ROUTE:
+            if route_name not in self.busRoutes:
+                self.busRoutes[route_name] = []
+        elif self.type == InputDataType.SCHEDULE:
+            if route_name not in self.busSchedules:
+                self.busSchedules[route_name] = []
 
     @staticmethod
     def _check_time_format(time) -> bool:
@@ -65,7 +112,7 @@ class RouteSchedule:
         x = str(time).zfill(4)
 
         # check for bad time format provided by user
-        if not RouteSchedule._check_time_format(x):
+        if not RouteManager._check_time_format(x):
             raise ValueError(f"Invalid time format: '{self}' -> '{time}'")
 
         # insert a colon separator if needed
@@ -73,29 +120,39 @@ class RouteSchedule:
             x = re.sub(r'(\d\d)(\d\d)', r'\1:\2', x)
         return x
 
-    def addSchedule(self, bus_stop: BusStop, scheduled_times: List):
-        self.bus_stop_schedules.append((bus_stop, scheduled_times))
+    def ProcessData(self, route_name, data_row):
+        if self.type == InputDataType.ROUTE:
+            if route_name in self.busRoutes:
+                self.AddBusStopsForRoute(data_row)
+        elif self.type == InputDataType.SCHEDULE:
+            if route_name in self.busSchedules:
+                self.AddScheduleForBusStops(data_row)
 
-    def getRouteSchedule(self):
-        res = []
-        bus_stop_schedules = self.bus_stop_schedules  # .reverse() if self.reverse else self.bus_stop_schedules
-
-        if not bus_stop_schedules:
-            print("No schedules have been added. Add a schedule with method 'addSchedule'.")
-
-        for bus_stop, times in bus_stop_schedules:
-            for time in times:
-                res.append({"Stop Name": str(bus_stop),
-                            "bus_stop": int(bus_stop),
-                            "bus_route": self.route_name,
-                            "day_of_week": self.day_of_week,
-                            "scheduled_time": self._convert_time(time),
-                            })
-        return {self.route_name: res}
+    # def getRouteSchedule(self):
+    #     res = []
+    #     bus_stop_schedules = self.bus_stop_schedules
+    #
+    #     if not bus_stop_schedules:
+    #         print("No schedules have been added. Add a schedule with method 'addSchedule'.")
+    #
+    #     for bus_stop, times in bus_stop_schedules:
+    #         for time in times:
+    #             res.append({"Stop Name": str(bus_stop),
+    #                         "bus_stop": int(bus_stop),
+    #                         "bus_route": self.route_name,
+    #                         "day_of_week": self.day_of_week,
+    #                         "scheduled_time": self._convert_time(time),
+    #                         })
+    #     return {self.route_name: res}
 
     def exportRouteScheduleToJSON(self):
-        with open(self.route_name + ".json", "w", encoding='utf-8') as f:
-            json.dump(self.getRouteSchedule(), f, ensure_ascii=False, indent=4)
+        with open("testSchedule" + ".json", "w", encoding='utf-8') as f:
+            json.dump(self.busSchedules, f, ensure_ascii=False, indent=4)
+        print("Done")
+
+    def exportRouteToJSON(self):
+        with open("testR" + ".json", "w", encoding='utf-8') as f:
+            json.dump(self.busRoutes, f, ensure_ascii=False, indent=4)
         print("Done")
 
     def getRouteBusStops(self):
@@ -107,4 +164,5 @@ class RouteSchedule:
         pass
 
 
-
+GenerateJsonFile(InputDataType.SCHEDULE)
+GenerateJsonFile(InputDataType.ROUTE)
