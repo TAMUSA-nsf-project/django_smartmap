@@ -10,16 +10,14 @@ kltc = BusStop("Kel-Lac Transit Center")
 dam = BusStop("Dolorosa & Main")
 
 # create route objects
-eastbound_mf = RouteSchedule("Route 555", "W")
-eastbound_mf.addSchedule(nwvc, [615, *[x * 100 + 55 for x in range(6, 22)]])
-eastbound_mf.addSchedule(swme, [1059, 1159, 1259, 1359, 1500, 1600, 1700, 1759, 1859, 1959, 2058, 2158])
-eastbound_mf.addSchedule(phwy, [626, 707, 807, 907, 1007, 1108, 1208, 1308, 1408, 1510, 1610, 1710, 1807,
-                                1907, 2007, 2106, 2206])
-eastbound_mf.addSchedule(kltc, [642, 724, 823, 923, 1023, 1124, 1224, 1324, 1424, 1529, 1629, 1729, 1822,
-                                1922, 2022, 2120, 2220])
-eastbound_mf.addSchedule(dam, [716, 819, 913, 1013, 1113, 1213, 1314, 1414, 1515, 1615, 1718, 1813, 1913, 2013,
+eastbound_mf = RouteSchedule("Route 64", "W")
+eastbound_mf.addSchedule(nwvc, [622,725,824,923,1023,1123,1225,1325,1425,1510,1610,1711,1811,1924,2024,2122,2222])
+eastbound_mf.addSchedule(swme, [1027,1127,1229,1329,1429,1515,1615,1716,1816,1928,2028,2125,2225])
+eastbound_mf.addSchedule(phwy, [633,738,837,936,1036,1136,1238,1338,1438,1525,1625,1726,1826,1937,2037,2133,2233])
+eastbound_mf.addSchedule(kltc, [648,753,854,952,1051,1151,1254,1354,1454,1544,1644,1744,1844,1953,2053,2147,2247,])
+eastbound_mf.addSchedule(dam, [715, 819, 914, 1014, 1114, 1214, 1314, 1414, 1515, 1615, 1714, 1814, 1914, 2013,
                                2113, 2213, 2313, 2417])
-eastbound_mf.exportRouteScheduleToJSON()
+eastbound_mf.exportDataToCSV()
 
 westbound_mf = RouteSchedule("Route 64 (reverse)", "W")
 westbound_mf.addSchedule(dam, [515, 615, 715, 819, 914, 1014, 1114, 1214, 1314, 1414, 1515, 1615, 1714, 1814, 1914,
@@ -29,8 +27,8 @@ westbound_mf.addSchedule(kltc, [534, 634, 734, 838, 934, 1034, 1134, 1234, 1334,
 westbound_mf.addSchedule(phwy, [610, 711, 811, 911, 1011, 1111, 1211, 1311, 1411, 1513, 1613, 1713, 1813, 1911, 2011,
                                 2110, 2210])
 westbound_mf.addSchedule(nwvc, [621, 724, 824, 923, 1023, 1123, 1225, 1325, 1425, 1527, 1627, 1727, 1827, 1924, 2024,
-                                2122, 1222])
-westbound_mf.exportRouteScheduleToJSON()
+                                2122, 2222])
+westbound_mf.exportDataToCSV()
 
 eastbound_sat = RouteSchedule("Route 64", "S")
 eastbound_sat.addSchedule(nwvc, [621, 721, 822, 922, 1024, 1124, 1224, 1324, 1424, 1524, 1624, 1724, 1824, 1924, 2024,
@@ -45,7 +43,7 @@ eastbound_sat.addSchedule(kltc,
 eastbound_sat.addSchedule(dam,
                           [714, 814, 914, 1014, 1115, 1216, 1316, 1416, 1516, 1616, 1716, 1816, 1914, 2014, 2114, 2213,
                            2313, 2317, 2417])
-eastbound_sat.exportRouteScheduleToJSON()
+eastbound_sat.exportDataToCSV()
 
 westbound_sat = RouteSchedule("Route 64 (reverse)", "S")
 westbound_sat.addSchedule(dam,
@@ -57,8 +55,8 @@ westbound_sat.addSchedule(kltc,
 westbound_sat.addSchedule(phwy,
                           [610, 710, 810, 910, 1011, 1111, 1211, 1311, 1411, 1511, 1611, 1711, 1811, 1911, 2011, 2110,
                            2210])
-westbound_sat.addSchedule(nwvc, [621, 721, 822, 922, 1024, 1124, 1224, 1324, 1424, 1724, 2024, 2122, 2222])
-westbound_sat.exportRouteScheduleToJSON()
+westbound_sat.addSchedule(nwvc, [621, 721, 822, 922, 1024, 1124, 1224, 1324, 1424, 1524, 1624, 1724,1824,1924, 2024, 2122, 2222])
+westbound_sat.exportDataToCSV()
 
 eastbound_sun = RouteSchedule("Route 64", "F")
 eastbound_sun.addSchedule(nwvc,
@@ -72,7 +70,7 @@ eastbound_sun.addSchedule(kltc,
 eastbound_sun.addSchedule(dam,
                           [714, 814, 914, 1014, 1114, 1214, 1314, 1414, 1514, 1614, 1714, 1814, 1913, 2013, 2113, 2213,
                            2313, 2317, 2417])
-eastbound_sun.exportRouteScheduleToJSON()
+eastbound_sun.exportDataToCSV()
 
 westbound_sun = RouteSchedule("Route 64 (reverse)", "F")
 westbound_sun.addSchedule(dam,
@@ -83,4 +81,4 @@ westbound_sun.addSchedule(phwy,
                           [709, 809, 909, 1010, 1110, 1210, 1310, 1410, 1510, 1610, 1710, 1810, 1910, 2010, 2110, 2210])
 westbound_sun.addSchedule(nwvc,
                           [720, 820, 920, 1022, 1122, 1222, 1322, 1422, 1522, 1622, 1722, 1822, 1922, 2022, 2121, 2221])
-westbound_sun.exportRouteScheduleToJSON()
+westbound_sun.exportDataToCSV()
