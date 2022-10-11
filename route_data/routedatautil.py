@@ -19,7 +19,7 @@ def GenerateJsonFile(file_type: InputDataType):
         filename = ROUTE_DATA_FILE
     elif file_type == InputDataType.SCHEDULE:
         filename = ROUTE_SCHEDULE_FILE
-    with open(filename, "r") as file:
+    with open(filename, "r", encoding='utf-8-sig') as file:
         fileContents = csv.DictReader(file)
         for item in fileContents:
             r_name = item['bus_route']
@@ -81,7 +81,7 @@ class RouteManager:
             if val:
                 stopName, stopNumber = key.split('#')
                 # Todo: fix later
-                stopName = stopName.strip('ï»¿')
+                # stopName = stopName.strip('ï»¿')
                 self.busSchedules[route].append(
                     {"Stop Name": stopName,
                      "bus_stop": int(stopNumber),

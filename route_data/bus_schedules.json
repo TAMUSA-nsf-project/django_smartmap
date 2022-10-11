@@ -2857,7 +2857,7 @@
       "bus_stop": 89913,
       "bus_route": "Route 64",
       "day_of_week": "W",
-      "scheduled_time": "24:17"
+      "scheduled_time": "00:17"
     },
     {
       "Stop Name": "Northwest Vista College",
@@ -3438,7 +3438,7 @@
       "bus_stop": 89913,
       "bus_route": "Route 64",
       "day_of_week": "S",
-      "scheduled_time": "24:17"
+      "scheduled_time": "00:17"
     },
     {
       "Stop Name": "Northwest Vista College",
@@ -4012,7 +4012,7 @@
       "bus_stop": 89913,
       "bus_route": "Route 64",
       "day_of_week": "F",
-      "scheduled_time": "24:17"
+      "scheduled_time": "00:17"
     }
   ],
   "Route 64 (reverse)": [
