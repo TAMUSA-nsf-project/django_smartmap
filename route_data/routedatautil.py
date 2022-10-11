@@ -47,6 +47,7 @@ class RouteSchedule:
         self.route_name = route_name  # + " (reverse)" if reverse else route_name
         self.day_of_week = day_of_week
         self.reverse = reverse
+        self.file_prefix = route_name + "_" + day_of_week
         self.bus_stop_schedules = []
 
     def __repr__(self):
@@ -94,7 +95,7 @@ class RouteSchedule:
         return {self.route_name: res}
 
     def exportRouteScheduleToJSON(self):
-        with open(self.route_name + ".json", "w", encoding='utf-8') as f:
+        with open(self.file_prefix + ".json", "w", encoding='utf-8') as f:
             json.dump(self.getRouteSchedule(), f, ensure_ascii=False, indent=4)
         print("Done")
 
