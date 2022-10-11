@@ -1,6 +1,8 @@
+import csv
 from typing import List, Tuple
 import json
 import re
+import itertools
 
 
 # if today == 6:  # Sunday
@@ -97,6 +99,17 @@ class RouteSchedule:
                             "scheduled_time": self._convert_time(time),
                             })
         return {self.route_name: res}
+
+    def exportDataToCSV(self):
+        zipped_times = itertools.zip_longest(*[times for _, times in self.bus_stop_schedules], fillvalue="")
+        field_names = self.bus_stop_names + ["route_name", "day_of_week"]
+        with open(self.file_prefix + ".csv", 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=field_names)
+            writer.writeheader()
+            for item in zipped_times:
+                x = list(item) + [self.route_name, self.day_of_week]
+                _dict = dict(zip(field_names, x))
+                writer.writerow(_dict)
 
     def exportRouteScheduleToJSON(self):
         with open(self.file_prefix + ".json", "w", encoding='utf-8') as f:
