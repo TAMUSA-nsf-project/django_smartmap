@@ -8,7 +8,7 @@ let activeMarkerInfoWindow;   // marker info window
 let activeMarkerObj = null;   // marker info window
 const defaultTimeString = "TBD";
 
-let poly, left, right;
+let poly, left;
 let directionsService;
 
 
@@ -358,11 +358,11 @@ function initMap() {
         strokeOpacity: 1,
         strokeWeight: 5,
     });
-    right = new google.maps.Polyline({
-        strokeColor: "#000000",
-        strokeOpacity: 1,
-        strokeWeight: 3,
-    });
+    // right = new google.maps.Polyline({
+    //     strokeColor: "#000000",
+    //     strokeOpacity: 1,
+    //     strokeWeight: 3,
+    // });
 
     // Create the div to hold the route-selection dropdown.
     const routeDropdownDiv = RouteDropdown(map);
@@ -420,14 +420,14 @@ function reDrawPolyLineWithCurrentLocation(busLocation, mapRoutePolylinePath) {
 
         poly.setMap(null)
         left.setMap(null)
-        right.setMap(null)
+        // right.setMap(null)
 
         left.setPath(mapRoutePolylinePath.slice(0, startIndex))
         left.setOptions({strokeColor: mapRouteMarkers[displayedRoute][0].location_pin_color});
         left.setMap(map)
 
-        right.setPath(mapRoutePolylinePath.slice(startIndex - 1, arrayLen))
-        right.setMap(map)
+        // right.setPath(mapRoutePolylinePath.slice(startIndex - 1, arrayLen))
+        // right.setMap(map)
     }
 }
 
@@ -447,7 +447,7 @@ function updateBusMarkers(data) {
 
         const busLatLng = new google.maps.LatLng(busData.bus_lat, busData.bus_lng);
 
-        const iconWidth = 60  // pixels
+        const iconWidth = 100  // pixels
 
         const busIcon = {
             url: busData.bus_color,
@@ -504,7 +504,7 @@ async function DrawRoutePolyline(route) {
     }
     // Clear the polylines from the previous route
     left.setMap(null)
-    right.setMap(null)
+    // right.setMap(null)
 
     // Draw the line, todo make sure this part is always asynchronous
     poly.setPath(mapRoutePolylinePaths[route].polyline);
