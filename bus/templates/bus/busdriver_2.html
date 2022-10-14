@@ -30,56 +30,59 @@
 
     <script type="text/javascript" nonce="{{request.csp_nonce}}">
 
-        /**
-         * Class to represent a document element. Contains methods to disable/enable state, etc.
-         */
-        class Element {
 
-            constructor(element, disabled_opacity=0.5) {
-                this.element = element
-                this.disabled_opacity = disabled_opacity
-                this.enabled_opacity = 1
-            }
-
-            /**
-             * Depth-first-search based function that recursively toggles disabled state and opacity of the descendants
-             * of an element.
-             *
-             * @param element
-             * @param disable_bool
-             * @param opacity
-             */
-            static dfsToggleDisabledState(element, disable_bool, opacity=1) {
-
-                function _dfs_disable(element) {
-                    element.children().each(function () {
-                        _dfs_disable($(this))
-                    })
-                    element.prop('disabled', disable_bool).css('opacity', opacity)
-                }
-
-                _dfs_disable(element)
-            }
-
-            /**
-             * Disables the element and its descendants.
-             */
-            disableElement() {
-                Element.dfsToggleDisabledState(this.element, true, this.disabled_opacity)
-            }
-
-            /**
-             * Enables the element and its descendants.
-             */
-            enableElement() {
-                Element.dfsToggleDisabledState(this.element, false, this.enabled_opacity)
-            }
-
-
-        }
 
 
         $(document).ready(function () {
+
+            /**
+             * Class to represent a document element. Contains methods to disable/enable state, etc.
+             */
+            class Element {
+
+                constructor(element, disabled_opacity=0.5) {
+                    this.element = element
+                    this.disabled_opacity = disabled_opacity
+                    this.enabled_opacity = 1
+                }
+
+                /**
+                 * Depth-first-search based function that recursively toggles disabled state and opacity of the descendants
+                 * of an element.
+                 *
+                 * @param element
+                 * @param disable_bool
+                 * @param opacity
+                 */
+                static dfsToggleDisabledState(element, disable_bool, opacity=1) {
+
+                    function _dfs_disable(element) {
+                        element.children().each(function () {
+                            _dfs_disable($(this))
+                        })
+                        element.prop('disabled', disable_bool).css('opacity', opacity)
+                    }
+
+                    _dfs_disable(element)
+                }
+
+                /**
+                 * Disables the element and its descendants.
+                 */
+                disableElement() {
+                    Element.dfsToggleDisabledState(this.element, true, this.disabled_opacity)
+                }
+
+                /**
+                 * Enables the element and its descendants.
+                 */
+                enableElement() {
+                    Element.dfsToggleDisabledState(this.element, false, this.enabled_opacity)
+                }
+
+
+            }
+
 
             // setup button on-click behavior (send data to server via ajax)
             $('.seat-availability-btn').each(function () {
