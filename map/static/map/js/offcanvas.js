@@ -38,7 +38,8 @@ function createAccordionElement( id, label, content )
     collapse.setAttribute("data-bs-parent", "#leftOffcanvasAccordion"); // TODO: "#leftOffcanvasAccordion must be a param eventually
 
     // So apparently JS is case-sensitive and .innerHtml is not the same as .innerHTML
-    body.innerHTML = content;
+    // body.innerHTML = content;
+    createBusStopInfoForOffcanvasAccordionBody( body, "Route 51" );
 
     header.appendChild( button );
     collapse.appendChild( body );
@@ -49,18 +50,93 @@ function createAccordionElement( id, label, content )
 }
 
 /*
-    Generates material for the content section of accordion elements.
+    Generates material for the content section of accordion elements. The div returned
+    should be placed inside a div of class "accordion-body".
     ARGS:
-        int routeId - The route info to compose.
-    RETURN:
-        A div displaying a route's information.
+        div accordionDiv    - Element where the containers generated will be appended to.
+        int routeId         - An id of a route whose info the accordion body will be composed of.
  */
-function displayRouteInfoForOffcanvas( routeId )
+function createBusStopInfoForOffcanvasAccordionBody( accordionDiv, routeId )
 {
-    const item  = document.createElement("div");
-    const dot   = document.createElement("i");
+    // This for loop is simply to see if the generated container are formatted correctly.
+    for( let i = 1; i < 10; i++ )
+    {
+        const busStopInfoContainer = generateStopInfoContainer(
+            i,
+            "Bus Stop #" + i,
+            "Estimated Arrival Time: Never",
+            "Scheduled Arrival Time: Nope"
+        );
 
-    dot.className = "fa-solid fa-circle-dot";
+        accordionDiv.appendChild( busStopInfoContainer );
+    }
+    /*
+    // Ripped from map_index.js
+    jQuery.ajax({
+        url: ROUTE_DETAILS,
+        data: {'data': JSON.stringify(routeId)},
+        type: "GET",
+        dataType: 'json',
+        success: (data) => {
+            if (data) {
+                data.all_stops.forEach((busStopJSONInfo) => {
+
+                    const busStopInfoContainer = generateStopInfoContainer(
+                        busStopJSONInfo.BusStopNumber,
+                        busStopJSONInfo.BusStopName,
+                        "???",          // TODO: Since this is dynamic, there has to be a way to update this.
+                        "???"           // This too.
+                    );
+
+                    accordionDiv.appendChild( busStopInfoContainer );
+                })
+            } else
+                console.log("No stops found for the given route.")
+            resolve("Resolved")
+        },
+        error: (e) => {
+            console.log(e.message)
+            reject("rejected")
+        }
+    });*/
+}
+
+/*
+    Creates a container for info on a singular bus stop.
+ */
+function generateStopInfoContainer( stopNumber, param_stopName, param_estTime, param_schTime )
+{
+    const container = document.createElement("div");
+    const row       = document.createElement("div");
+    const bPointDiv = document.createElement("div");    // A bullet point
+    const bPointImg = document.createElement("i");
+    const stopDiv   = document.createElement("div");    // Bus stop info container
+    const stopName  = document.createElement("div");    // Bus stop name
+    const estTime   = document.createElement("div");    // Estimated time
+    const schTime   = document.createElement("div");    // Scheduled time
+
+    container.className = "container bus-stop-container";
+        container.setAttribute("id", stopNumber);
+        row.className = "row";
+            bPointDiv.className = "col-1 bus-stop-bullet-point";
+                bPointImg.className = "fa fa-circle";   // Provided by FontAwesome 4.7.0
+            stopDiv.className = "col-10";
+                stopName.className = "row";
+                    stopName.innerHTML = param_stopName;
+                estTime.className  = "row";
+                    estTime.innerHTML = param_estTime;
+                schTime.className  = "row";
+                    schTime.innerHTML = param_schTime;
+
+    container.appendChild( row );
+        row.appendChild( bPointDiv );
+            bPointDiv.appendChild( bPointImg );
+        row.appendChild( stopDiv );
+            stopDiv.appendChild( stopName );
+            stopDiv.appendChild( estTime );
+            stopDiv.appendChild( schTime );
+
+    return container;
 }
 
 // ALL_ACTIVE_ROUTES is from map_index.html, which provides an array of routes.
