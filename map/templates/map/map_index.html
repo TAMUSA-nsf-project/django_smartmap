@@ -32,6 +32,7 @@
     <!-- Front-end stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" nonce="{{ request.csp_nonce }}" href="{% static 'map/css/offcanvas.css' %}" />
 
 {% endblock %}
 
@@ -49,7 +50,7 @@
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body">
+      <div class="offcanvas-body scrollbar-width-thin">
         <div id="leftOffcanvasContent">
 
             <div class="accordion accordion-flush" id="leftOffcanvasAccordion">
@@ -63,13 +64,13 @@
                       <div class="accordion-body">
                           <div class="container">
                               <div class="row">
-                                  <div class="col">
-                                      <i class="fa-solid fa-circle-dot"></i>
+                                  <div class="col-1 bus-stop-bullet-point">
+                                      <i class="fa fa-circle"></i>
                                   </div>
-                                  <div class="col">
-                                      <div class="row">Route number</div>
-                                      <div class="row">Stop name</div>
-                                      <div class="row">ETA</div>
+                                  <div class="col-10">
+                                      <div class="row">La Cantera Pkwy Opposite La Cantera Terrace</div>
+                                      <div class="row">Scheduled Time: ##:##</div>
+                                      <div class="row">Estimated Arrival Time: ##:##</div>
                                   </div>
                               </div>
                           </div>
