@@ -2666,5 +2666,1045 @@
       "route": "Route 64 (reverse)",
       "Order on Route": "28"
     }
+  ],
+  "Route 30": [
+    {
+      "Stop Name": "ST. MARY'S & HOUSTON",
+      "Stop Number": "53777",
+      "Lat": 29.426556,
+      "Lng": -98.491412,
+      "route": "Route 30",
+      "Order on Route": "2"
+    },
+    {
+      "Stop Name": "ST. MARY'S & VILLITA",
+      "Stop Number": "99347",
+      "Lat": 29.4229,
+      "Lng": -98.491712,
+      "route": "Route 30",
+      "Order on Route": "3"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ BLVD & S. PRESA",
+      "Stop Number": "11223",
+      "Lat": 29.418281,
+      "Lng": -98.489671,
+      "route": "Route 30",
+      "Order on Route": "4"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ BLVD & S. ALAMO",
+      "Stop Number": "11263",
+      "Lat": 29.418371,
+      "Lng": -98.488043,
+      "route": "Route 30",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ BLV OPP J.H. WOOD BLDG",
+      "Stop Number": "12123",
+      "Lat": 29.417685,
+      "Lng": -98.485911,
+      "route": "Route 30",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ BLVD & INDIANOLA",
+      "Stop Number": "12553",
+      "Lat": 29.41681,
+      "Lng": -98.484654,
+      "route": "Route 30",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "Cesar Chavez Between Labor & IH-37",
+      "Stop Number": "13823",
+      "Lat": 29.41534,
+      "Lng": -98.48247,
+      "route": "Route 30",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ AT IH-37 N. EXIT RAMP",
+      "Stop Number": "23193",
+      "Lat": 29.413788,
+      "Lng": -98.479894,
+      "route": "Route 30",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "Iowa btwn Cherry & Mesquite",
+      "Stop Number": "24573",
+      "Lat": 29.411983,
+      "Lng": -98.475557,
+      "route": "Route 30",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "IOWA & S. HACKBERRY",
+      "Stop Number": "25473",
+      "Lat": 29.411974,
+      "Lng": -98.473383,
+      "route": "Route 30",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & CESAR CHAVEZ BLVD",
+      "Stop Number": "35177",
+      "Lat": 29.409519,
+      "Lng": -98.473332,
+      "route": "Route 30",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & DELAWARE",
+      "Stop Number": "35377",
+      "Lat": 29.408166,
+      "Lng": -98.473332,
+      "route": "Route 30",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & FLORIDA",
+      "Stop Number": "35577",
+      "Lat": 29.406866,
+      "Lng": -98.473291,
+      "route": "Route 30",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "DENVER & S. HACKBERRY",
+      "Stop Number": "35977",
+      "Lat": 29.404998,
+      "Lng": -98.473291,
+      "route": "Route 30",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & HIGH",
+      "Stop Number": "45677",
+      "Lat": 29.401587,
+      "Lng": -98.473559,
+      "route": "Route 30",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & WHITTIER",
+      "Stop Number": "45977",
+      "Lat": 29.399999,
+      "Lng": -98.473528,
+      "route": "Route 30",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "RIGSBY & OLIVE",
+      "Stop Number": "56333",
+      "Lat": 29.398429,
+      "Lng": -98.47156,
+      "route": "Route 30",
+      "Order on Route": "18"
+    },
+    {
+      "Stop Name": "RIGSBY & PIEDMONT",
+      "Stop Number": "57333",
+      "Lat": 29.39843,
+      "Lng": -98.467918,
+      "route": "Route 30",
+      "Order on Route": "19"
+    },
+    {
+      "Stop Name": "RIGSBY & ST. ANTHONY",
+      "Stop Number": "58343",
+      "Lat": 29.398439,
+      "Lng": -98.463427,
+      "route": "Route 30",
+      "Order on Route": "20"
+    },
+    {
+      "Stop Name": "RIGSBY & S. NEW BRAUNFELS",
+      "Stop Number": "59323",
+      "Lat": 29.39843,
+      "Lng": -98.461408,
+      "route": "Route 30",
+      "Order on Route": "21"
+    },
+    {
+      "Stop Name": "RIGSBY & GEVERS",
+      "Stop Number": "51343",
+      "Lat": 29.39843,
+      "Lng": -98.456824,
+      "route": "Route 30",
+      "Order on Route": "22"
+    },
+    {
+      "Stop Name": "RIGSBY & WALTERS",
+      "Stop Number": "52363",
+      "Lat": 29.398417,
+      "Lng": -98.452464,
+      "route": "Route 30",
+      "Order on Route": "23"
+    },
+    {
+      "Stop Name": "RIGSBY & CLARK",
+      "Stop Number": "53373",
+      "Lat": 29.398425,
+      "Lng": -98.448499,
+      "route": "Route 30",
+      "Order on Route": "24"
+    },
+    {
+      "Stop Name": "Rigsby btwn Hallie & Elgin",
+      "Stop Number": "54453",
+      "Lat": 29.398032,
+      "Lng": -98.44499,
+      "route": "Route 30",
+      "Order on Route": "25"
+    },
+    {
+      "Stop Name": "RIGSBY & ELGIN",
+      "Stop Number": "55423",
+      "Lat": 29.397991,
+      "Lng": -98.443421,
+      "route": "Route 30",
+      "Order on Route": "26"
+    },
+    {
+      "Stop Name": "RIGSBY & BEETHOVEN",
+      "Stop Number": "56433",
+      "Lat": 29.398013,
+      "Lng": -98.439644,
+      "route": "Route 30",
+      "Order on Route": "27"
+    },
+    {
+      "Stop Name": "RIGSBY & AMANDA (ROLAND)",
+      "Stop Number": "57413",
+      "Lat": 29.398069,
+      "Lng": -98.435284,
+      "route": "Route 30",
+      "Order on Route": "28"
+    },
+    {
+      "Stop Name": "RIGSBY & PECAN VALLEY",
+      "Stop Number": "58413",
+      "Lat": 29.397961,
+      "Lng": -98.433133,
+      "route": "Route 30",
+      "Order on Route": "29"
+    },
+    {
+      "Stop Name": "RIGSBY IN FRONT OF STEWART ELEM. SC",
+      "Stop Number": "58333",
+      "Lat": 29.398047,
+      "Lng": -98.43092,
+      "route": "Route 30",
+      "Order on Route": "30"
+    },
+    {
+      "Stop Name": "Rigsby & West Entrance Commanche Park",
+      "Stop Number": "51153",
+      "Lat": 29.399124,
+      "Lng": -98.424261,
+      "route": "Route 30",
+      "Order on Route": "31"
+    },
+    {
+      "Stop Name": "RIGSBY OPPOSITE GROBE",
+      "Stop Number": "53123",
+      "Lat": 29.399387,
+      "Lng": -98.418889,
+      "route": "Route 30",
+      "Order on Route": "32"
+    },
+    {
+      "Stop Name": "RIGSBY OPPOSITE BOULDER",
+      "Stop Number": "54263",
+      "Lat": 29.399323,
+      "Lng": -98.416056,
+      "route": "Route 30",
+      "Order on Route": "33"
+    },
+    {
+      "Stop Name": "Rigsby Opposite Rigsby Apts",
+      "Stop Number": "55363",
+      "Lat": 29.398291,
+      "Lng": -98.409843,
+      "route": "Route 30",
+      "Order on Route": "34"
+    },
+    {
+      "Stop Name": "Rigsby Between Bonair & W.W. White",
+      "Stop Number": "56313",
+      "Lat": 29.398202,
+      "Lng": -98.407401,
+      "route": "Route 30",
+      "Order on Route": "35"
+    },
+    {
+      "Stop Name": "RIGSBY & W.W. WHITE",
+      "Stop Number": "56383",
+      "Lat": 29.398252,
+      "Lng": -98.404603,
+      "route": "Route 30",
+      "Order on Route": "36"
+    },
+    {
+      "Stop Name": "RIGSBY & TILLIE",
+      "Stop Number": "58363",
+      "Lat": 29.39823,
+      "Lng": -98.398708,
+      "route": "Route 30",
+      "Order on Route": "37"
+    },
+    {
+      "Stop Name": "RIGSBY & TUCKER",
+      "Stop Number": "59353",
+      "Lat": 29.3982,
+      "Lng": -98.395072,
+      "route": "Route 30",
+      "Order on Route": "38"
+    },
+    {
+      "Stop Name": "RIGSBY & HOLLY HILL",
+      "Stop Number": "51383",
+      "Lat": 29.398161,
+      "Lng": -98.390423,
+      "route": "Route 30",
+      "Order on Route": "39"
+    },
+    {
+      "Stop Name": "Rigsby Opposite Walmart",
+      "Stop Number": "52403",
+      "Lat": 29.398148,
+      "Lng": -98.38642,
+      "route": "Route 30",
+      "Order on Route": "40"
+    },
+    {
+      "Stop Name": "Hwy 87 btwn Foster Meadows & Foster",
+      "Stop Number": "69443",
+      "Lat": 29.392857,
+      "Lng": -98.364138,
+      "route": "Route 30",
+      "Order on Route": "41"
+    },
+    {
+      "Stop Name": "HEB Facility at Foster Road",
+      "Stop Number": "69459",
+      "Lat": 29.40494,
+      "Lng": -98.363463,
+      "route": "Route 30",
+      "Order on Route": "42"
+    },
+    {
+      "Stop Name": "Hwy 87 btwn Foster & Foster Meadows",
+      "Stop Number": "69449",
+      "Lat": 29.393281,
+      "Lng": -98.364045,
+      "route": "Route 30",
+      "Order on Route": "43"
+    },
+    {
+      "Stop Name": "FOSTER MEADOWS BTWN. MOUNTAIN",
+      "Stop Number": "76777",
+      "Lat": 29.392258,
+      "Lng": -98.369487,
+      "route": "Route 30",
+      "Order on Route": "44"
+    },
+    {
+      "Stop Name": "FOSTER MEADOWS BTWN FLOWER MEADOW &",
+      "Stop Number": "76797",
+      "Lat": 29.389461,
+      "Lng": -98.370353,
+      "route": "Route 30",
+      "Order on Route": "45"
+    },
+    {
+      "Stop Name": "SINCLAIR OPP. GLACIER LAKE",
+      "Stop Number": "76789",
+      "Lat": 29.385338,
+      "Lng": -98.370966,
+      "route": "Route 30",
+      "Order on Route": "46"
+    },
+    {
+      "Stop Name": "SINCLAIR & VISTA LAKE",
+      "Stop Number": "76729",
+      "Lat": 29.386189,
+      "Lng": -98.373622,
+      "route": "Route 30",
+      "Order on Route": "47"
+    },
+    {
+      "Stop Name": "SINCLAIR & LAKE MEADOW",
+      "Stop Number": "76739",
+      "Lat": 29.387462,
+      "Lng": -98.374969,
+      "route": "Route 30",
+      "Order on Route": "48"
+    },
+    {
+      "Stop Name": "LAKE MEADOW & LAKE BANK",
+      "Stop Number": "66846",
+      "Lat": 29.390331,
+      "Lng": -98.374399,
+      "route": "Route 30",
+      "Order on Route": "49"
+    },
+    {
+      "Stop Name": "LAKE MEADOW & LAKEDALE",
+      "Stop Number": "66646",
+      "Lat": 29.391861,
+      "Lng": -98.374388,
+      "route": "Route 30",
+      "Order on Route": "50"
+    },
+    {
+      "Stop Name": "LAKE MEADOW & LAKEFRONT",
+      "Stop Number": "66156",
+      "Lat": 29.394284,
+      "Lng": -98.374085,
+      "route": "Route 30",
+      "Order on Route": "51"
+    },
+    {
+      "Stop Name": "LAKEFRONT OPPOSITE LAKELEDGE",
+      "Stop Number": "65159",
+      "Lat": 29.394905,
+      "Lng": -98.377237,
+      "route": "Route 30",
+      "Order on Route": "52"
+    },
+    {
+      "Stop Name": "LAKEFRONT OPPOSITE LAKE ALTAIR",
+      "Stop Number": "55919",
+      "Lat": 29.394925,
+      "Lng": -98.379007,
+      "route": "Route 30",
+      "Order on Route": "53"
+    },
+    {
+      "Stop Name": "LAKEFRONT & HWY 87",
+      "Stop Number": "54366",
+      "Lat": 29.397788,
+      "Lng": -98.380736,
+      "route": "Route 30",
+      "Order on Route": "54"
+    },
+    {
+      "Stop Name": "WAL-MART PARKING LOT",
+      "Stop Number": "43949",
+      "Lat": 29.399105,
+      "Lng": -98.386728,
+      "route": "Route 30",
+      "Order on Route": "55"
+    }
+  ],
+  "Route 30 (reverse)": [
+    {
+      "Stop Name": "WAL-MART PARKING LOT",
+      "Stop Number": "43949",
+      "Lat": 29.399105,
+      "Lng": -98.386728,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "1"
+    },
+    {
+      "Stop Name": "RIGSBY & SEMLINGER",
+      "Stop Number": "51359",
+      "Lat": 29.398287,
+      "Lng": -98.391086,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "2"
+    },
+    {
+      "Stop Name": "RIGSBY & WILLENBROCK",
+      "Stop Number": "59279",
+      "Lat": 29.398317,
+      "Lng": -98.394495,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "3"
+    },
+    {
+      "Stop Name": "RIGSBY & DIANE",
+      "Stop Number": "58379",
+      "Lat": 29.39833,
+      "Lng": -98.39798,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "4"
+    },
+    {
+      "Stop Name": "Rigsby btwn Odessa & WW White",
+      "Stop Number": "56389",
+      "Lat": 29.398342,
+      "Lng": -98.404002,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "Rigsby & WW White",
+      "Stop Number": "56359",
+      "Lat": 29.398308,
+      "Lng": -98.406272,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "RIGSBY IN FRONT OF RIGSBY APTS.",
+      "Stop Number": "55369",
+      "Lat": 29.398381,
+      "Lng": -98.409887,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "RIGSBY & COVINGTON",
+      "Stop Number": "53269",
+      "Lat": 29.39944,
+      "Lng": -98.416437,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "Rigsby btwn Grobe & Shrader",
+      "Stop Number": "52179",
+      "Lat": 29.399432,
+      "Lng": -98.41962,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "Rigsby & opposite West Entrance Commanche Park",
+      "Stop Number": "51159",
+      "Lat": 29.399301,
+      "Lng": -98.423953,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "RIGSBY BETWEEN PIONEER & DAY",
+      "Stop Number": "58369",
+      "Lat": 29.398139,
+      "Lng": -98.430484,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "RIGSBY & PECAN VALLEY",
+      "Stop Number": "58419",
+      "Lat": 29.398101,
+      "Lng": -98.432558,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "RIGSBY & ROLAND (AMANDA)",
+      "Stop Number": "57419",
+      "Lat": 29.398106,
+      "Lng": -98.436458,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "RIGSBY OPPOSITE BEETHOVEN",
+      "Stop Number": "56439",
+      "Lat": 29.398184,
+      "Lng": -98.439551,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "RIGSBY OPPOSITE ELGIN",
+      "Stop Number": "55439",
+      "Lat": 29.398185,
+      "Lng": -98.443414,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "Rigsby & Hallie",
+      "Stop Number": "54359",
+      "Lat": 29.398194,
+      "Lng": -98.445731,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "RIGSBY & CLARK",
+      "Stop Number": "53379",
+      "Lat": 29.39851,
+      "Lng": -98.448306,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "RIGSBY & WALTERS",
+      "Stop Number": "52369",
+      "Lat": 29.398489,
+      "Lng": -98.45233,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "18"
+    },
+    {
+      "Stop Name": "RIGSBY & GEVERS",
+      "Stop Number": "51349",
+      "Lat": 29.398484,
+      "Lng": -98.456763,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "19"
+    },
+    {
+      "Stop Name": "RIGSBY & S. NEW BRAUNFELS",
+      "Stop Number": "59329",
+      "Lat": 29.398484,
+      "Lng": -98.461099,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "20"
+    },
+    {
+      "Stop Name": "RIGSBY & ST. ANTHONY",
+      "Stop Number": "58349",
+      "Lat": 29.398518,
+      "Lng": -98.46331,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "21"
+    },
+    {
+      "Stop Name": "RIGSBY & PIEDMONT",
+      "Stop Number": "57339",
+      "Lat": 29.398484,
+      "Lng": -98.467784,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "22"
+    },
+    {
+      "Stop Name": "RIGSBY & OLIVE",
+      "Stop Number": "56339",
+      "Lat": 29.398493,
+      "Lng": -98.47143,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "23"
+    },
+    {
+      "Stop Name": "S Hackberry opposite Whitter",
+      "Stop Number": "45976",
+      "Lat": 29.399918,
+      "Lng": -98.473414,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "24"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & HIGH",
+      "Stop Number": "45676",
+      "Lat": 29.401488,
+      "Lng": -98.473486,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "25"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & ESSEX",
+      "Stop Number": "45276",
+      "Lat": 29.403834,
+      "Lng": -98.473208,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "26"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & DENVER",
+      "Stop Number": "35976",
+      "Lat": 29.404845,
+      "Lng": -98.473239,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "27"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & FLORIDA",
+      "Stop Number": "35576",
+      "Lat": 29.406695,
+      "Lng": -98.473219,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "28"
+    },
+    {
+      "Stop Name": "S. HACKBERRY & INDIANA",
+      "Stop Number": "35176",
+      "Lat": 29.408545,
+      "Lng": -98.473239,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "29"
+    },
+    {
+      "Stop Name": "IOWA & S. HACKBERRY",
+      "Stop Number": "25479",
+      "Lat": 29.412028,
+      "Lng": -98.473579,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "30"
+    },
+    {
+      "Stop Name": "IOWA & CHERRY",
+      "Stop Number": "24599",
+      "Lat": 29.412037,
+      "Lng": -98.47602,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "31"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ AT IH-37 N. EXIT RAMP",
+      "Stop Number": "23199",
+      "Lat": 29.413851,
+      "Lng": -98.479585,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "32"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ IN FRONT OF THE INSTITUTE OF TEXAN CULTURES",
+      "Stop Number": "13839",
+      "Lat": 29.415871,
+      "Lng": -98.482929,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "33"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ OPPOSITE INDIANOLA",
+      "Stop Number": "12559",
+      "Lat": 29.417143,
+      "Lng": -98.484763,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "34"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ FRNT OF J.H. WOOD BLDG",
+      "Stop Number": "12129",
+      "Lat": 29.417919,
+      "Lng": -98.485876,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "35"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ & S. ALAMO",
+      "Stop Number": "11269",
+      "Lat": 29.418542,
+      "Lng": -98.488157,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "36"
+    },
+    {
+      "Stop Name": "CESAR CHAVEZ BLVD & S. ST. MARY'S",
+      "Stop Number": "11219",
+      "Lat": 29.418326,
+      "Lng": -98.490351,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "37"
+    },
+    {
+      "Stop Name": "S. St. Mary's btwn. Cesar Chavez & Arciniega",
+      "Stop Number": "99986",
+      "Lat": 29.419102,
+      "Lng": -98.490681,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "38"
+    },
+    {
+      "Stop Name": "S.ST.MARY'S & NUEVA",
+      "Stop Number": "99586",
+      "Lat": 29.421114,
+      "Lng": -98.490877,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "39"
+    },
+    {
+      "Stop Name": "NAVARRO OPPOSITE VILLITA",
+      "Stop Number": "99396",
+      "Lat": 29.422504,
+      "Lng": -98.490434,
+      "route": "Route 30 (reverse)",
+      "Order on Route": "40"
+    }
+  ],
+  "Route 100": [
+    {
+      "Stop Name": "CHESTNUT AT ELLIS ALLEY PARK & RIDE",
+      "Stop Number": "93296",
+      "Lat": 29.423064,
+      "Lng": -98.479863,
+      "route": "Route 100",
+      "Order on Route": "1"
+    },
+    {
+      "Stop Name": "MARTIN & SANTA ROSA",
+      "Stop Number": "78819",
+      "Lat": 29.429577,
+      "Lng": -98.497319,
+      "route": "Route 100",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "Medina & Houston (Stop G)",
+      "Stop Number": "61636",
+      "Lat": 29.427319,
+      "Lng": -98.504932,
+      "route": "Route 100",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "MARTIN OPPOSITE LEONA",
+      "Stop Number": "76773",
+      "Lat": 29.429807,
+      "Lng": -98.502232,
+      "route": "Route 100",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "HUISACHE STATION",
+      "Stop Number": "10109",
+      "Lat": 29.455468,
+      "Lng": -98.517136,
+      "route": "Route 100",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "MARY LOUISE STATION",
+      "Stop Number": "10209",
+      "Lat": 29.46501,
+      "Lng": -98.5265,
+      "route": "Route 100",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "BABCOCK STATION",
+      "Stop Number": "10309",
+      "Lat": 29.472569,
+      "Lng": -98.533896,
+      "route": "Route 100",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "DE CHANTLE STATION",
+      "Stop Number": "10409",
+      "Lat": 29.480402,
+      "Lng": -98.541729,
+      "route": "Route 100",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "FREDERICKSBURG RD. OPPOSITE ALTGELT",
+      "Stop Number": "53249",
+      "Lat": 29.485209,
+      "Lng": -98.546513,
+      "route": "Route 100",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "CROSSROADS STATION",
+      "Stop Number": "10509",
+      "Lat": 29.490791,
+      "Lng": -98.552016,
+      "route": "Route 100",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "Fredericksburg Rd. btwn. Lakeridge & Oaklawn",
+      "Stop Number": "29569",
+      "Lat": 29.498478,
+      "Lng": -98.556713,
+      "route": "Route 100",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "CALLAGHAN STATION",
+      "Stop Number": "10609",
+      "Lat": 29.503659,
+      "Lng": -98.560887,
+      "route": "Route 100",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "EWING HALSELL STATION",
+      "Stop Number": "10709",
+      "Lat": 29.510461,
+      "Lng": -98.571559,
+      "route": "Route 100",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "UNIVERSITY HOSPITAL STATION",
+      "Stop Number": "10809",
+      "Lat": 29.50959,
+      "Lng": -98.576838,
+      "route": "Route 100",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "STMC Transit Center East Side",
+      "Stop Number": "20097",
+      "Lat": 29.507494,
+      "Lng": -98.589681,
+      "route": "Route 100",
+      "Order on Route": "18"
+    }
+  ],
+  "Route 100 (reverse)": [
+    {
+      "Stop Name": "STMC Transit Center East Side",
+      "Stop Number": "20097",
+      "Lat": 29.507494,
+      "Lng": -98.589681,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "1"
+    },
+    {
+      "Stop Name": "UNIVERSITY HOSPITAL STATION",
+      "Stop Number": "10803",
+      "Lat": 29.509383,
+      "Lng": -98.576766,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "2"
+    },
+    {
+      "Stop Name": "EWING HALSELL STATION",
+      "Stop Number": "10703",
+      "Lat": 29.510371,
+      "Lng": -98.571455,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "3"
+    },
+    {
+      "Stop Name": "CALLAGHAN STATION",
+      "Stop Number": "10603",
+      "Lat": 29.502198,
+      "Lng": -98.559947,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "4"
+    },
+    {
+      "Stop Name": "FREDERICKSBURG RD. & LAKERIDGE",
+      "Stop Number": "29653",
+      "Lat": 29.497751,
+      "Lng": -98.556354,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "5"
+    },
+    {
+      "Stop Name": "CROSSROADS STATION",
+      "Stop Number": "10503",
+      "Lat": 29.488762,
+      "Lng": -98.550347,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "6"
+    },
+    {
+      "Stop Name": "FREDERICKSBURG RD. & ALTGELT",
+      "Stop Number": "53243",
+      "Lat": 29.485182,
+      "Lng": -98.546753,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "7"
+    },
+    {
+      "Stop Name": "DE CHANTLE STATION",
+      "Stop Number": "10403",
+      "Lat": 29.479938,
+      "Lng": -98.541664,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "8"
+    },
+    {
+      "Stop Name": "BABCOCK STATION",
+      "Stop Number": "10303",
+      "Lat": 29.471673,
+      "Lng": -98.533455,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "9"
+    },
+    {
+      "Stop Name": "MARY LOUISE STATION",
+      "Stop Number": "10203",
+      "Lat": 29.464821,
+      "Lng": -98.526346,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "10"
+    },
+    {
+      "Stop Name": "HUISACHE STATION",
+      "Stop Number": "10103",
+      "Lat": 29.455757,
+      "Lng": -98.5176,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "11"
+    },
+    {
+      "Stop Name": "MARTIN & N. FRIO",
+      "Stop Number": "76759",
+      "Lat": 29.430081,
+      "Lng": -98.503058,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "12"
+    },
+    {
+      "Stop Name": "Medina opposite W. Houston (Stop J)",
+      "Stop Number": "61637",
+      "Lat": 29.427229,
+      "Lng": -98.504984,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "13"
+    },
+    {
+      "Stop Name": "BUENA VISTA & PECOS",
+      "Stop Number": "86883",
+      "Lat": 29.424703,
+      "Lng": -98.501748,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "14"
+    },
+    {
+      "Stop Name": "Dolorosa Between San Saba & Santa Rosa",
+      "Stop Number": "87823",
+      "Lat": 29.424365,
+      "Lng": -98.499317,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "15"
+    },
+    {
+      "Stop Name": "DOLOROSA & S. MAIN",
+      "Stop Number": "89913",
+      "Lat": 29.424091,
+      "Lng": -98.493969,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "16"
+    },
+    {
+      "Stop Name": "MARKET & S. ST. MARY'S",
+      "Stop Number": "89963",
+      "Lat": 29.423983,
+      "Lng": -98.491712,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "17"
+    },
+    {
+      "Stop Name": "MARKET & ALAMO - 150 FT. WEST",
+      "Stop Number": "91383",
+      "Lat": 29.423,
+      "Lng": -98.487921,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "18"
+    },
+    {
+      "Stop Name": "MARKET/ FRONT OF CONVENTION CENTER",
+      "Stop Number": "92453",
+      "Lat": 29.422531,
+      "Lng": -98.485808,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "19"
+    },
+    {
+      "Stop Name": "CHESTNUT AT ELLIS ALLEY PARK & RIDE",
+      "Stop Number": "93296",
+      "Lat": 29.423064,
+      "Lng": -98.479863,
+      "route": "Route 100 (reverse)",
+      "Order on Route": "20"
+    }
   ]
 }
