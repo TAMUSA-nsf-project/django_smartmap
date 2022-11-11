@@ -5,7 +5,7 @@ steps:
       - build
       - '--no-cache'
       - '-t'
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME'
       - .
       - '-f'
       - Dockerfile
@@ -15,7 +15,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME'
     id: Push
 
 # 2. Make migrations
