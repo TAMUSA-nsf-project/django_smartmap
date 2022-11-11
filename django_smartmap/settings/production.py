@@ -24,7 +24,7 @@ if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     )
 
     env.read_env(io.StringIO(payload))
-    print("Loaded secret settings")
+    print("Loaded secret settings" + name)
 else:
     raise Exception(
         "No GOOGLE_CLOUD_PROJECT detected. No secrets found."
@@ -45,7 +45,7 @@ if CLOUDRUN_SERVICE_URL:
     CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL, DOMAIN_URL, "https://mysmartsa.com" ]
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
+print(ALLOWED_HOSTS,)
 INSTALLED_APPS += ['storages']
 
 # Database
