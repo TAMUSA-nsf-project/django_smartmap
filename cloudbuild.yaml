@@ -78,7 +78,7 @@ steps:
 
 # Store images in Google Artifact Registry
 images:
-  - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+  - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME'
 logsBucket: 'perf-log-bucket-smartmap'
 options:
   logging: GCS_ONLY
