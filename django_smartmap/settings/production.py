@@ -52,7 +52,15 @@ INSTALLED_APPS += ['storages']
 # Database
 # Use django-environ to parse the connection string
 # DATABASE_URL=psql://<username>:<password>@<host>:<port>/<database_name>
-DATABASES = {"default": env.db()}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME_DJANGO'),
+        'USER': env('DB_USER_DJANGO'),
+        'PASSWORD': env('DB_PASSWORD_DJANGO'),
+        'HOST': env('CLOUD_SQL_INSTANCE_IP'),
+        'PORT': 5432,
+    }}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
