@@ -15,5 +15,6 @@ ENV PYTHONUNBUFFERED 1
 
 USER django-user
 
+EXPOSE 80
 # Gunicorn as app server
-CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 --timeout 0 django_smartmap.wsgi:application
+CMD exec gunicorn --bind :80 --workers 1 --threads 8 --timeout 0 django_smartmap.wsgi:application
