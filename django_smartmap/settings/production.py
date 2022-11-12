@@ -1,7 +1,7 @@
 from .defaults import *
 import io
 from google.cloud import secretmanager
-import  google.auth
+import google.auth
 from urllib.parse import urlparse
 
 DEBUG = os.getenv("DEBUG", default="False") == "True"
@@ -42,10 +42,10 @@ CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
 DOMAIN_URL = "https://www.mysmartsa.com"
 if CLOUDRUN_SERVICE_URL:
     ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc, urlparse(DOMAIN_URL).netloc, 'mysmartsa.com']
-    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL, DOMAIN_URL, "https://mysmartsa.com" ]
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-print(ALLOWED_HOSTS,)
+    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL, DOMAIN_URL, "https://mysmartsa.com", '35.202.39.14']
+    # SECURE_SSL_REDIRECT = True
+    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+print(ALLOWED_HOSTS, )
 INSTALLED_APPS += ['storages']
 
 # Database
@@ -71,7 +71,6 @@ GOOGLE_MAP_API_KEY = env("GOOGLE_MAP_API_KEY")
 
 # For the server-side Python Client for Google Maps Services (an unrestricted key, as required)
 GOOGLE_PYTHON_API_KEY = env("GOOGLE_PYTHON_API_KEY")
-
 
 """
 TWILIO API KEYS
