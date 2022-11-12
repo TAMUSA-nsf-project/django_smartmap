@@ -66,16 +66,16 @@ steps:
 #    id: Collect static
 
 #   4. Deploy to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    args:
-      - 'compute'
-      - 'instances'
-      - 'update-container'
-      - 'instance-1'
-      - '--container-image'
-      - 'us-central1-docker.pkg.dev/nsf-2131193-18902/smart-map-docker-registry-perf/django-smartmap-perf:latest'
-    id: update-container
-    entrypoint: gcloud
+#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+#    args:
+#      - 'compute'
+#      - 'instances'
+#      - 'update-container'
+#      - 'instance-1'
+#      - '--container-image'
+#      - 'us-central1-docker.pkg.dev/nsf-2131193-18902/smart-map-docker-registry-perf/django-smartmap-perf:latest'
+#    id: update-container
+#    entrypoint: gcloud
 
 # Store images in Google Artifact Registry
 images:
