@@ -24,7 +24,7 @@ if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     )
 
     env.read_env(io.StringIO(payload))
-    print("Loaded secret settings" + name)
+    print("Loaded secret settings" + name + env("CLOUDRUN_SERVICE_URL", default=None))
 else:
     raise Exception(
         "No GOOGLE_CLOUD_PROJECT detected. No secrets found."
