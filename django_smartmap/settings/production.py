@@ -15,9 +15,9 @@ except google.auth.exceptions.DefaultCredentialsError:
 # Use GCP secret manager in prod mode
 if os.getenv("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
-
+    service_type = os.getenv("GOOGLE_CLOUD_SERVICE_TYPE", default="AE")
     client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.getenv("SETTINGS_NAME", "application_settings")
+    settings_name = os.getenv("SETTINGS_NAME", f"application_settings{service_type}")
     name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
     payload = client.access_secret_version(name=name).payload.data.decode(
         "UTF-8"
