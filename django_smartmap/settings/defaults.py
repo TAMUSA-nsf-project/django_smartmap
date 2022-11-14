@@ -124,8 +124,8 @@ LOGIN_REDIRECT_URL = 'main:index'  # needed to get the currently used login page
 """
 Security
 """
-CSRF_COOKIE_HTTPONLY = True  # for httponly alert
-SESSION_COOKIE_SECURE = True  # cookie secure
+CSRF_COOKIE_HTTPONLY = False  # for httponly alert
+SESSION_COOKIE_SECURE = False  # cookie secure
 SECURE_CONTENT_TYPE_NOSNIFF = True
 # CSRF_COOKIE_SECURE = True  # to avoid transmitting the CSRF cookie over HTTP accidentally.
 # SECURE_BROWSER_XSS_FILTER = True
