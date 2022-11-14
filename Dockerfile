@@ -17,3 +17,5 @@ USER django-user
 
 # Gunicorn as app server
 CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 --timeout 0 django_smartmap.wsgi:application
+
+#sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080

@@ -130,9 +130,9 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # CSRF_COOKIE_SECURE = True  # to avoid transmitting the CSRF cookie over HTTP accidentally.
 # SECURE_BROWSER_XSS_FILTER = True
 
-CSP_DEFAULT_SRC = ("'self'", '')
+CSP_DEFAULT_SRC = ("'self'", "http://34.27.220.169")
 
-CSP_STYLE_SRC = ("'self'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
                  'cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css',
                  'polyfill.io/v3/polyfill.min.js', 'fonts.googleapis.com',
                  'cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 'storage.googleapis.com')
