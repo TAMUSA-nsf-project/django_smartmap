@@ -16,4 +16,4 @@ ENV PYTHONUNBUFFERED 1
 USER django-user
 
 # Gunicorn as app server
-CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 --timeout 0 django_smartmap.wsgi:application
+CMD exec gunicorn --certfile=./SSLCert.crt --keyfile=./SSLCert.key --bind 0.0.0.0:443 --workers 1 --threads 8 --timeout 0 django_smartmap.wsgi:application
