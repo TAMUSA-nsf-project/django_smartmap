@@ -5,7 +5,7 @@ import google.auth
 from urllib.parse import urlparse
 
 DEBUG = os.getenv("DEBUG", default="False") == "True"
-DEBUG = True
+# DEBUG = True
 
 # Attempt to load the Project ID into the environment, safely failing on error.
 try:
@@ -43,10 +43,10 @@ CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
 DOMAIN_URL = "https://www.mysmartsa.com"
 if CLOUDRUN_SERVICE_URL:
     ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
-    CSRF_TRUSTED_ORIGINS = ['*']
+    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
     # SECURE_SSL_REDIRECT = True
     # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-print(ALLOWED_HOSTS, )
+print(ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS )
 INSTALLED_APPS += ['storages']
 
 # Database
