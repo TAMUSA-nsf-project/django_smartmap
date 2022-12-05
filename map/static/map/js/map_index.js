@@ -1,6 +1,14 @@
 // the following are variables accessible anywhere in the script (script vars)
 let map;
+
 let mapRouteMarkers = {};  // object to hold routes and their google.maps.Marker instances
+// 3 December 2022
+// So it turns out that javascripts already share variables.
+// No idea why or how.
+// I spent hours trying to find a way to share mapRouteMarkers
+// with offcanvas.js, but is already done. Cool.
+// - Emmer
+
 let mapRoutePolylinePaths = {};  // object to hold routes and their DirectionsService polyline paths
 let displayedRoute = ""  // ID of currently displayed route
 
@@ -125,6 +133,16 @@ function RouteDropdown(map) {
             }
 
         }
+
+        // generateStopInfoContainer() located in ./offcanvas.js
+        // document.getElementById("leftOffcanvasAccordion").appendChild(
+        //     generateStopInfoContainer(
+        //         mapRouteMarkers[key][0].number,
+        //         mapRouteMarkers[key][0].name,
+        //         mapRouteMarkers[key][0].est_arrival,
+        //         mapRouteMarkers[key][0].scheduled_arrival
+        //     )
+        // )
 
         li.appendChild(li_button);
         listItems.appendChild(li);     // append li to ul.
