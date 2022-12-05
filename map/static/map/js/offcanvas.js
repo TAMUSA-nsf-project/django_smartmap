@@ -8,22 +8,31 @@
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
+    // Generate placeholder bars while async
     let aRoutesAccordionInfo = createAccordionElement(
         "route" + key,
         ALL_ACTIVE_ROUTES[key],
         generateBusStopPlaceholder()
     )
 
-    aRoutesAccordionInfo.onclick = () => {
-        if (mapRouteMarkers[key]) {
-            hideDisplayedMarkers()
+    aRoutesAccordionInfo.querySelector("#accordionHeader_route" + key).onclick = () => {
+        if (mapRouteMarkers[key]) {     // mapRouteMarkers is from map_index.js
+            hideDisplayedMarkers()      // Same with these three functions
             showRouteMarkers(key)
             getActiveBussesOnSelectedRoute()
+
+
         } else {
             initRouteMarkers(key).then((res) => {
                 hideDisplayedMarkers()
                 showRouteMarkers(key)
                 getActiveBussesOnSelectedRoute()
+
+                // Route bus stop info generated at initRouteMarkers().
+                // Remove placeholders and display bus stops.
+                const routeAccordion = document.getElementById("accordionBody_route" + key);
+                routeAccordion.removeChild( document.getElementById("busStopInfoPlaceholder") );
+                routeAccordion.appendChild( createBusStopInfoOfRoute( key ) );
             });
         }
     }
@@ -55,7 +64,7 @@ function createAccordionElement( id, label, content )
     header.className   = "accordion-header";
     button.className   = "accordion-button collapsed";
     collapse.className = "accordion-collapse collapse";
-    body.className     = "accordion-body";
+    body.className     = "accordion-body accordion-body-route";
 
     item.setAttribute("id", "accordionItem_" + id)
     header.setAttribute("id", "accordionHeader_" + id);
@@ -94,46 +103,32 @@ function createAccordionElement( id, label, content )
     RETURNS:
         a div element
  */
-function createBusStopInfoForOffcanvasAccordionBody( routeId )
+function createBusStopInfoOfRoute( routeId )
 {
-    jQuery.ajax({
-        url: ROUTE_DETAILS,
-        data: {'data': JSON.stringify(routeId)},
-        type: "GET",
-        dataType: 'json',
-        success: (data) => {
-            if (data) {
-                console.log(data)
-                const returnDiv = document.createElement("div");
-                console.log("beep");
-                data.all_stops.forEach((busStop) => {
-                    //mapRouteMarkers[route_id].push(new BusStop(busStop));
-                    const busStopInfoContainer = generateStopInfoContainer(
-                        busStop.BusStopIndex,
-                        busStop.BusStopName,
-                        "Estimated Arrival Time: " + defaultTimeString,
-                        "Scheduled Arrival Time: " + defaultTimeString
-                    );
-                    returnDiv.appendChild( busStopInfoContainer );
-                })
+    routeId = parseInt( routeId );
 
-                return returnDiv;
-            } else
-                console.log("No stops found for the given route.")
-            resolve("Resolved")
-        },
-        error: (e) => {
-            console.log(e.message)
-            reject("rejected")
-        }
+    const container = document.createElement("div");
+        container.className = "container bus-stop-container";
+        container.setAttribute("aria-hidden", "true");
+
+    // A aBusStop is a BusStop object instance. The class is located in map_index.js
+    mapRouteMarkers[routeId].forEach( aBusStop =>
+    {
+        container.appendChild( generateStopInfoContainer(
+            aBusStop.number,
+            aBusStop.name,
+            aBusStop.scheduled_arrival,
+            aBusStop.est_arrival
+        ) );
     });
 
+    return container;
 }
 
 /*
     Creates a container(div) of info on a singular bus stop.
  */
-function generateStopInfoContainer( stopNumber, stopName, estTime, schTime )
+function generateStopInfoContainer( stopNumber, stopName, schTime, estTime )
 {
     const container = document.createElement("div");
     const row       = document.createElement("div");
@@ -142,23 +137,23 @@ function generateStopInfoContainer( stopNumber, stopName, estTime, schTime )
     const stopDiv   = document.createElement("div");    // Bus stop info container
     const stopNameDiv   = document.createElement("div");
     const stopNumberDiv = document.createElement("div");
-    const estTimeDiv    = document.createElement("div");    // Estimated time
     const schTimeDiv    = document.createElement("div");    // Scheduled time
+    const estTimeDiv    = document.createElement("div");    // Estimated time
 
-    container.className = "container bus-stop-container";
+    container.className = "container";
         container.setAttribute("id", stopNumber);
         row.className = "row";
             bPointDiv.className = "col-1 bus-stop-bullet-point";
                 bPointImg.className = "fa fa-circle";   // Icon provided by FontAwesome 4.7.0
             stopDiv.className = "col-10";
                 stopNameDiv.className = "row";
-                    stopNameDiv.innerHTML = stopName;
+                    stopNameDiv.innerHTML = "<strong>" + stopName + "</strong>";
                 stopNumberDiv.className = "row";
-                    stopNumberDiv.innerHTML = stopNumber;
-                estTimeDiv.className  = "row";
-                    estTimeDiv.innerHTML = estTime;
+                    stopNumberDiv.innerHTML = "Stop #: " + stopNumber;
                 schTimeDiv.className  = "row";
-                    schTimeDiv.innerHTML = schTime;
+                    schTimeDiv.innerHTML = "Scheduled Arrival: " + schTime;
+                estTimeDiv.className  = "row";
+                    estTimeDiv.innerHTML = "Estimated Arrival: " + estTime;
 
     container.appendChild( row );
         row.appendChild( bPointDiv );
@@ -166,8 +161,8 @@ function generateStopInfoContainer( stopNumber, stopName, estTime, schTime )
         row.appendChild( stopDiv );
             stopDiv.appendChild( stopNameDiv );
             stopDiv.appendChild( stopNumberDiv );
-            stopDiv.appendChild( estTimeDiv );
             stopDiv.appendChild( schTimeDiv );
+            stopDiv.appendChild( estTimeDiv );
 
     return container;
 }
@@ -175,9 +170,9 @@ function generateStopInfoContainer( stopNumber, stopName, estTime, schTime )
 function generateBusStopPlaceholder()
 {
     const container = document.createElement("div");
-
-    container.className = "container bus-stop-container";
-    container.setAttribute("aria-hidden", "true");
+        container.className = "container bus-stop-container";
+        container.setAttribute("aria-hidden", "true");
+        container.setAttribute("id", "busStopInfoPlaceholder")
 
     const placeholder       = document.createElement("p");
     placeholder.className = "placeholder-glow";
