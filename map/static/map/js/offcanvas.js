@@ -5,6 +5,8 @@
     - Emmer
  */
 
+let currentlyViewedRoute = -1;
+
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
@@ -12,15 +14,23 @@ for( let key in ALL_ACTIVE_ROUTES )
     let aRoutesAccordionInfo = createAccordionElement(
         "route" + key,
         ALL_ACTIVE_ROUTES[key],
-        generateBusStopPlaceholder()
+        generateBusStopPlaceholder( key )
     )
 
     aRoutesAccordionInfo.querySelector("#accordionHeader_route" + key).onclick = () => {
+        console.log("curr: " + currentlyViewedRoute + "\n key: " + key )
+        // This will prevent route info from being polled again when closing
+        // the currently open accordion.
+        if ( currentlyViewedRoute == key )
+        {
+            return;
+        }
+        currentlyViewedRoute = key;
+
         if (mapRouteMarkers[key]) {     // mapRouteMarkers is from map_index.js
             hideDisplayedMarkers()      // Same with these three functions
             showRouteMarkers(key)
             getActiveBussesOnSelectedRoute()
-
 
         } else {
             initRouteMarkers(key).then((res) => {
@@ -31,7 +41,7 @@ for( let key in ALL_ACTIVE_ROUTES )
                 // Route bus stop info generated at initRouteMarkers().
                 // Remove placeholders and display bus stops.
                 const routeAccordion = document.getElementById("accordionBody_route" + key);
-                routeAccordion.removeChild( document.getElementById("busStopInfoPlaceholder") );
+                routeAccordion.removeChild( document.getElementById("busStopInfoPlaceholder_route" + key) );
                 routeAccordion.appendChild( createBusStopInfoOfRoute( key ) );
             });
         }
@@ -107,28 +117,78 @@ function createBusStopInfoOfRoute( routeId )
 {
     routeId = parseInt( routeId );
 
-    const container = document.createElement("div");
-        container.className = "container bus-stop-container";
-        container.setAttribute("aria-hidden", "true");
+    const listGroup = document.createElement("div");
+        listGroup.className = "list-group";
+        //listGroup.setAttribute("aria-current", "true");
 
     // A aBusStop is a BusStop object instance. The class is located in map_index.js
     mapRouteMarkers[routeId].forEach( aBusStop =>
     {
-        container.appendChild( generateStopInfoContainer(
-            aBusStop.number,
-            aBusStop.name,
-            aBusStop.scheduled_arrival,
-            aBusStop.est_arrival
-        ) );
+        listGroup.appendChild(
+            generateStopInfoContainer(
+                aBusStop.number,
+                aBusStop.name,
+                aBusStop.scheduled_arrival,
+                aBusStop.marker
+            )
+        );
     });
 
-    return container;
+    return listGroup;
+}
+
+function generateStopInfoContainer( stopNumber, stopName, schTime, marker )
+{
+    const listGroupItem = document.createElement("a");
+    const topRow        = document.createElement("div");
+    const stopNameLabel     = document.createElement("strong");
+    const stopNumberLabel   = document.createElement("small");
+    const schTimeLabel  = document.createElement("p");
+    const estTimeLabel  = document.createElement("p");
+
+    listGroupItem.className = "list-group-item list-group-item-action";
+    listGroupItem.setAttribute("id", stopNumber);
+    //listGroupItem.setAttribute("aria-current", "true");
+
+    topRow.className = "d-flex w-100 justify-content-between";
+    stopNameLabel.className = "mb-1";
+    stopNumberLabel.className = "";
+    schTimeLabel.className = "mb-1";
+    estTimeLabel.className = "mb-1 invisible";
+
+    stopNameLabel.innerHTML = stopName;
+    stopNumberLabel.innerHTML = "#" + stopNumber;
+    schTimeLabel.innerHTML = "Scheduled Arrival: " + schTime;
+    estTimeLabel.innerHTML = "Calculating estimated arrival... ";
+
+    const spinnerGIF                = document.createElement("div");
+    const spinTextForScreenReaders  = document.createElement("span");
+    spinnerGIF.className = "spinner-border spinner-border-sm";
+    spinnerGIF.setAttribute("role", "status");
+    spinTextForScreenReaders.className = "visually-hidden";
+    spinTextForScreenReaders.innerHTML = "Loading...";
+    spinnerGIF.appendChild( spinTextForScreenReaders );
+    estTimeLabel.appendChild(spinnerGIF);
+
+    listGroupItem.appendChild( topRow );
+        topRow.appendChild( stopNameLabel );
+        topRow.appendChild( stopNumberLabel );
+    listGroupItem.appendChild( schTimeLabel );
+    listGroupItem.appendChild( estTimeLabel );
+
+    listGroupItem.onclick = () =>
+    {
+        map.panTo( marker.getPosition() );
+        estTimeLabel.className = "mb-1";
+    }
+
+    return listGroupItem;
 }
 
 /*
     Creates a container(div) of info on a singular bus stop.
  */
-function generateStopInfoContainer( stopNumber, stopName, schTime, estTime )
+function generateStopInfoContainer_old( stopNumber, stopName, schTime, estTime )
 {
     const container = document.createElement("div");
     const row       = document.createElement("div");
@@ -167,12 +227,12 @@ function generateStopInfoContainer( stopNumber, stopName, schTime, estTime )
     return container;
 }
 
-function generateBusStopPlaceholder()
+function generateBusStopPlaceholder( key )
 {
     const container = document.createElement("div");
         container.className = "container bus-stop-container";
         container.setAttribute("aria-hidden", "true");
-        container.setAttribute("id", "busStopInfoPlaceholder")
+        container.setAttribute("id", "busStopInfoPlaceholder_route" + key)
 
     const placeholder       = document.createElement("p");
     placeholder.className = "placeholder-glow";
