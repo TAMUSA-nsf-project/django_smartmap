@@ -157,7 +157,16 @@ function generateStopInfoContainer( aBusStop )
     listGroupItem.onclick = () =>
     {
         map.panTo( aBusStop.marker.getPosition() );
-        aBusStop.marker.setAnimation( google.maps.Animation.BOUNCE );
+
+        if( aBusStop.marker.getAnimation() === null )
+        {
+            aBusStop.marker.setAnimation( google.maps.Animation.BOUNCE );
+            setTimeout( function(){
+                aBusStop.marker.setAnimation( null );
+            }
+            , 2000)
+        }
+
 
         // This BusStop object has no scheduled time nor estimated time. The assumed reason is
         // that this information has not been requested yet from the server.

@@ -395,6 +395,7 @@ class BusStop {
                 fontWeight: "bold"
             },
             icon: svgMarker,
+            animation: null,
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
