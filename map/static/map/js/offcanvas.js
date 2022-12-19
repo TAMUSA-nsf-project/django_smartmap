@@ -125,61 +125,95 @@ function createBusStopInfoOfRoute( routeId )
     mapRouteMarkers[routeId].forEach( aBusStop =>
     {
         listGroup.appendChild(
-            generateStopInfoContainer(
-                aBusStop.number,
-                aBusStop.name,
-                aBusStop.scheduled_arrival,
-                aBusStop.marker
-            )
+            generateStopInfoContainer( aBusStop )
         );
     });
 
     return listGroup;
 }
 
-function generateStopInfoContainer( stopNumber, stopName, schTime, marker )
+function generateStopInfoContainer( aBusStop )
 {
     const listGroupItem = document.createElement("a");
     const topRow        = document.createElement("div");
     const stopNameLabel     = document.createElement("strong");
     const stopNumberLabel   = document.createElement("small");
-    const schTimeLabel  = document.createElement("p");
-    const estTimeLabel  = document.createElement("p");
 
     listGroupItem.className = "list-group-item list-group-item-action";
-    listGroupItem.setAttribute("id", stopNumber);
+    listGroupItem.setAttribute("id", aBusStop.number);
     //listGroupItem.setAttribute("aria-current", "true");
 
     topRow.className = "d-flex w-100 justify-content-between";
     stopNameLabel.className = "mb-1";
     stopNumberLabel.className = "";
-    schTimeLabel.className = "mb-1";
-    estTimeLabel.className = "mb-1 invisible";
 
-    stopNameLabel.innerHTML = stopName;
-    stopNumberLabel.innerHTML = "#" + stopNumber;
-    schTimeLabel.innerHTML = "Scheduled Arrival: " + schTime;
-    estTimeLabel.innerHTML = "Calculating estimated arrival... ";
-
-    const spinnerGIF                = document.createElement("div");
-    const spinTextForScreenReaders  = document.createElement("span");
-    spinnerGIF.className = "spinner-border spinner-border-sm";
-    spinnerGIF.setAttribute("role", "status");
-    spinTextForScreenReaders.className = "visually-hidden";
-    spinTextForScreenReaders.innerHTML = "Loading...";
-    spinnerGIF.appendChild( spinTextForScreenReaders );
-    estTimeLabel.appendChild(spinnerGIF);
+    stopNameLabel.innerHTML = "(" + aBusStop.index + ") " + aBusStop.name;
+    stopNumberLabel.innerHTML = "#" + aBusStop.number;
 
     listGroupItem.appendChild( topRow );
         topRow.appendChild( stopNameLabel );
         topRow.appendChild( stopNumberLabel );
-    listGroupItem.appendChild( schTimeLabel );
-    listGroupItem.appendChild( estTimeLabel );
 
     listGroupItem.onclick = () =>
     {
-        map.panTo( marker.getPosition() );
-        estTimeLabel.className = "mb-1";
+        map.panTo( aBusStop.marker.getPosition() );
+        aBusStop.marker.setAnimation( google.maps.Animation.BOUNCE );
+
+        // This BusStop object has no scheduled time nor estimated time. The assumed reason is
+        // that this information has not been requested yet from the server.
+        if( aBusStop.scheduled_arrival === defaultTimeString || aBusStop.est_arrival === defaultTimeString )
+        {
+            // So, tell the user that the info is being retrieved.
+            const arrivalPlaceholder = document.createElement("p");
+                arrivalPlaceholder.setAttribute("id", "arrivalPlaceholder");
+                arrivalPlaceholder.innerHTML = "Retrieving arrival times... ";
+
+            const spinnerGIF = document.createElement("div");
+                spinnerGIF.className = "spinner-border spinner-border-sm";
+                spinnerGIF.setAttribute("role", "status");
+
+            const spinTextForScreenReaders = document.createElement("span");
+                spinTextForScreenReaders.className = "visually-hidden";
+                spinTextForScreenReaders.innerHTML = "Loading...";
+
+            spinnerGIF.appendChild( spinTextForScreenReaders );
+            arrivalPlaceholder.appendChild( spinnerGIF );
+
+            listGroupItem.appendChild( arrivalPlaceholder );
+
+            // Then begin the retrieval process
+            aBusStop.updateArrivalInfo().then( (res) => {
+
+                // Check if this is the first time the arrivals are requested for this bus stop.
+                // If so, generate <p> elements that will contain that info.
+                if( listGroupItem.querySelector("#arrivalTimes") === null )
+                {
+                    const arrivalTimes = document.createElement("p");
+                        arrivalTimes.setAttribute("id", "arrivalTimes");
+                    const estArrival = document.createElement("p");
+                        estArrival.setAttribute("id", "estArrival");
+                    const schArrival = document.createElement("p");
+                        schArrival.setAttribute("id", "schArrival");
+
+                    arrivalTimes.appendChild( schArrival );
+                    arrivalTimes.appendChild( estArrival );
+                    listGroupItem.appendChild( arrivalTimes );
+                }
+
+                // .callbackMethod() has already updated the BusStop object's
+                // .scheduled_arrival and .est_arrival data members by this point.
+                // All that needs to be done is display them.
+                listGroupItem.querySelector("#estArrival").innerHTML = "<small>Estimated Arrival Time</small><br />" + aBusStop.est_arrival;
+                listGroupItem.querySelector("#schArrival").innerHTML = "<small>Scheduled Arrival Time</small><br />" + aBusStop.scheduled_arrival;
+
+                listGroupItem.querySelector("#arrivalPlaceholder").remove();
+
+            });
+
+
+        }
+
+
     }
 
     return listGroupItem;

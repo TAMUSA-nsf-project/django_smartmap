@@ -246,6 +246,61 @@ class BusStop {
         return message
     }
 
+    /**
+     * Updates this object's scheduled_arrival and est_arrival through jQuery.ajax.
+     * Returns a Promise (basically, a function that can succeed or fail, but will
+     * at least return something.)
+     * Note that this function is just callbackMethod() without the .refreshContentWindow() part.
+     */
+    updateArrivalInfo()
+    {
+        const toSend = {
+            'route': this.routeId,
+            'bus_stop_id': this.number,
+            'calc_schedule': this.scheduled_arrival === defaultTimeString ? 1 : 0
+        }
+
+        return new Promise(( resolve, reject ) => {
+            jQuery.ajax({
+                url: AJAX_EST_ARRIVAL_URL,  //TODO setup url (10 Dec 2022 - Has this been completed? -Emmer)
+                data: { 'data': JSON.stringify(toSend) },
+                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                // server-side, hence the object defined here
+                type: "GET",
+                //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
+                success: (data) =>
+                {
+                    if (data) {
+                        // console.log(data)
+                        if (data['est_arrival'] !== '') {
+                            if (this.est_arrival === defaultTimeString) {
+                                // Reset the scheduled arrival string. This scenario will happen if there were no buses available
+                                // on the route when the info window was opened.
+                                this.scheduled_arrival = defaultTimeString
+                            }
+                            this.est_arrival = data['est_arrival'];
+                        } else
+                            this.est_arrival = defaultTimeString;
+
+                        if (data['scheduled_arrival'] !== '')
+                            this.scheduled_arrival = data['scheduled_arrival']
+                    } else {
+                        this.est_arrival = defaultTimeString
+                        this.scheduled_arrival = defaultTimeString
+                    }
+                    resolve("Resolved");
+                },
+                error: (e) =>
+                {
+                    console.log( e );
+                    reject("An internal error has occurred.");
+                }
+            }); // End of ajax
+        });  // End of Promise
+    }
+
+
     callBackMethod() {
 
         const toSend = {
