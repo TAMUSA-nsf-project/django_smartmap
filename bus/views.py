@@ -222,6 +222,9 @@ def bus_position_ajax(request):
         new_transit_log_entry.longitude = bus_lng
         new_transit_log_entry.save()
 
+        # Update latest route stop index
+        bus.updateLatestRouteStopIndex()
+
         return HttpResponse(f"Success")
     else:
         return HttpResponse("Error: Didn't receive data.")

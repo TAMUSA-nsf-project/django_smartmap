@@ -7,6 +7,8 @@ from django.conf import settings
 import googlemaps
 from googlemaps.directions import directions
 
+from geopy.distance import distance as geopy_distance
+
 DEFAULT_COLOR_CODE = "#FF0000"
 
 gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
@@ -26,6 +28,7 @@ class Bus(models.Model):
     end_time = models.DateTimeField(default=None, blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
+    latest_route_stop_index = models.PositiveSmallIntegerField(default=1)
 
     def getBusColorStaticUrl(self) -> str:
         """
@@ -42,6 +45,32 @@ class Bus(models.Model):
 
     def getCoordinates(self):
         return self.getLatLngTuple()
+
+    def getNearestRouteStopIndex(self, start_index=1):
+        """
+        Use geopy to loop through the bus stops in the current route for the nearest stop within 50 meters and return
+        its index, otherwise return -1.
+        """
+
+        if start_index < 1:
+            raise ValueError("Route indexing starts at 1")
+
+        bus_route_details = self.route.busroutedetails_set.all()
+        for i in range(start_index - 1, len(bus_route_details)):
+            brd_obj = bus_route_details[i]
+            bus_stop = brd_obj.bus_stop
+            dist_between = geopy_distance(self.getCoordinates(), bus_stop.getCoordinates()).m
+            if dist_between < 50:
+                return brd_obj.route_index
+        return -1
+
+    def updateLatestRouteStopIndex(self):
+        """
+        Updates latest_route_stop_index field using getNearestRouteStopIndex
+        """
+        nearest_route_stop_index = self.getNearestRouteStopIndex(self.latest_route_stop_index)
+        if nearest_route_stop_index > -1 and nearest_route_stop_index != self.latest_route_stop_index:
+            self.latest_route_stop_index = nearest_route_stop_index
 
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
