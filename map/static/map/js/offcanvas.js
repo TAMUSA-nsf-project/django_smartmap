@@ -6,6 +6,7 @@
  */
 
 let currentlyViewedRoute = -1;
+let routesOffcanvasBody = document.getElementById("routes-offcanvas-body")
 
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
@@ -18,7 +19,6 @@ for( let key in ALL_ACTIVE_ROUTES )
     )
 
     aRoutesAccordionInfo.querySelector("#accordionHeader_route" + key).onclick = () => {
-        console.log("curr: " + currentlyViewedRoute + "\n key: " + key )
         // This will prevent route info from being polled again when closing
         // the currently open accordion.
         if ( currentlyViewedRoute == key )

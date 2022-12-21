@@ -408,7 +408,7 @@ class BusStop {
             // Set the current object as the active marker object
             activeMarkerObj = this
 
-            //TODO Set the map view to the selected bus stop location
+            // Set the map view to the selected bus stop location   (19 Dec 2022: Done. -Emmer)
         })
 
         this.marker = marker;
