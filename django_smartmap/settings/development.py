@@ -8,7 +8,7 @@ env.read_env(env_file=os.path.join(BASE_DIR, "env", "local.env"))
 
 SECRET_KEY = os.getenv("SECRET_KEY", "NoxUmTUaQ7BvTPxIlKaQTTQvHS3aQBO3aV5zBKqrHuP6gZyyYZ")
 
-INSTALLED_APPS += ['sslserver']
+INSTALLED_APPS += ['sslserver', 'django_q']
 ALLOWED_HOSTS = ['*']
 
 # Database
@@ -57,3 +57,11 @@ TWILIO
 """
 TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")
+
+
+"""
+DJANGO Q
+"""
+Q_CLUSTER = {
+    'timeout': 50  # timeout value must be less than 'retry' value, which defaults to 60
+}
