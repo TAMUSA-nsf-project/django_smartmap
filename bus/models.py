@@ -95,7 +95,7 @@ class BusRoute(models.Model):
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
 
         if not res:
-            raise ValueError("Directions Matrix API result is empty")
+            raise ValueError("DirectionsService API result is empty")
 
         class GmapsDirectionsServiceResult:
             def __init__(self):
