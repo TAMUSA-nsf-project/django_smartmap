@@ -72,6 +72,9 @@ class Bus(models.Model):
         if nearest_route_stop_index > -1 and nearest_route_stop_index != self.latest_route_stop_index:
             self.latest_route_stop_index = nearest_route_stop_index
 
+    def getBusRouteDetails(self):
+        return self.route.busroutedetails_set.all()
+
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
 
