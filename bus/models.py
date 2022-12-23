@@ -94,6 +94,9 @@ class BusRoute(models.Model):
         dest_coords = self.last_stop.getCoordinates()
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
 
+        if not res:
+            raise ValueError("Directions Matrix API result is empty")
+
         class GmapsDirectionsServiceResult:
             def __init__(self):
                 self._res = res
