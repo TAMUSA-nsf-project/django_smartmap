@@ -223,3 +223,18 @@ class TransitLogEntry(models.Model):
 
     def __str__(self):
         return f"{self.time_stamp}, Lat: {self.latitude}, Lng: {self.longitude}"
+
+
+# todo: these can be moved to a new app
+class BusArrivalLog(models.Model):
+    route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
+
+
+class BusArrivalLogEntry(models.Model):
+    bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
+    bus = models.ForeignKey("Bus", on_delete=models.DO_NOTHING)  # todo how will a bus be represented if instance is
+    # deleted?
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    bus_stop_id = models.PositiveIntegerField(default=None)
+    estimated_arrival_time = models.DateTimeField(default=None)
+    actual_arrival_time = models.DateTimeField(default=None)
