@@ -11,6 +11,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", "NoxUmTUaQ7BvTPxIlKaQTTQvHS3aQBO3aV5zBKqrHu
 INSTALLED_APPS += ['sslserver']
 ALLOWED_HOSTS = ['*']
 
+SYNC_BUS_SCHEDULES = env("SYNC_BUS_SCHEDULES")
+
 # Database
 DATABASES = {
     'default': {
