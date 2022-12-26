@@ -168,4 +168,4 @@ CSP_MANIFEST_SRC = ("'none'")
 CSP_MEDIA_SRC = ("'self'")
 
 
-SYNC_BUS_SCHEDULES = True
+SYNC_BUS_SCHEDULES = False
