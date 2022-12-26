@@ -56,18 +56,25 @@ def addRouteIfNotExist(bus_route: dict):
         busRoute.first_stop = BusStop.objects.get(stop_id=bus_route["first_stop"])
         busRoute.last_stop = BusStop.objects.get(stop_id=bus_route["last_stop"])
         busRoute.active = True
-        bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
-        busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
-        busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
+        try:
+            bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
+            busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
+            busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
+        except:
+            print(f'An error occurred while fetching the Google Maps Polyline. Route : {bus_route["name"]}')
+
         if busRoute.name in std_color_codes:
             busRoute.color_code = std_color_codes[busRoute.name]
         busRoute.save()
     elif not busRoute.gmaps_polyline_encoding or not busRoute.gmaps_polyline_bounds:
-        print("Adding gmaps polyline data.")
-        bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
-        busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
-        busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
-        busRoute.save()
+        print(f'Adding gmaps polyline data. Route : {bus_route["name"]}')
+        try:
+            bus_route_directions_service_result = busRoute.getGmapsDirectionsServiceResult()
+            busRoute.gmaps_polyline_encoding = bus_route_directions_service_result.getGmapsPolylineEncoding()
+            busRoute.gmaps_polyline_bounds = bus_route_directions_service_result.getGmapsPolylineBounds()
+            busRoute.save()
+        except:
+            print(f'An error occurred while fetching the Google Maps Polyline. Route : {bus_route["name"]}')
     else:
         print(f'Route {bus_route["name"]} exist in database.')
 
@@ -125,13 +132,14 @@ def addScheduleIfNotExist(route, schedules):
     from bus.models import BusStop, BusRoute, BusSchedule
 
     busRoute = BusRoute.objects.filter(name=route).first()
-    busStop = BusStop.objects.filter(stop_id=schedules[0]["bus_stop"]).first()
-    if busRoute and busStop:
+    if busRoute:
         for schedule in schedules:
-            if not BusSchedule.objects.filter(bus_route_id=busRoute.id,
-                                              bus_stop_id=busStop.id,
-                                              day_of_week=schedule["day_of_week"],
-                                              scheduled_time=get_scheduled_time(schedule["scheduled_time"])).exists():
+            busStop = BusStop.objects.filter(stop_id=schedule["bus_stop"]).first()
+            if busStop and not BusSchedule.objects.filter(bus_route_id=busRoute.id,
+                                                          bus_stop_id=busStop.id,
+                                                          day_of_week=schedule["day_of_week"],
+                                                          scheduled_time=get_scheduled_time(
+                                                              schedule["scheduled_time"])).exists():
                 print(f'Adding New Schedule for {get_scheduled_time(schedule["scheduled_time"])}')
                 newSchedule = BusSchedule()
                 newSchedule.bus_route = busRoute
@@ -148,4 +156,6 @@ def AddBusSchedules(sender, **kwargs):
         schedule_data = json.load(f)
     for route, schedules in schedule_data.items():
         print(f'Checking schedules for {route}')
+        # TODO: Introduce ENV variable
+        continue
         addScheduleIfNotExist(route, schedules)

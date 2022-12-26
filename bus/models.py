@@ -1,4 +1,5 @@
 import datetime
+import json
 import re
 from django.db import models
 from django.contrib.auth.models import User
@@ -94,18 +95,31 @@ class BusRoute(models.Model):
         dest_coords = self.last_stop.getCoordinates()
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
 
+        out_file = open("myfile.json", "a")
+
+        json.dump(res, out_file, indent=4)
+
+        out_file.close()
+
         if not res:
             raise ValueError("DirectionsService API result is empty")
 
         class GmapsDirectionsServiceResult:
+
             def __init__(self):
                 self._res = res
 
             def getGmapsPolylineEncoding(self) -> str:
                 """
                 Returns the ascii string encoding of the polyline calculated by Google's Directions Service API.
+                The directions result may return multiple results. We are interested in the TRANSIT part of it.
                 """
-                polyline_encoding = self._res[0]['overview_polyline']['points']
+                polyline_encoding = None
+                if self._res[0]['legs'] and self._res[0]['legs'][0]['steps']:
+                    for step in self._res[0]['legs'][0]['steps']:
+                        if step['travel_mode'] == 'TRANSIT':
+                            polyline_encoding = step['polyline']['points']
+                            break
                 if not polyline_encoding:
                     raise ValueError("BusRoute Gmaps polyline encoding is empty.")
                 return polyline_encoding
