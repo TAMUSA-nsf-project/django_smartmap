@@ -150,12 +150,14 @@ def addScheduleIfNotExist(route, schedules):
 
 
 def AddBusSchedules(sender, **kwargs):
+
+    if not settings.SYNC_BUS_SCHEDULES:
+        print("SYNC_BUS_SCHEDULES set to False. Skipping bus schedule sync")
+        return
     # Read json file with all the route data (bus stops and their lat, lng, etc)
     schedule_data = None
     with open(os.path.join(settings.BASE_DIR, "route_data/bus_schedules.json")) as f:
         schedule_data = json.load(f)
     for route, schedules in schedule_data.items():
         print(f'Checking schedules for {route}')
-        # TODO: Introduce ENV variable
-        continue
         addScheduleIfNotExist(route, schedules)

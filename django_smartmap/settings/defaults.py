@@ -166,3 +166,6 @@ CSP_OBJECT_SRC = ("'self'")
 CSP_FRAME_SRC = ("'self'", 'maps.google.com', 'maps.googleapis.com')
 CSP_MANIFEST_SRC = ("'none'")
 CSP_MEDIA_SRC = ("'self'")
+
+
+SYNC_BUS_SCHEDULES = True
