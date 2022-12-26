@@ -19,6 +19,10 @@ const defaultTimeString = "TBD";
 let poly, left, right;
 let directionsService;
 
+setTimeout(() => {
+    $("#loadingScreen").fadeOut("slow")
+}, 1250)
+
 /**
  * The CenterControl adds a control to the map that recenters the map on marker_coords
  * This constructor takes the control DIV as an argument.

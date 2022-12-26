@@ -12,9 +12,40 @@
         #map {
             height: 100vh; /* Google's suggested height of 100% may prevent map from displaying */
         }
+        #loadingScreen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            z-index: 11;
+        }
+        #loadingScreenContent {
+            text-align: center;
+            padding: 50vh 0;
+        }
         .btn.btn-map-left {
             position: absolute;
             z-index: 10;
+        }
+
+        /* Light mode */
+        @media (prefers-color-scheme: light) {
+            #loadingScreen {
+                background-color: white;
+            }
+            #loadingScreenContent {
+                color: black;
+                /* Spinner color is automatically handled cause Bootstrap is pretty cool like that */
+            }
+        }
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            #loadingScreen {
+                background-color: black;
+            }
+            #loadingScreenContent {
+                color: white;
+            }
         }
     </style>
 
@@ -38,16 +69,24 @@
 
 
 {% block content %}
-    <button class="btn btn-primary btn-map-left" type="button" data-bs-toggle="offcanvas" data-bs-target="#leftOffcanvas" aria-controls="offcanvasExample">
+
+    <button class="btn btn-primary btn-map-left" type="button" data-bs-toggle="offcanvas" data-bs-target="#leftOffcanvas" aria-controls="offcanvasRoutes">
       Routes
     </button>
 
     <!--The div element for the mapindex -->
     <div id="map"></div>
 
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="leftOffcanvas" aria-labelledby="offcanvasExampleLabel">
+    <div id="loadingScreen">
+        <div id="loadingScreenContent" style="margin: auto">
+            <div class="spinner-border" role="status"></div>
+            <h3>Loading bus map...</h3>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="leftOffcanvas" aria-labelledby="leftOffcanvasRoutes">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Routes</h5>
+        <h5 class="offcanvas-title" id="leftOffcanvasRoutes">Routes</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body offcanvas-body-routes scrollbar-width-thin" id="routes-offcanvas-body">
