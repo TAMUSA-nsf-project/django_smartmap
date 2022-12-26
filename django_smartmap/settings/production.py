@@ -82,4 +82,5 @@ TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")
 """
 APP SETTINGS
 """
-SYNC_BUS_SCHEDULES = env("SYNC_BUS_SCHEDULES")
+# TODO:Fix this later. I lost access to the secret manage in GCP. So, i am unable to add this now. Anoop
+# SYNC_BUS_SCHEDULES = env("SYNC_BUS_SCHEDULES")
