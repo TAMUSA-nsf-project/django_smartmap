@@ -94,13 +94,6 @@ class BusRoute(models.Model):
         origin_coords = self.first_stop.getCoordinates()
         dest_coords = self.last_stop.getCoordinates()
         res = directions(gmaps, origin=origin_coords, destination=dest_coords, mode="transit", transit_mode="bus")
-
-        out_file = open("myfile.json", "a")
-
-        json.dump(res, out_file, indent=4)
-
-        out_file.close()
-
         if not res:
             raise ValueError("DirectionsService API result is empty")
 
