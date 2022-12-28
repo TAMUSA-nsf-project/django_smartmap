@@ -8,19 +8,31 @@
 let currentlyViewedRoute = -1;
 let routesOffcanvasBody = document.getElementById("routes-offcanvas-body")
 
+const ACCORDION_ITEM_ROUTE_PREFIX = "accordionItemOfRoute"
+const ACCORDION_HEADER_ROUTE_PREFIX = "accordionHeaderForRoute"
+const ACCORDION_COLLAPSE_ROUTE_PREFIX = "accordionCollapseForRoute"
+const ACCORDION_BODY_ROUTE_PREFIX = "accordionBodyForRoute"
+const LIST_GROUP_ROUTE_PREFIX = "listGroupForRoute"
+const BUS_STOP_INFO_PLACEHOLDER_ROUTE_PREFIX = "busStopInfoPlaceholderForRoute"
 const ARRIVAL_TIMES_ID_PREFIX = "arrivalTimesFor"
+const SCHEDULED_ARRIVAL_TIME_LABEL = "Next scheduled arrival:"
+const ESTIMATED_ARRIVAL_TIME_LABEL = "Next estimated arrival:"
 
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
     // Generate placeholder bars while async
     let aRoutesAccordionInfo = createAccordionElement(
-        "route" + key,
+        key,
         ALL_ACTIVE_ROUTES[key],
         generateBusStopPlaceholder( key )
     )
 
-    aRoutesAccordionInfo.querySelector("#accordionHeader_route" + key).onclick = () => {
+    document.getElementById("leftOffcanvasAccordion").appendChild( aRoutesAccordionInfo );
+
+    console.log("#" + ACCORDION_HEADER_ROUTE_PREFIX + key)
+
+    aRoutesAccordionInfo.querySelector("#" + ACCORDION_HEADER_ROUTE_PREFIX + key).onclick = () => {
         // This will prevent route info from being polled again when closing
         // the currently open accordion.
         if ( currentlyViewedRoute == key )
@@ -42,14 +54,13 @@ for( let key in ALL_ACTIVE_ROUTES )
 
                 // Route bus stop info generated at initRouteMarkers().
                 // Remove placeholders and display bus stops.
-                const routeAccordion = document.getElementById("accordionBody_route" + key);
-                routeAccordion.removeChild( document.getElementById("busStopInfoPlaceholder_route" + key) );
+                const routeAccordion = document.getElementById(ACCORDION_BODY_ROUTE_PREFIX + key);
+                routeAccordion.removeChild( document.getElementById(BUS_STOP_INFO_PLACEHOLDER_ROUTE_PREFIX + key) );
                 routeAccordion.appendChild( createBusStopInfoOfRoute( key ) );
             });
         }
     }
 
-    document.getElementById("leftOffcanvasAccordion").appendChild( aRoutesAccordionInfo );
 }
 
 /*
@@ -78,21 +89,21 @@ function createAccordionElement( id, label, content )
     collapse.className = "accordion-collapse collapse";
     body.className     = "accordion-body accordion-body-route";
 
-    item.setAttribute("id", "accordionItem_" + id)
-    header.setAttribute("id", "accordionHeader_" + id);
+    item.setAttribute("id", ACCORDION_ITEM_ROUTE_PREFIX + id)
+    header.setAttribute("id", ACCORDION_HEADER_ROUTE_PREFIX + id);
 
     button.setAttribute("type", "button");
     button.setAttribute("data-bs-toggle", "collapse");
-    button.setAttribute("data-bs-target", "#accordionCollapse_" + id);
+    button.setAttribute("data-bs-target", "#" + ACCORDION_COLLAPSE_ROUTE_PREFIX + id);
     button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-controls", "accordionCollapse_"+ id);
+    button.setAttribute("aria-controls", ACCORDION_COLLAPSE_ROUTE_PREFIX+ id);
     button.innerHTML = label;
 
-    collapse.setAttribute("id", "accordionCollapse_" + id);
-    collapse.setAttribute("aria-labelledby", "accordionHeader_" + id);
+    collapse.setAttribute("id", ACCORDION_COLLAPSE_ROUTE_PREFIX + id);
+    collapse.setAttribute("aria-labelledby", ACCORDION_HEADER_ROUTE_PREFIX + id);
     collapse.setAttribute("data-bs-parent", "#leftOffcanvasAccordion"); // TODO: "#leftOffcanvasAccordion must be a param eventually
 
-    body.setAttribute("id", "accordionBody_" + id);
+    body.setAttribute("id", ACCORDION_BODY_ROUTE_PREFIX + id);
     // So apparently JS is case-sensitive and .innerHtml is not the same as .innerHTML
     //body.innerHTML = content;
     //createBusStopInfoForOffcanvasAccordionBody( body, "Route 51" );
@@ -121,7 +132,7 @@ function createBusStopInfoOfRoute( routeId )
 
     const listGroup = document.createElement("div");
         listGroup.className = "list-group";
-        listGroup.setAttribute("id", "listGroupOfRoute" + routeId);
+        listGroup.setAttribute("id", LIST_GROUP_ROUTE_PREFIX + routeId);
 
     // A aBusStop is a BusStop object instance. The class is located in map_index.js
     mapRouteMarkers[routeId].forEach( aBusStop =>
@@ -221,11 +232,11 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
                 let estArrivalLabel = listGroupItem.querySelector("#estArrival")
                 let schArrivalLabel = listGroupItem.querySelector("#schArrival")
 
-                schArrivalLabel.innerHTML = "<small>Scheduled Arrival Time</small><br />" + aBusStop.scheduled_arrival
+                schArrivalLabel.innerHTML = "<small>" + SCHEDULED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.scheduled_arrival
 
-                if( aBusStop.est_arrival != "TBD" )
+                if( aBusStop.est_arrival !== "TBD" )
                 {
-                    estArrivalLabel.innerHTML = "<small>Estimated Arrival Time</small><br />" + aBusStop.est_arrival
+                    estArrivalLabel.innerHTML = "<small>" + ESTIMATED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.est_arrival
                 }
                 else
                 {
@@ -291,7 +302,7 @@ function generateBusStopPlaceholder( key )
     const container = document.createElement("div");
         container.className = "container bus-stop-container";
         container.setAttribute("aria-hidden", "true");
-        container.setAttribute("id", "busStopInfoPlaceholder_route" + key)
+        container.setAttribute("id", BUS_STOP_INFO_PLACEHOLDER_ROUTE_PREFIX + key)
 
     const placeholder       = document.createElement("p");
     placeholder.className = "placeholder-glow";
