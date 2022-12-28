@@ -8,6 +8,8 @@
 let currentlyViewedRoute = -1;
 let routesOffcanvasBody = document.getElementById("routes-offcanvas-body")
 
+const ARRIVAL_TIMES_ID_PREFIX = "arrivalTimesFor"
+
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
@@ -119,29 +121,38 @@ function createBusStopInfoOfRoute( routeId )
 
     const listGroup = document.createElement("div");
         listGroup.className = "list-group";
-        //listGroup.setAttribute("aria-current", "true");
+        listGroup.setAttribute("id", "listGroupOfRoute" + routeId);
 
     // A aBusStop is a BusStop object instance. The class is located in map_index.js
     mapRouteMarkers[routeId].forEach( aBusStop =>
     {
         listGroup.appendChild(
-            generateStopInfoContainer( aBusStop )
+            generateStopInfoContainer( aBusStop, listGroup.id )
         );
     });
 
     return listGroup;
 }
 
-function generateStopInfoContainer( aBusStop )
+function generateStopInfoContainer( aBusStop, forThisListGroup )
 {
-    const listGroupItem = document.createElement("a");
-    const topRow        = document.createElement("div");
+    const listGroupItem     = document.createElement("a");
+
+    const topRow            = document.createElement("div");
     const stopNameLabel     = document.createElement("strong");
     const stopNumberLabel   = document.createElement("small");
 
+    const arrivalTimes = document.createElement("div");
+    const estArrival = document.createElement("p");
+    const schArrival = document.createElement("p");
+
     listGroupItem.className = "list-group-item list-group-item-action";
     listGroupItem.setAttribute("id", aBusStop.number);
-    //listGroupItem.setAttribute("aria-current", "true");
+    listGroupItem.setAttribute("data-bs-toggle", "collapse");
+    listGroupItem.setAttribute("role", "button");
+    listGroupItem.setAttribute("aria-expanded", "false");
+    listGroupItem.setAttribute("href", "#" + ARRIVAL_TIMES_ID_PREFIX + aBusStop.number);
+    listGroupItem.setAttribute("aria-controls", ARRIVAL_TIMES_ID_PREFIX + aBusStop.number);
 
     topRow.className = "d-flex w-100 justify-content-between";
     stopNameLabel.className = "mb-1";
@@ -150,13 +161,25 @@ function generateStopInfoContainer( aBusStop )
     stopNameLabel.innerHTML = "(" + aBusStop.index + ") " + aBusStop.name;
     stopNumberLabel.innerHTML = "#" + aBusStop.number;
 
+    arrivalTimes.className = "collapse"
+    arrivalTimes.setAttribute("id", ARRIVAL_TIMES_ID_PREFIX + aBusStop.number)
+    arrivalTimes.setAttribute("data-bs-parent", "#" + forThisListGroup)
+
+    estArrival.setAttribute("id", "estArrival");
+
+    schArrival.setAttribute("id", "schArrival");
+
     listGroupItem.appendChild( topRow );
         topRow.appendChild( stopNameLabel );
         topRow.appendChild( stopNumberLabel );
 
+    listGroupItem.appendChild( arrivalTimes );
+        arrivalTimes.appendChild( schArrival );
+        arrivalTimes.appendChild( estArrival );
+
     listGroupItem.onclick = () =>
     {
-        map.panTo( aBusStop.marker.getPosition() );
+        //map.panTo( aBusStop.marker.getPosition() );
 
         if( aBusStop.marker.getAnimation() === null )
         {
@@ -166,7 +189,6 @@ function generateStopInfoContainer( aBusStop )
             }
             , 2000)
         }
-
 
         // This BusStop object has no scheduled time nor estimated time. The assumed reason is
         // that this information has not been requested yet from the server.
@@ -193,31 +215,25 @@ function generateStopInfoContainer( aBusStop )
             // Then begin the retrieval process
             aBusStop.updateArrivalInfo().then( (res) => {
 
-                // Check if this is the first time the arrivals are requested for this bus stop.
-                // If so, generate <p> elements that will contain that info.
-                if( listGroupItem.querySelector("#arrivalTimes") === null )
-                {
-                    const arrivalTimes = document.createElement("p");
-                        arrivalTimes.setAttribute("id", "arrivalTimes");
-                    const estArrival = document.createElement("p");
-                        estArrival.setAttribute("id", "estArrival");
-                    const schArrival = document.createElement("p");
-                        schArrival.setAttribute("id", "schArrival");
-
-                    arrivalTimes.appendChild( schArrival );
-                    arrivalTimes.appendChild( estArrival );
-                    listGroupItem.appendChild( arrivalTimes );
-                }
-
-                // .callbackMethod() has already updated the BusStop object's
+                // .updateArrivalInfo() in map_index.js has already updated the BusStop object's
                 // .scheduled_arrival and .est_arrival data members by this point.
                 // All that needs to be done is display them.
-                listGroupItem.querySelector("#estArrival").innerHTML = "<small>Estimated Arrival Time</small><br />" + aBusStop.est_arrival;
-                listGroupItem.querySelector("#schArrival").innerHTML = "<small>Scheduled Arrival Time</small><br />" + aBusStop.scheduled_arrival;
+                let estArrivalLabel = listGroupItem.querySelector("#estArrival")
+                let schArrivalLabel = listGroupItem.querySelector("#schArrival")
 
-                listGroupItem.querySelector("#arrivalPlaceholder").remove();
+                schArrivalLabel.innerHTML = "<small>Scheduled Arrival Time</small><br />" + aBusStop.scheduled_arrival
 
-            });
+                if( aBusStop.est_arrival != "TBD" )
+                {
+                    estArrivalLabel.innerHTML = "<small>Estimated Arrival Time</small><br />" + aBusStop.est_arrival
+                }
+                else
+                {
+                    estArrivalLabel.innerHTML = ""
+                }
+
+                listGroupItem.querySelector("#arrivalPlaceholder").remove()
+            })
 
 
         }
