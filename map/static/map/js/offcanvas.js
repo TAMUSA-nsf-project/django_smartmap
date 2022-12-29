@@ -28,14 +28,14 @@ for( let key in ALL_ACTIVE_ROUTES )
         generateBusStopPlaceholder( key )
     )
 
-    document.getElementById("leftOffcanvasAccordion").appendChild( aRoutesAccordionInfo );
+    document.getElementById("routeMenuAccordion").appendChild( aRoutesAccordionInfo );
 
     console.log("#" + ACCORDION_HEADER_ROUTE_PREFIX + key)
 
     aRoutesAccordionInfo.querySelector("#" + ACCORDION_HEADER_ROUTE_PREFIX + key).onclick = () => {
         // This will prevent route info from being polled again when closing
         // the currently open accordion.
-        if ( currentlyViewedRoute == key )
+        if ( currentlyViewedRoute === key )
         {
             return;
         }
@@ -101,7 +101,7 @@ function createAccordionElement( id, label, content )
 
     collapse.setAttribute("id", ACCORDION_COLLAPSE_ROUTE_PREFIX + id);
     collapse.setAttribute("aria-labelledby", ACCORDION_HEADER_ROUTE_PREFIX + id);
-    collapse.setAttribute("data-bs-parent", "#leftOffcanvasAccordion"); // TODO: "#leftOffcanvasAccordion must be a param eventually
+    collapse.setAttribute("data-bs-parent", "#routeMenuAccordion"); // TODO: "#leftOffcanvasAccordion must be a param eventually
 
     body.setAttribute("id", ACCORDION_BODY_ROUTE_PREFIX + id);
     // So apparently JS is case-sensitive and .innerHtml is not the same as .innerHTML
