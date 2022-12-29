@@ -509,3 +509,8 @@ async function DrawRoutePolyline(route) {
     poly.setMap(map);
 
 }
+// Close the seat availability legend after 5 seconds
+$(document).ready( ()=>{
+    setTimeout(()=>{
+        $('#legend a')[0].click();
+    },5000)});
