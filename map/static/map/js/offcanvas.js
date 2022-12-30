@@ -5,8 +5,9 @@
     - Emmer
  */
 
-let currentlyViewedRoute = -1;
-let routesOffcanvasBody = document.getElementById("routes-offcanvas-body")
+let selectedRoute = -1;
+let selectedBusStop = null
+let selectedBusStopArrivalLabelParent = null
 
 const ACCORDION_ITEM_ROUTE_PREFIX = "accordionItemOfRoute"
 const ACCORDION_HEADER_ROUTE_PREFIX = "accordionHeaderForRoute"
@@ -15,8 +16,11 @@ const ACCORDION_BODY_ROUTE_PREFIX = "accordionBodyForRoute"
 const LIST_GROUP_ROUTE_PREFIX = "listGroupForRoute"
 const BUS_STOP_INFO_PLACEHOLDER_ROUTE_PREFIX = "busStopInfoPlaceholderForRoute"
 const ARRIVAL_TIMES_ID_PREFIX = "arrivalTimesFor"
+const RETRIEVING_ARRIVAL_TIMES_LABEL = "Retrieving arrival times..."
 const SCHEDULED_ARRIVAL_TIME_LABEL = "Next scheduled arrival:"
 const ESTIMATED_ARRIVAL_TIME_LABEL = "Next estimated arrival:"
+
+const ESTIMATED_ARRIVAL_TIME_UPDATE_INTERVAL_MILLISECONDS = 30000
 
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
@@ -30,16 +34,17 @@ for( let key in ALL_ACTIVE_ROUTES )
 
     document.getElementById("routeMenuAccordion").appendChild( aRoutesAccordionInfo );
 
-    console.log("#" + ACCORDION_HEADER_ROUTE_PREFIX + key)
-
     aRoutesAccordionInfo.querySelector("#" + ACCORDION_HEADER_ROUTE_PREFIX + key).onclick = () => {
         // This will prevent route info from being polled again when closing
         // the currently open accordion.
-        if ( currentlyViewedRoute === key )
+        if ( selectedRoute === key )    // User is closing the already opened route
         {
+            console.log("Setting var selectedRoute to -1 and var selectedBusStop to null")
+            selectedRoute = -1
+            selectedBusStop = null
             return;
         }
-        currentlyViewedRoute = key;
+        selectedRoute = key;
 
         if (mapRouteMarkers[key]) {     // mapRouteMarkers is from map_index.js
             hideDisplayedMarkers()      // Same with these three functions
@@ -62,6 +67,19 @@ for( let key in ALL_ACTIVE_ROUTES )
     }
 
 }
+
+// Estimated arrival updater
+setInterval(function()
+{
+    if( !selectedBusStop || !selectedBusStopArrivalLabelParent ) { console.log("No bus stop selected"); return }
+
+    selectedBusStop.updateArrivalInfo().then( (res) => {
+
+        updateArrivalLabels( selectedBusStop, selectedBusStopArrivalLabelParent )
+
+    })
+
+}, ESTIMATED_ARRIVAL_TIME_UPDATE_INTERVAL_MILLISECONDS)
 
 /*
     Creates a div that represents an accordion list element for an accordion list.
@@ -101,7 +119,7 @@ function createAccordionElement( id, label, content )
 
     collapse.setAttribute("id", ACCORDION_COLLAPSE_ROUTE_PREFIX + id);
     collapse.setAttribute("aria-labelledby", ACCORDION_HEADER_ROUTE_PREFIX + id);
-    collapse.setAttribute("data-bs-parent", "#routeMenuAccordion"); // TODO: "#leftOffcanvasAccordion must be a param eventually
+    collapse.setAttribute("data-bs-parent", "#routeMenuAccordion"); // "#routeMenuAccordion" must be a param eventually if this function is to be used for any other offcanvas
 
     body.setAttribute("id", ACCORDION_BODY_ROUTE_PREFIX + id);
     // So apparently JS is case-sensitive and .innerHtml is not the same as .innerHTML
@@ -190,7 +208,18 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
 
     listGroupItem.onclick = () =>
     {
-        //map.panTo( aBusStop.marker.getPosition() );
+        if( selectedBusStop === aBusStop )   // User clicked on the already viewed bus stop
+        {
+            console.log("Setting var selectedBusStop to null")
+            selectedBusStop = null;
+            selectedBusStopArrivalLabelParent = null
+            return
+        }
+
+        selectedBusStop = aBusStop
+        selectedBusStopArrivalLabelParent = listGroupItem
+
+        map.panTo( aBusStop.marker.getPosition() );
 
         if( aBusStop.marker.getAnimation() === null )
         {
@@ -203,12 +232,12 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
 
         // This BusStop object has no scheduled time nor estimated time. The assumed reason is
         // that this information has not been requested yet from the server.
-        if( aBusStop.scheduled_arrival === defaultTimeString || aBusStop.est_arrival === defaultTimeString )
+        if( aBusStop.scheduled_arrival === defaultTimeString && aBusStop.est_arrival === defaultTimeString )
         {
             // So, tell the user that the info is being retrieved.
             const arrivalPlaceholder = document.createElement("p");
                 arrivalPlaceholder.setAttribute("id", "arrivalPlaceholder");
-                arrivalPlaceholder.innerHTML = "Retrieving arrival times... ";
+                arrivalPlaceholder.innerHTML = RETRIEVING_ARRIVAL_TIMES_LABEL;
 
             const spinnerGIF = document.createElement("div");
                 spinnerGIF.className = "spinner-border spinner-border-sm";
@@ -226,33 +255,38 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
             // Then begin the retrieval process
             aBusStop.updateArrivalInfo().then( (res) => {
 
-                // .updateArrivalInfo() in map_index.js has already updated the BusStop object's
-                // .scheduled_arrival and .est_arrival data members by this point.
-                // All that needs to be done is display them.
-                let estArrivalLabel = listGroupItem.querySelector("#estArrival")
-                let schArrivalLabel = listGroupItem.querySelector("#schArrival")
+                updateArrivalLabels( aBusStop, listGroupItem )
 
-                schArrivalLabel.innerHTML = "<small>" + SCHEDULED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.scheduled_arrival
-
-                if( aBusStop.est_arrival !== "TBD" )
-                {
-                    estArrivalLabel.innerHTML = "<small>" + ESTIMATED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.est_arrival
-                }
-                else
-                {
-                    estArrivalLabel.innerHTML = ""
-                }
-
+            }).then( (res) => {
                 listGroupItem.querySelector("#arrivalPlaceholder").remove()
             })
 
-
         }
-
 
     }
 
     return listGroupItem;
+}
+
+function updateArrivalLabels( aBusStop, busStopLabelParent )
+{
+    // NOTE: This function should only be used right after .updateArrivalInfo().
+    // .updateArrivalInfo() in map_index.js has already updated the BusStop object's
+    // .scheduled_arrival and .est_arrival data members by this point.
+    // All that needs to be done is display the new data to the user.
+    let estArrivalLabel = busStopLabelParent.querySelector("#estArrival")
+    let schArrivalLabel = busStopLabelParent.querySelector("#schArrival")
+
+    schArrivalLabel.innerHTML = "<small>" + SCHEDULED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.scheduled_arrival
+
+    if( aBusStop.est_arrival !== "TBD" )
+    {
+        estArrivalLabel.innerHTML = "<small>" + ESTIMATED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.est_arrival
+    }
+    else
+    {
+        estArrivalLabel.innerHTML = ""
+    }
 }
 
 /*
