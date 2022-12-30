@@ -48,33 +48,7 @@ class Bus(models.Model):
     def getCoordinates(self):
         return self.getLatLngTuple()
 
-    def getNearestRouteStopIndex(self, start_index=1):
-        """
-        Use geopy to loop through the bus stops in the current route for the nearest stop within 50 meters and return
-        its index, otherwise return -1.
-        """
-
-        if start_index < 1:
-            raise ValueError("Route indexing starts at 1")
-
-        bus_route_details = self.route.busroutedetails_set.all()
-        for i in range(start_index - 1, len(bus_route_details)):
-            brd_obj = bus_route_details[i]
-            bus_stop = brd_obj.bus_stop
-            dist_between = geopy_distance(self.getCoordinates(), bus_stop.getCoordinates()).m
-            if dist_between < 50:
-                return brd_obj.route_index
-        return -1
-
-    def updateLatestRouteStopIndex(self):
-        """
-        Updates latest_route_stop_index field using getNearestRouteStopIndex
-        """
-        nearest_route_stop_index = self.getNearestRouteStopIndex(self.latest_route_stop_index)
-        if nearest_route_stop_index > -1 and nearest_route_stop_index != self.latest_route_stop_index:
-            self.latest_route_stop_index = nearest_route_stop_index
-
-    def getBusRouteDetails(self):
+    def getBusRouteDetailsSet(self):
         return self.route.busroutedetails_set.all()
 
     class Meta:
