@@ -218,6 +218,13 @@ class TransitLogEntry(models.Model):
 class BusArrivalLog(models.Model):
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
 
+    def __str__(self):
+        return f"{self.route.name}"
+
+    def __repr__(self):
+        self_str = str(self)
+        return self_str if len(self_str) < 50 else self_str[:50] + "..."
+
 
 class BusArrivalLogEntry(models.Model):
     bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
@@ -227,3 +234,11 @@ class BusArrivalLogEntry(models.Model):
     # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
     estimated_arrival_time = models.DateTimeField(default=None)
     actual_arrival_time = models.DateTimeField(default=None)
+
+    def __str__(self):
+        return f"{self.time_stamp}, {self.bus_driver}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}"
+
+    def __repr__(self):
+        self_str = str(self)
+        return self_str if len(self_str) < 50 else self_str[:50] + "..."
+
