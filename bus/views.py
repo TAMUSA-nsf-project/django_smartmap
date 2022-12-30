@@ -10,7 +10,8 @@ from django.shortcuts import render, HttpResponse
 
 import commons.helper
 from .distancematrixcalcs import calc_duration
-from .models import Bus, BusRouteDetails, BusRoute, TransitLog, TransitLogEntry, BusSchedule
+from .models import Bus, BusRoute, BusRouteDetails, BusSchedule
+from .models import TransitLog, TransitLogEntry, BusArrivalLog, BusArrivalLogEntry
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
@@ -75,7 +76,8 @@ def getEstimatedArrivalAJAX(request):
     # TODO filter BusRoute models
 
     # get BusStop instance
-    busStop = BusRouteDetails.objects.get(parent_route=user_selected_route, bus_stop__stop_id=int(user_selected_bus_stop)).bus_stop
+    busStop = BusRouteDetails.objects.get(parent_route=user_selected_route,
+                                          bus_stop__stop_id=int(user_selected_bus_stop)).bus_stop
     busStopCoord = busStop.getCoordinates()
 
     # filter Bus models by route (for now)
@@ -194,33 +196,97 @@ def bus_position_ajax(request):
     """
     if request.method == 'GET':
         # extract bus position out of request
-        pos_data = ast.literal_eval(request.GET.get('posData'))
-        selected_route = BusRoute.objects.filter(pk=pos_data['selected_route']).first()
-        bus_lat = pos_data['latitude']
-        bus_lng = pos_data['longitude']
+        ajax_data = ast.literal_eval(request.GET.get('posData'))
+        selected_route = ajax_data['selected_route']
+        bus_lat = ajax_data['latitude']
+        bus_lng = ajax_data['longitude']
 
-        # Check if the bus exists already
+        # Get current time
+        datetime_now = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+
+        # Get BusRoute instance from db
+        busRoute = BusRoute.objects.filter(pk=selected_route).first()
+
+        # Check if the Bus instance exists already
         bus = Bus.objects.filter(driver=request.user.username).first()
-        if bus is None:
-            # Create a Bus and TransitLog instance
-            log = TransitLog(driver=request.user.username, bus_route=selected_route)
-            log.save()
-            bus = Bus(driver=request.user.username, transit_log_id=log.id)
-            bus.route = selected_route
-            bus.start_time = datetime.utcnow()
 
-        # Update the bus coordinates
+        transitLog = None
+        arrivalLog = None
+        if bus is None:
+            # Create a TransitLog instance
+            transitLog = TransitLog(driver=request.user.username, bus_route=busRoute)
+            transitLog.save()
+
+            # Create a BusArrivalLog instance
+            arrivalLog = BusArrivalLog(route=busRoute)
+            arrivalLog.save()
+
+            # Create a Bus instance
+            bus = Bus(driver=request.user.username)
+            bus.route = busRoute
+            bus.start_time = datetime_now
+            bus.transit_log_id = transitLog.id
+            bus.arrival_log_id = arrivalLog.id
+
+        # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
         bus.longitude = bus_lng
+        last_bus_position_update_time = bus.position_update_time
+        bus.position_update_time = datetime_now
         bus.save()
 
+        # Get BusRouteDetails set
+        busRouteDetails_set = bus.getBusRouteDetailsSet()
+        if bus.latest_route_stop_index < len(busRouteDetails_set):
+            nextBusRouteDetail = busRouteDetails_set[bus.latest_route_stop_index]  # no need for + 1 - 1
+            nextBusStop = nextBusRouteDetail.bus_stop
+
+            # Check if arrived at next stop
+            # get next stop
+            if nextBusStop.getGeodesicDistanceTo(bus.getCoordinates()).m < 10:
+
+                # Filter for existing ArrivalLogEntry
+                arrivalLogEntry = BusArrivalLogEntry.objects.filter(bus_driver=request.user.username,
+                                                                    bus_stop_id=nextBusStop.stop_id).first()
+                if arrivalLogEntry is not None:
+                    arrivalLogEntry.actual_arrival_time = datetime_now
+                    arrivalLogEntry.save()
+
+                # Update bus's latest route stop index
+                bus.latest_route_stop_index = nextBusRouteDetail.route_index
+                bus.save(update_fields=['latest_route_stop_index'])
+
+        # must check latest_route_stop_index again because previous if-clause can change it
+        if bus.latest_route_stop_index < len(busRouteDetails_set) and last_bus_position_update_time is not None:
+            delta = datetime_now - last_bus_position_update_time
+
+            if delta.seconds > 10:  # be aware that .seconds is capped at 86400
+
+                if arrivalLog is None:
+                    arrivalLog = BusArrivalLog.objects.get(id=bus.arrival_log_id)
+
+                for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
+                    busStop = busRouteDetails_set[i].bus_stop
+                    res = calc_duration(bus.getCoordinates(), busStop.getCoordinates(), datetime_now)
+                    eat_for_the_stop = int(res['text'].split(' ')[0])
+
+                    # create ArrivalLogEntry
+                    arrivalLogEntry = BusArrivalLogEntry()
+                    arrivalLogEntry.bus_arrival_log = arrivalLog
+                    arrivalLogEntry.bus_stop_id = busStop.stop_id
+                    arrivalLogEntry.bus_driver = bus.driver
+                    arrivalLogEntry.estimated_arrival_time = eat_for_the_stop
+                    arrivalLogEntry.save()
+
         # Create new TransitLogEntry
-        transit_log = TransitLog.objects.get(id=bus.transit_log_id)
-        new_transit_log_entry = TransitLogEntry()
-        new_transit_log_entry.transit_log = transit_log
-        new_transit_log_entry.latitude = bus_lat
-        new_transit_log_entry.longitude = bus_lng
-        new_transit_log_entry.save()
+        if transitLog is None:
+            transitLog = TransitLog.objects.get(id=bus.transit_log_id)
+
+        transitLogEntry = TransitLogEntry()
+        transitLogEntry.transit_log = transitLog
+        transitLogEntry.latitude = bus_lat
+        transitLogEntry.longitude = bus_lng
+        transitLogEntry.save()
 
         return HttpResponse(f"Success")
     else:

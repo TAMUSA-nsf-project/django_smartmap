@@ -8,6 +8,8 @@ from django.conf import settings
 import googlemaps
 from googlemaps.directions import directions
 
+from geopy.distance import distance as geopy_distance
+
 DEFAULT_COLOR_CODE = "#FF0000"
 
 gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
@@ -26,7 +28,10 @@ class Bus(models.Model):
     start_time = models.DateTimeField(default=None, blank=True, null=True)
     end_time = models.DateTimeField(default=None, blank=True, null=True)
     transit_log_id = models.PositiveIntegerField(default=None)
+    arrival_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
+    position_update_time = models.DateTimeField(default=None, blank=True, null=True)
+    latest_route_stop_index = models.PositiveSmallIntegerField(default=1)
 
     def getBusColorStaticUrl(self) -> str:
         """
@@ -43,6 +48,9 @@ class Bus(models.Model):
 
     def getCoordinates(self):
         return self.getLatLngTuple()
+
+    def getBusRouteDetailsSet(self):
+        return self.route.busroutedetails_set.all()
 
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
@@ -62,6 +70,9 @@ class BusStop(models.Model):
 
     def getCoordinates(self):
         return self.getLatLngTuple()
+
+    def getGeodesicDistanceTo(self, coords):
+        return geopy_distance(coords, self.getCoordinates())
 
     def __str__(self):
         return self.name
@@ -201,3 +212,18 @@ class TransitLogEntry(models.Model):
 
     def __str__(self):
         return f"{self.time_stamp}, Lat: {self.latitude}, Lng: {self.longitude}"
+
+
+# todo: these can be moved to a new app
+class BusArrivalLog(models.Model):
+    route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
+
+
+class BusArrivalLogEntry(models.Model):
+    bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
+    bus_driver = models.CharField(max_length=100)  # for now just using name of bus driver
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    bus_stop_id = models.PositiveIntegerField(default=None)
+    # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
+    estimated_arrival_time = models.DateTimeField(default=None)
+    actual_arrival_time = models.DateTimeField(default=None)
