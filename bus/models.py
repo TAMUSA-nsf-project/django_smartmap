@@ -237,5 +237,6 @@ class BusArrivalLogEntry(models.Model):
     bus_driver = models.CharField(max_length=100)  # for now just using name of bus driver
     time_stamp = models.DateTimeField(auto_now_add=True)
     bus_stop_id = models.PositiveIntegerField(default=None)
+    # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
     estimated_arrival_time = models.DateTimeField(default=None)
     actual_arrival_time = models.DateTimeField(default=None)
