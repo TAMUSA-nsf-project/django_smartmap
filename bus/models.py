@@ -234,8 +234,7 @@ class BusArrivalLog(models.Model):
 
 class BusArrivalLogEntry(models.Model):
     bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
-    bus = models.ForeignKey("Bus", on_delete=models.DO_NOTHING)  # todo how will a bus be represented if instance is
-    # deleted?
+    bus_driver = models.CharField(max_length=100)  # for now just using name of bus driver
     time_stamp = models.DateTimeField(auto_now_add=True)
     bus_stop_id = models.PositiveIntegerField(default=None)
     estimated_arrival_time = models.DateTimeField(default=None)
