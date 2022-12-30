@@ -211,22 +211,16 @@ def bus_position_ajax(request):
         bus = Bus.objects.filter(driver=request.user.username).first()
 
         transitLog = None
-        arrivalLog = None
         if bus is None:
             # Create a TransitLog instance
             transitLog = TransitLog(driver=request.user.username, bus_route=busRoute)
             transitLog.save()
-
-            # Create a BusArrivalLog instance
-            arrivalLog = BusArrivalLog(route=busRoute)
-            arrivalLog.save()
 
             # Create a Bus instance
             bus = Bus(driver=request.user.username)
             bus.route = busRoute
             bus.start_time = datetime_now
             bus.transit_log_id = transitLog.id
-            bus.arrival_log_id = arrivalLog.id
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
@@ -262,8 +256,10 @@ def bus_position_ajax(request):
 
             if delta.seconds > 10:  # be aware that .seconds is capped at 86400
 
+                # Get or create a BusArrivalLog instance
+                arrivalLog = BusArrivalLog.objects.get(route=busRoute)
                 if arrivalLog is None:
-                    arrivalLog = BusArrivalLog.objects.get(id=bus.arrival_log_id)
+                    arrivalLog = BusArrivalLog(route=busRoute)
 
                 for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
