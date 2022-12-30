@@ -10,7 +10,8 @@ from django.shortcuts import render, HttpResponse
 
 import commons.helper
 from .distancematrixcalcs import calc_duration
-from .models import Bus, BusRouteDetails, BusRoute, TransitLog, TransitLogEntry, BusSchedule
+from .models import Bus, BusRoute, BusRouteDetails, BusSchedule
+from .models import TransitLog, TransitLogEntry, BusArrivalLog, BusArrivalLogEntry
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
