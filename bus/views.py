@@ -76,7 +76,8 @@ def getEstimatedArrivalAJAX(request):
     # TODO filter BusRoute models
 
     # get BusStop instance
-    busStop = BusRouteDetails.objects.get(parent_route=user_selected_route, bus_stop__stop_id=int(user_selected_bus_stop)).bus_stop
+    busStop = BusRouteDetails.objects.get(parent_route=user_selected_route,
+                                          bus_stop__stop_id=int(user_selected_bus_stop)).bus_stop
     busStopCoord = busStop.getCoordinates()
 
     # filter Bus models by route (for now)
