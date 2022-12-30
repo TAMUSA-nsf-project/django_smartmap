@@ -96,6 +96,9 @@ class BusStop(models.Model):
     def getCoordinates(self):
         return self.getLatLngTuple()
 
+    def getGeodesicDistanceTo(self, coords):
+        return geopy_distance(coords, self.getCoordinates())
+
     def __str__(self):
         return self.name
 
