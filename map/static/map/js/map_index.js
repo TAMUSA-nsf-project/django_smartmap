@@ -11,37 +11,6 @@ const defaultTimeString = "TBD";
 let poly, left;
 let directionsService;
 
-
-function RouteDropdown(map) {
-    /* This function will Dynamically Add the available Route Options to the dropdown List.*/
-    const routeDropdown = document.getElementById("routeDropdown")
-    const button = document.getElementById("dropDownButton")
-
-    const dropdownControls = document.getElementById("dropDownControls")
-    for (let key in ALL_ACTIVE_ROUTES) {
-
-        const li = document.createElement('li');     // create li element.
-
-        const li_button = document.createElement("button")
-        li_button.type = "button"
-        li_button.setAttribute("class", 'dropdown-item')
-        li_button.innerHTML = ALL_ACTIVE_ROUTES[key]
-
-        // define the button's onclick behavior
-        li_button.onclick = () => {
-            var buttonText = ALL_ACTIVE_ROUTES[key];
-            button.innerHTML = buttonText
-            refreshBusRouteElements(key);
-        }
-
-        li.appendChild(li_button);
-        dropdownControls.appendChild(li);     // append li to ul.
-    }
-    return routeDropdown;
-}
-
-
-
 /**
  * Hides bus route markers, polyline, gets (either from cache or server) and displays new bus route markers
  */
@@ -179,6 +148,60 @@ class BusStop {
             message += "Arrival in " + this.est_arrival
         return message
     }
+        /**
+     * Updates this object's scheduled_arrival and est_arrival through jQuery.ajax.
+     * Returns a Promise (basically, a function that can succeed or fail, but will
+     * at least return something.)
+     * Note that this function is just callbackMethod() without the .refreshContentWindow() part.
+     */
+    updateArrivalInfo()
+    {
+        const toSend = {
+            'route': this.routeId,
+            'bus_stop_id': this.number,
+            'calc_schedule': this.scheduled_arrival === defaultTimeString ? 1 : 0
+        }
+
+        return new Promise(( resolve, reject ) => {
+            jQuery.ajax({
+                url: AJAX_URL_EST_ARRIVAL,
+                data: { 'data': JSON.stringify(toSend) },
+                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                // server-side, hence the object defined here
+                type: "GET",
+                //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
+                success: (data) =>
+                {
+                    if (data) {
+                        // console.log(data)
+                        if (data['est_arrival'] !== '') {
+                            if (this.est_arrival === defaultTimeString) {
+                                // Reset the scheduled arrival string. This scenario will happen if there were no buses available
+                                // on the route when the info window was opened.
+                                this.scheduled_arrival = defaultTimeString
+                            }
+                            this.est_arrival = data['est_arrival'];
+                        } else
+                            this.est_arrival = defaultTimeString;
+
+                        if (data['scheduled_arrival'] !== '')
+                            this.scheduled_arrival = data['scheduled_arrival']
+                    } else {
+                        this.est_arrival = defaultTimeString
+                        this.scheduled_arrival = defaultTimeString
+                    }
+                    resolve("Resolved");
+                },
+                error: (e) =>
+                {
+                    console.log( e );
+                    reject("An internal error has occurred.");
+                }
+            }); // End of ajax
+        });  // End of Promise
+    }
+
 
     callBackMethod() {
 
@@ -274,6 +297,7 @@ class BusStop {
                 fontWeight: "bold"
             },
             icon: svgMarker,
+            animation: null,
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
@@ -356,10 +380,10 @@ function initMap() {
     });
 
     // Create the div to hold the route-selection dropdown.
-    const routeDropdownDiv = RouteDropdown(map);
+    const selectRoutesBtn = document.getElementById("selectRoutesButtonDiv")
 
     // Push control divs to the map.
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(routeDropdownDiv)
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(selectRoutesBtn)
 
     jQuery.ajax({
         url: AJAX_URL_BUS_OCCUPANCY_STATUS,
@@ -514,3 +538,7 @@ $(document).ready( ()=>{
     setTimeout(()=>{
         $('#legend a')[0].click();
     },5000)});
+
+setTimeout(() => {
+    $("#loadingScreen").fadeOut("slow")
+}, 1250)
