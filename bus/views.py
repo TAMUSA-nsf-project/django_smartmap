@@ -246,7 +246,7 @@ def bus_position_ajax(request):
                 arrivalLogEntry = BusArrivalLogEntry.objects.filter(bus_driver=request.user.username,
                                                                     bus_stop_id=nextBusStop.stop_id).first()
                 if arrivalLogEntry is not None:
-                    arrivalLogEntry.actual_arrival_time = datetime_now
+                    arrivalLogEntry.actual_arrival_time = str(datetime_now)
                     arrivalLogEntry.save()
 
                 # Update bus's latest route stop index
