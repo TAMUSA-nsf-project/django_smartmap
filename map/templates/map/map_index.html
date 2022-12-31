@@ -10,7 +10,8 @@
         /* Always set the mapindex height explicitly to define the size of the div
          * element that contains the mapindex. */
         #map {
-            height: 100vh; /* Google's suggested height of 100% may prevent map from displaying */
+            height: calc( 100vh - 56px );   /* Google's suggested height of 100% may prevent map from displaying */
+                                            /* Explanation for the 56px is located below */
             width: 100vw;
         }
         #routeMenu {
@@ -20,6 +21,10 @@
         #routeMenuBody {
             scrollbar-width: thin;
             padding: 0; /* .offcanvas-body has initial padding, but this removes it. */
+            max-height: calc(100vh - 56px);
+            /* 56px is the height of the navbar. Not sure if it is different on other platforms.
+            I know you can extend it down on smaller viewports, but that does not negatively
+            affect the result I am trying to aim for (no scrollbar on the right side of the map page. */
         }
         #loadingScreen {
             position: fixed;
@@ -82,9 +87,9 @@
     <!--The div element for the mapindex -->
 {#    <div id="map"></div>#}
     <div id="selectRoutesButtonDiv">
-        <button class="btn btn-primary btn-map-left" type="button" data-bs-toggle="offcanvas" data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
-      Select Route
-    </button>
+        <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
+          Select Route
+        </button>
     </div>
     <div id="legend">
         <a class="btn btn-info" data-bs-toggle="collapse" href="#legendContent" role="button" aria-expanded="true"
