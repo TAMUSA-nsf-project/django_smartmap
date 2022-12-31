@@ -26,6 +26,11 @@
             I know you can extend it down on smaller viewports, but that does not negatively
             affect the result I am trying to aim for (no scrollbar on the right side of the map page. */
         }
+        #selectedRouteAndBusStopLabels {
+            text-shadow: 1px 1px 1px white;
+            padding-top: 10px;
+            width: calc(100vw - 130px);
+        }
         #loadingScreen {
             position: fixed;
             width: 100%;
@@ -36,10 +41,6 @@
         #loadingScreenContent {
             text-align: center;
             padding: 50vh 0;
-        }
-        .btn.btn-map-left {
-            position: absolute;
-            z-index: 10;
         }
 
         /* Light mode */
@@ -84,12 +85,12 @@
 
 {% block content %}
 
-    <!--The div element for the mapindex -->
-{#    <div id="map"></div>#}
-    <div id="selectRoutesButtonDiv">
-        <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
+    <div id="selectRoutesButtonDiv" class="d-lg-none">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
           Select Route
         </button>
+    </div>
+    <div id="selectedRouteAndBusStopLabels" class="container-fluid fs-6 fw-normal text-end d-lg-none">
     </div>
     <div id="legend">
         <a class="btn btn-info" data-bs-toggle="collapse" href="#legendContent" role="button" aria-expanded="true"

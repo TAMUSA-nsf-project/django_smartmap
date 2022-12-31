@@ -118,7 +118,6 @@ function getActiveBussesOnSelectedRoute() {
     }
 }
 
-
 /**
  * Class to represent a bus stop. One of its properties is a google.maps.Marker instance.
  */
@@ -381,9 +380,12 @@ function initMap() {
 
     // Create the div to hold the route-selection dropdown.
     const selectRoutesBtn = document.getElementById("selectRoutesButtonDiv")
+    const selectedRouteAndBusStopLabels = document.getElementById("selectedRouteAndBusStopLabels")
 
     // Push control divs to the map.
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(selectRoutesBtn)
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push( selectedRouteAndBusStopLabels )
+    updateSelectedRouteAndBusStopLabelsOnMap()  // From offcanvas.js
 
     jQuery.ajax({
         url: AJAX_URL_BUS_OCCUPANCY_STATUS,

@@ -22,6 +22,11 @@ const ESTIMATED_ARRIVAL_TIME_LABEL = "Next estimated arrival:"
 
 const ESTIMATED_ARRIVAL_TIME_UPDATE_INTERVAL_MILLISECONDS = 30000
 
+const NO_ROUTE_SELECTED_LABEL = "No route selected."
+const NO_BUS_STOP_SELECTED_LABEL = "No bus stop selected."
+const VIEWING_ROUTE_LABEL = "Viewing route "
+const VIEWING_BUS_STOP_LABEL = "Viewing bus stop"
+
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
@@ -42,9 +47,14 @@ for( let key in ALL_ACTIVE_ROUTES )
             console.log("Setting var selectedRoute to -1 and var selectedBusStop to null")
             selectedRoute = -1
             selectedBusStop = null
+
+            updateSelectedRouteAndBusStopLabelsOnMap()
+
             return;
         }
         selectedRoute = key;
+
+        updateSelectedRouteAndBusStopLabelsOnMap( ALL_ACTIVE_ROUTES[key] )
 
         refreshBusRouteElements(selectedRoute).then(()=>{
              const routeAccordion = document.getElementById(ACCORDION_BODY_ROUTE_PREFIX + key);
@@ -200,11 +210,16 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
             console.log("Setting var selectedBusStop to null")
             selectedBusStop = null;
             selectedBusStopArrivalLabelParent = null
+
+            updateSelectedRouteAndBusStopLabelsOnMap( ALL_ACTIVE_ROUTES[aBusStop.routeId] )
+
             return
         }
 
         selectedBusStop = aBusStop
         selectedBusStopArrivalLabelParent = listGroupItem
+
+        updateSelectedRouteAndBusStopLabelsOnMap( ALL_ACTIVE_ROUTES[aBusStop.routeId], aBusStop.name )
 
         map.panTo( aBusStop.marker.getPosition() );
 
@@ -276,46 +291,20 @@ function updateArrivalLabels( aBusStop, busStopLabelParent )
     }
 }
 
-/*
-    Creates a container(div) of info on a singular bus stop.
- */
-function generateStopInfoContainer_old( stopNumber, stopName, schTime, estTime )
+function updateSelectedRouteAndBusStopLabelsOnMap( routeText, stopText )
 {
-    const container = document.createElement("div");
-    const row       = document.createElement("div");
-    const bPointDiv = document.createElement("div");    // A bullet point
-    const bPointImg = document.createElement("i");
-    const stopDiv   = document.createElement("div");    // Bus stop info container
-    const stopNameDiv   = document.createElement("div");
-    const stopNumberDiv = document.createElement("div");
-    const schTimeDiv    = document.createElement("div");    // Scheduled time
-    const estTimeDiv    = document.createElement("div");    // Estimated time
+    routeText = routeText != null ? routeText : NO_ROUTE_SELECTED_LABEL
+    stopText = stopText != null ? stopText : NO_BUS_STOP_SELECTED_LABEL
+    const selectedRouteAndBusStopLabels = document.getElementById("selectedRouteAndBusStopLabels")
 
-    container.className = "container";
-        container.setAttribute("id", stopNumber);
-        row.className = "row";
-            bPointDiv.className = "col-1 bus-stop-bullet-point";
-                bPointImg.className = "fa fa-circle";   // Icon provided by FontAwesome 4.7.0
-            stopDiv.className = "col-10";
-                stopNameDiv.className = "row";
-                    stopNameDiv.innerHTML = "<strong>" + stopName + "</strong>";
-                stopNumberDiv.className = "row";
-                    stopNumberDiv.innerHTML = "Stop #: " + stopNumber;
-                schTimeDiv.className  = "row";
-                    schTimeDiv.innerHTML = "Scheduled Arrival: " + schTime;
-                estTimeDiv.className  = "row";
-                    estTimeDiv.innerHTML = "Estimated Arrival: " + estTime;
+    let updatedString = "";
+    if( routeText !== NO_ROUTE_SELECTED_LABEL )
+    {
+        updatedString += "<p><strong>" + routeText + "</strong></p>"
+        + "<p><strong>" + stopText + "</strong></p>"
+    }
 
-    container.appendChild( row );
-        row.appendChild( bPointDiv );
-            bPointDiv.appendChild( bPointImg );
-        row.appendChild( stopDiv );
-            stopDiv.appendChild( stopNameDiv );
-            stopDiv.appendChild( stopNumberDiv );
-            stopDiv.appendChild( schTimeDiv );
-            stopDiv.appendChild( estTimeDiv );
-
-    return container;
+    selectedRouteAndBusStopLabels.innerHTML = updatedString
 }
 
 function generateBusStopPlaceholder( key )
