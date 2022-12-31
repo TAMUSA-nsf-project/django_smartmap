@@ -14,11 +14,10 @@ from .distancematrixcalcs import calc_duration
 from .models import Bus, BusRoute, BusRouteDetails, BusSchedule
 from .models import TransitLog, BusArrivalLog, BusArrivalLogEntry
 
-
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 
 BUS_STOP_ARRIVAL_PROXIMITY = 10  # meters
-ARRIVAL_LOG_FREQUENCY = 10  # seconds
+ARRIVAL_LOG_FREQUENCY = 60  # seconds
 
 """
 Bus Driver page
@@ -186,6 +185,13 @@ def getBusRouteGmapsPolylineEncodingAJAX(request):
     return HttpResponse(json.dumps(to_send))
 
 
+def doesBusReachedNextStop(busLocation, busRouteDetails, last_index):
+    for i in range(last_index, len(busRouteDetails)):
+        if busRouteDetails[i].bus_stop.getGeodesicDistanceTo(busLocation).m < BUS_STOP_ARRIVAL_PROXIMITY:
+            return i
+    return None
+
+
 @login_required
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
@@ -229,25 +235,27 @@ def bus_position_ajax(request):
             bus.route = busRoute
             bus.arrival_log_id = arrivalLog.id
             bus.start_time = datetime_now
+            bus.last_eta_logged_time = datetime_now
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-        last_bus_position_update_time = bus.position_update_time
-        bus.position_update_time = datetime_now
+        last_bus_position_update_time = bus.last_eta_logged_time
+
         bus.save()
 
         # Get BusRouteDetails set
         busRouteDetails_set = bus.getBusRouteDetailsSet()
         if bus.latest_route_stop_index < len(busRouteDetails_set):
-            nextBusRouteDetail = busRouteDetails_set[bus.latest_route_stop_index]  # no need for + 1 - 1
-            nextBusStop = nextBusRouteDetail.bus_stop
+            nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set, bus.latest_route_stop_index)
 
             # Check if arrived at next stop
-            # get next stop
-            if nextBusStop.getGeodesicDistanceTo(bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
+
+            if nextBusStopIdx:
+                # get next stop
+                nextBusStop = busRouteDetails_set[nextBusStopIdx].bus_stop
                 # Get or create a BusArrivalLog instance
-                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()  # todo date field
+                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
 
                 # create ArrivalLogEntry
                 arrivalLogEntry = BusArrivalLogEntry()
@@ -261,7 +269,7 @@ def bus_position_ajax(request):
                 arrivalLogEntry.save()
 
                 # Update bus's latest route stop index
-                bus.latest_route_stop_index = nextBusRouteDetail.route_index
+                bus.latest_route_stop_index = busRouteDetails_set[nextBusStopIdx].route_index
                 bus.save(update_fields=['latest_route_stop_index'])
 
         # must check latest_route_stop_index again because previous if-clause can change it
@@ -271,7 +279,11 @@ def bus_position_ajax(request):
             if delta.seconds > ARRIVAL_LOG_FREQUENCY:  # be aware that .seconds is capped at 86400
 
                 # Get or create a BusArrivalLog instance
-                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()  # todo date field
+                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
+
+                # Update the time value only here. So that the interval will be calculated properly
+                bus.last_eta_logged_time = datetime_now
+                bus.save()
 
                 for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop

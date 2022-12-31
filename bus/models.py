@@ -27,10 +27,10 @@ class Bus(models.Model):
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
     start_time = models.DateTimeField(default=None, blank=True, null=True)
     end_time = models.DateTimeField(default=None, blank=True, null=True)
-    transit_log_id = models.PositiveIntegerField(default=None)
+    # transit_log_id = models.PositiveIntegerField(default=None)
     arrival_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
-    position_update_time = models.DateTimeField(default=None, blank=True, null=True)
+    last_eta_logged_time = models.DateTimeField(default=None, blank=True, null=True)
     latest_route_stop_index = models.PositiveSmallIntegerField(default=1)
 
     def getBusColorStaticUrl(self) -> str:
@@ -244,4 +244,3 @@ class BusArrivalLogEntry(models.Model):
     def __repr__(self):
         self_str = str(self)
         return self_str if len(self_str) < 50 else self_str[:50] + "..."
-
