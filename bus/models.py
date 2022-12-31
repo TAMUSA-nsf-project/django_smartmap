@@ -235,7 +235,7 @@ class BusArrivalLogEntry(models.Model):
     actual_arrival_time = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.time_stamp}, {self.bus_driver}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}"
+        return f'{self.time_stamp.strftime("%H:%M:%S")}, {self.bus_driver}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}'
 
     def __repr__(self):
         self_str = str(self)
