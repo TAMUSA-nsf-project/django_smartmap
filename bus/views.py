@@ -260,7 +260,7 @@ def bus_position_ajax(request):
             if delta.seconds > 10:  # be aware that .seconds is capped at 86400
 
                 # Get or create a BusArrivalLog instance
-                arrivalLog = BusArrivalLog.objects.get(route=busRoute)
+                arrivalLog = BusArrivalLog.objects.filter(route__id=busRoute.id).first()
                 if arrivalLog is None:
                     arrivalLog = BusArrivalLog(route=busRoute)
 
