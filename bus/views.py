@@ -263,6 +263,7 @@ def bus_position_ajax(request):
                 arrivalLog = BusArrivalLog.objects.filter(route__id=busRoute.id).first()
                 if arrivalLog is None:
                     arrivalLog = BusArrivalLog(route=busRoute)
+                    arrivalLog.save()
 
                 for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
