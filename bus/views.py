@@ -12,7 +12,8 @@ from django.shortcuts import render, HttpResponse
 import commons.helper
 from .distancematrixcalcs import calc_duration
 from .models import Bus, BusRoute, BusRouteDetails, BusSchedule
-from .models import TransitLog, TransitLogEntry, BusArrivalLog, BusArrivalLogEntry
+from .models import TransitLog, BusArrivalLog, BusArrivalLogEntry
+
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 """
@@ -213,17 +214,16 @@ def bus_position_ajax(request):
         # Check if the Bus instance exists already
         bus = Bus.objects.filter(driver=request.user.username).first()
 
-        transitLog = None
         if bus is None:
-            # Create a TransitLog instance
-            transitLog = TransitLog(driver=request.user.username, bus_route=busRoute)
-            transitLog.save()
+            # Create BusArrivalLog
+            arrivalLog = BusArrivalLog(route_id=busRoute.id)
+            arrivalLog.driver = request.user.username
+            arrivalLog.save()
 
             # Create a Bus instance
             bus = Bus(driver=request.user.username)
             bus.route = busRoute
             bus.start_time = datetime_now
-            bus.transit_log_id = transitLog.id
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
@@ -277,16 +277,6 @@ def bus_position_ajax(request):
                     arrivalLogEntry.bus_driver = bus.driver
                     arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
                     arrivalLogEntry.save()
-
-        # Create new TransitLogEntry
-        if transitLog is None:
-            transitLog = TransitLog.objects.get(id=bus.transit_log_id)
-
-        transitLogEntry = TransitLogEntry()
-        transitLogEntry.transit_log = transitLog
-        transitLogEntry.latitude = bus_lat
-        transitLogEntry.longitude = bus_lng
-        transitLogEntry.save()
 
         return HttpResponse(f"Success")
     else:
