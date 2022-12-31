@@ -3,6 +3,7 @@ import datetime
 import json
 from datetime import datetime
 from datetime import timedelta
+from django.utils import timezone
 
 import pytz
 from django.contrib.auth.decorators import login_required, permission_required
@@ -202,7 +203,9 @@ def bus_position_ajax(request):
         bus_lng = ajax_data['longitude']
 
         # Get current time
-        datetime_now = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+        # datetime_now = datetime.utcnow()  # original code
+        # datetime_now = datetime.utcnow().astimezone(pytz.timezone('US/Central'))
+        datetime_now = timezone.now()
 
         # Get BusRoute instance from db
         busRoute = BusRoute.objects.filter(pk=selected_route).first()
