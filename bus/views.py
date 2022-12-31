@@ -16,6 +16,10 @@ from .models import TransitLog, BusArrivalLog, BusArrivalLogEntry
 
 
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
+
+BUS_STOP_ARRIVAL_PROXIMITY = 10  # meters
+ARRIVAL_LOG_FREQUENCY = 10  # seconds
+
 """
 Bus Driver page
 """
@@ -241,7 +245,9 @@ def bus_position_ajax(request):
 
             # Check if arrived at next stop
             # get next stop
-            if nextBusStop.getGeodesicDistanceTo(bus.getCoordinates()).m < 10:
+            if nextBusStop.getGeodesicDistanceTo(bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
+                # Get or create a BusArrivalLog instance
+                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()  # todo date field
 
                 # Filter for existing ArrivalLogEntry
                 arrivalLogEntry = BusArrivalLogEntry.objects.filter(bus_driver=request.user.username,
@@ -258,13 +264,10 @@ def bus_position_ajax(request):
         if bus.latest_route_stop_index < len(busRouteDetails_set) and last_bus_position_update_time is not None:
             delta = datetime_now - last_bus_position_update_time
 
-            if delta.seconds > 10:  # be aware that .seconds is capped at 86400
+            if delta.seconds > ARRIVAL_LOG_FREQUENCY:  # be aware that .seconds is capped at 86400
 
                 # Get or create a BusArrivalLog instance
-                arrivalLog = BusArrivalLog.objects.filter(route__id=busRoute.id).first()
-                if arrivalLog is None:
-                    arrivalLog = BusArrivalLog(route=busRoute)
-                    arrivalLog.save()
+                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()  # todo date field
 
                 for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
