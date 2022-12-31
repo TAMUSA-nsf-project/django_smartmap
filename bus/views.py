@@ -223,6 +223,7 @@ def bus_position_ajax(request):
             # Create a Bus instance
             bus = Bus(driver=request.user.username)
             bus.route = busRoute
+            bus.arrival_log_id = arrivalLog.id
             bus.start_time = datetime_now
 
         # Update the bus coordinates and timekeeping
