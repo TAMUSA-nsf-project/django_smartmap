@@ -249,12 +249,16 @@ def bus_position_ajax(request):
                 # Get or create a BusArrivalLog instance
                 arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()  # todo date field
 
-                # Filter for existing ArrivalLogEntry
-                arrivalLogEntry = BusArrivalLogEntry.objects.filter(bus_driver=request.user.username,
-                                                                    bus_stop_id=nextBusStop.stop_id).first()
-                if arrivalLogEntry is not None:
-                    arrivalLogEntry.actual_arrival_time = str(datetime_now)
-                    arrivalLogEntry.save()
+                # create ArrivalLogEntry
+                arrivalLogEntry = BusArrivalLogEntry()
+                arrivalLogEntry.bus_arrival_log = arrivalLog
+                arrivalLogEntry.time_stamp = datetime_now
+                arrivalLogEntry.bus_stop_id = nextBusStop.stop_id
+                arrivalLogEntry.latitude = bus.latitude
+                arrivalLogEntry.longitude = bus.longitude
+                # arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
+                arrivalLogEntry.actual_arrival_time = str(datetime_now)
+                arrivalLogEntry.save()
 
                 # Update bus's latest route stop index
                 bus.latest_route_stop_index = nextBusRouteDetail.route_index
