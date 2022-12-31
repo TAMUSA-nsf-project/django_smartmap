@@ -1,11 +1,14 @@
 /*
-    offcanvas.js is a javascript that handles the route offcanvas list used in map_index.js.
+    route_menu.js is a javascript that handles the route offcanvas list used in map_index.js.
     Note that javascript files can share variables and functions (by default I think? Maybe
     because they are both used in map_index.html).
+
+    For convenience, here is the Bootstrap website:
+    https://getbootstrap.com/docs/5.2/getting-started/introduction/
     - Emmer
  */
 
-let selectedRoute = -1;
+let selectedRoute = -1;     // This variable may be similar to 'displayedRoute' in map_index.js, but I did not realize at the time. -Emmer
 let selectedBusStop = null
 let selectedBusStopArrivalLabelParent = null
 
@@ -19,9 +22,7 @@ const ARRIVAL_TIMES_ID_PREFIX = "arrivalTimesFor"
 const RETRIEVING_ARRIVAL_TIMES_LABEL = "Retrieving arrival times..."
 const SCHEDULED_ARRIVAL_TIME_LABEL = "Next scheduled arrival:"
 const ESTIMATED_ARRIVAL_TIME_LABEL = "Next estimated arrival:"
-
 const ESTIMATED_ARRIVAL_TIME_UPDATE_INTERVAL_MILLISECONDS = 30000
-
 const NO_ROUTE_SELECTED_LABEL = "No route selected."
 const NO_BUS_STOP_SELECTED_LABEL = "No bus stop selected."
 const VIEWING_ROUTE_LABEL = "Viewing route "
@@ -30,7 +31,7 @@ const VIEWING_BUS_STOP_LABEL = "Viewing bus stop"
 // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
-    // Generate placeholder bars while async
+    // Generate placeholder bars while async things happen
     let aRoutesAccordionInfo = createAccordionElement(
         key,
         ALL_ACTIVE_ROUTES[key],
@@ -40,8 +41,9 @@ for( let key in ALL_ACTIVE_ROUTES )
     document.getElementById("routeMenuAccordion").appendChild( aRoutesAccordionInfo );
 
     aRoutesAccordionInfo.querySelector("#" + ACCORDION_HEADER_ROUTE_PREFIX + key).onclick = () => {
-        // This will prevent route info from being polled again when closing
-        // the currently open accordion.
+
+        // This will prevent route info from being polled again
+        // when closing the currently open accordion.
         if ( selectedRoute === key )    // User is closing the already opened route
         {
             console.log("Setting var selectedRoute to -1 and var selectedBusStop to null")
@@ -160,6 +162,14 @@ function createBusStopInfoOfRoute( routeId )
     return listGroup;
 }
 
+/*
+    Generates an "a" element that represents a singular bus stop on a route.
+    ARGS:
+        BusStop aBusStop        - The BusStop object whose information will be presented in the returned element.
+        string forThisListGroup - Id of the element that the returned element will be parented to.
+    RETURNS:
+        a div element
+ */
 function generateStopInfoContainer( aBusStop, forThisListGroup )
 {
     const listGroupItem     = document.createElement("a");
@@ -189,7 +199,7 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
 
     arrivalTimes.className = "collapse"
     arrivalTimes.setAttribute("id", ARRIVAL_TIMES_ID_PREFIX + aBusStop.number)
-    arrivalTimes.setAttribute("data-bs-parent", "#" + forThisListGroup)
+    arrivalTimes.setAttribute("data-bs-parent", "#" + forThisListGroup)     // This will make it so only one bus stop info can show at anytime.
 
     estArrival.setAttribute("id", "estArrival");
 
@@ -219,10 +229,11 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
         selectedBusStop = aBusStop
         selectedBusStopArrivalLabelParent = listGroupItem
 
-        updateSelectedRouteAndBusStopLabelsOnMap( ALL_ACTIVE_ROUTES[aBusStop.routeId], aBusStop.name )
+        updateSelectedRouteAndBusStopLabelsOnMap( ALL_ACTIVE_ROUTES[aBusStop.routeId], "(" + aBusStop.index + ") " + aBusStop.name )
 
         map.panTo( aBusStop.marker.getPosition() );
 
+        // Apparently this bounce animation does not show on Chrome, which is weird since it is from the Google Maps API.
         if( aBusStop.marker.getAnimation() === null )
         {
             aBusStop.marker.setAnimation( google.maps.Animation.BOUNCE );
@@ -270,18 +281,28 @@ function generateStopInfoContainer( aBusStop, forThisListGroup )
     return listGroupItem;
 }
 
+/*
+    Updates the arrival text labels of the specified bus stop parent using the specified BusStop object.
+    ARGS:
+        BusStop aBusStop            - The BusStop object whose information will be presented in the labels.
+        Element busStopLabelParent  - The element which parents the arrival labels
+    RETURNS:
+        null
+ */
 function updateArrivalLabels( aBusStop, busStopLabelParent )
 {
-    // NOTE: This function should only be used right after .updateArrivalInfo().
-    // .updateArrivalInfo() in map_index.js has already updated the BusStop object's
-    // .scheduled_arrival and .est_arrival data members by this point.
-    // All that needs to be done is display the new data to the user.
+    /*  NOTE: This function should only be used in a .then() after .updateArrivalInfo().
+        An example can be found near the end of generateStopInfoContainer().
+        .updateArrivalInfo() in map_index.js would have already updated the BusStop
+        object's .scheduled_arrival and .est_arrival data members by this function is
+        called. All that needs to be done is display the new data to the user.
+    */
     let estArrivalLabel = busStopLabelParent.querySelector("#estArrival")
     let schArrivalLabel = busStopLabelParent.querySelector("#schArrival")
 
     schArrivalLabel.innerHTML = "<small>" + SCHEDULED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.scheduled_arrival
 
-    if( aBusStop.est_arrival !== "TBD" )
+    if( aBusStop.est_arrival !== defaultTimeString )    // defaultTimeString is from map_index.js
     {
         estArrivalLabel.innerHTML = "<small>" + ESTIMATED_ARRIVAL_TIME_LABEL + "</small><br />" + aBusStop.est_arrival
     }
@@ -291,6 +312,14 @@ function updateArrivalLabels( aBusStop, busStopLabelParent )
     }
 }
 
+/*
+    Replaces the text of the information located on the top right section of the map.
+    ARGS:
+        String routeText    - The text that will appear in the upper section
+        String stopText     - The text that will appear in the bottom section
+    RETURNS:
+        null
+ */
 function updateSelectedRouteAndBusStopLabelsOnMap( routeText, stopText )
 {
     routeText = routeText != null ? routeText : NO_ROUTE_SELECTED_LABEL
@@ -307,6 +336,13 @@ function updateSelectedRouteAndBusStopLabelsOnMap( routeText, stopText )
     selectedRouteAndBusStopLabels.innerHTML = updatedString
 }
 
+/*
+    Creates three softly glowing bars that act as placeholders.
+    ARGS:
+        key - Route Id that the placeholders will be parented to.
+    RETURNS:
+        null
+ */
 function generateBusStopPlaceholder( key )
 {
     const container = document.createElement("div");

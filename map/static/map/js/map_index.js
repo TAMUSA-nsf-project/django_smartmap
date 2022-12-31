@@ -385,7 +385,7 @@ function initMap() {
     // Push control divs to the map.
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(selectRoutesBtn)
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push( selectedRouteAndBusStopLabels )
-    updateSelectedRouteAndBusStopLabelsOnMap()  // From offcanvas.js
+    updateSelectedRouteAndBusStopLabelsOnMap()  // From route_menu.js
 
     jQuery.ajax({
         url: AJAX_URL_BUS_OCCUPANCY_STATUS,
@@ -394,15 +394,19 @@ function initMap() {
         success: (data) => {
             console.log(data)
 
-            var legend = document.getElementById('legendContent');
+            const legend = document.getElementById("legend")
+            const legendContent = document.getElementById('legendContent');
+
             data.forEach((item) => {
-                var div = document.createElement('div');
+                const div = document.createElement('div');
                 div.innerHTML = '<img src="' + item.icon + '"> ' + item.description;
-                legend.appendChild(div);
+                legendContent.appendChild(div);
             })
-            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push
-            (document.getElementById('legend'));
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push( legend )
         },
+    })
+    .then( (res) => {
+        $("#loadingScreen").fadeOut("slow")
     });
 }
 
@@ -541,6 +545,6 @@ $(document).ready( ()=>{
         $('#legend a')[0].click();
     },5000)});
 
-setTimeout(() => {
-    $("#loadingScreen").fadeOut("slow")
-}, 1250)
+// setTimeout( () => {
+//     $("#loadingScreen").fadeOut("slow")
+// }, 1250 )
