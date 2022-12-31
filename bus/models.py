@@ -216,10 +216,12 @@ class TransitLogEntry(models.Model):
 
 # todo: these can be moved to a new app
 class BusArrivalLog(models.Model):
-    route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
+    driver = models.CharField(max_length=100)  # for now just using name of bus driver
+    route_id = models.PositiveSmallIntegerField(default=None)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.route.name}"
+        return f"Route: {self.route_id}"
 
     def __repr__(self):
         self_str = str(self)
@@ -228,15 +230,16 @@ class BusArrivalLog(models.Model):
 
 class BusArrivalLogEntry(models.Model):
     bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
-    bus_driver = models.CharField(max_length=100)  # for now just using name of bus driver
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    time_stamp = models.DateTimeField(default=None, blank=True, null=True)
     bus_stop_id = models.PositiveIntegerField(default=None)
     # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
     estimated_arrival_time = models.CharField(max_length=100)
     actual_arrival_time = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'{self.time_stamp.strftime("%H:%M:%S")}, {self.bus_driver}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}'
+        return f'{self.time_stamp.strftime("%H:%M:%S")}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}'
 
     def __repr__(self):
         self_str = str(self)

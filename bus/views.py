@@ -277,8 +277,11 @@ def bus_position_ajax(request):
                     # create ArrivalLogEntry
                     arrivalLogEntry = BusArrivalLogEntry()
                     arrivalLogEntry.bus_arrival_log = arrivalLog
+                    arrivalLogEntry.time_stamp = datetime_now
                     arrivalLogEntry.bus_stop_id = busStop.stop_id
                     arrivalLogEntry.bus_driver = bus.driver
+                    arrivalLogEntry.latitude = bus.latitude
+                    arrivalLogEntry.longitude = bus.longitude
                     arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
                     arrivalLogEntry.save()
 
