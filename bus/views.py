@@ -268,14 +268,14 @@ def bus_position_ajax(request):
                 for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
                     res = calc_duration(bus.getCoordinates(), busStop.getCoordinates(), datetime_now)
-                    eat_for_the_stop = int(res['text'].split(' ')[0])
+                    estimatedTime = datetime_now + timedelta(seconds=res['value'])
 
                     # create ArrivalLogEntry
                     arrivalLogEntry = BusArrivalLogEntry()
                     arrivalLogEntry.bus_arrival_log = arrivalLog
                     arrivalLogEntry.bus_stop_id = busStop.stop_id
                     arrivalLogEntry.bus_driver = bus.driver
-                    arrivalLogEntry.estimated_arrival_time = eat_for_the_stop
+                    arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
                     arrivalLogEntry.save()
 
         # Create new TransitLogEntry

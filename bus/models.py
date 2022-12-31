@@ -231,8 +231,8 @@ class BusArrivalLogEntry(models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True)
     bus_stop_id = models.PositiveIntegerField(default=None)
     # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
-    estimated_arrival_time = models.DateTimeField(default=None)
-    actual_arrival_time = models.DateTimeField(default=None)
+    estimated_arrival_time = models.CharField(max_length=100)
+    actual_arrival_time = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.time_stamp}, {self.bus_driver}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}"
