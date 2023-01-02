@@ -239,21 +239,26 @@ def bus_position_ajax(request):
 
         # Get BusRouteDetails set
         busRouteDetails_set = bus.getBusRouteDetailsSet()
+
+        """ 
+        The following if-clause is executed at a frequency defined on the frontend (currently every ~2 sec) 
+        """
         if bus.latest_route_stop_index < len(busRouteDetails_set):
 
-            # Look for proximity to a bus stop starting at last known
+            # Look for proximity to a bus stop starting at last visited stop (if applicable)
             nextBusStopIdx = None
             for i in range(bus.latest_route_stop_index, len(busRouteDetails_set)):
-                if busRouteDetails_set[i].bus_stop.getGeodesicDistanceTo(bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
+                if busRouteDetails_set[i].bus_stop.getGeodesicDistanceTo(
+                        bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
                     nextBusStopIdx = i
                     break
 
             # Check if arrived at next stop
-
             if nextBusStopIdx:
                 # get next stop
                 nextBusStop = busRouteDetails_set[nextBusStopIdx].bus_stop
-                # Get or create a BusArrivalLog instance
+
+                # Get BusArrivalLog instance
                 arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
 
                 # create ArrivalLogEntry
@@ -271,13 +276,16 @@ def bus_position_ajax(request):
                 bus.latest_route_stop_index = nextBusStop.route_index
                 bus.save(update_fields=['latest_route_stop_index'])
 
+        """ 
+        The following inner if-clause is executed at frequency ARRIVAL_LOG_FREQUENCY defined above
+        """
         # must check latest_route_stop_index again because previous if-clause can change it
         if bus.latest_route_stop_index < len(busRouteDetails_set) and last_eta_logged_time is not None:
             delta = datetime_now - last_eta_logged_time
 
             if delta.seconds > ARRIVAL_LOG_FREQUENCY:  # be aware that .seconds is capped at 86400
 
-                # Get or create a BusArrivalLog instance
+                # Get the BusArrivalLog instance
                 arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
 
                 # Update the time value only here. So that the interval will be calculated properly
