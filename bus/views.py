@@ -267,7 +267,7 @@ def bus_position_ajax(request):
                 arrivalLogEntry.save()
 
                 # Update bus's latest route stop index
-                bus.latest_route_stop_index = busRouteDetails_set[nextBusStopIdx].route_index
+                bus.latest_route_stop_index = nextBusStop.route_index
                 bus.save(update_fields=['latest_route_stop_index'])
 
         # must check latest_route_stop_index again because previous if-clause can change it
