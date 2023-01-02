@@ -240,8 +240,7 @@ def bus_position_ajax(request):
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-        last_bus_position_update_time = bus.last_eta_logged_time
-
+        last_eta_logged_time = bus.last_eta_logged_time
         bus.save()
 
         # Get BusRouteDetails set
@@ -273,8 +272,8 @@ def bus_position_ajax(request):
                 bus.save(update_fields=['latest_route_stop_index'])
 
         # must check latest_route_stop_index again because previous if-clause can change it
-        if bus.latest_route_stop_index < len(busRouteDetails_set) and last_bus_position_update_time is not None:
-            delta = datetime_now - last_bus_position_update_time
+        if bus.latest_route_stop_index < len(busRouteDetails_set) and last_eta_logged_time is not None:
+            delta = datetime_now - last_eta_logged_time
 
             if delta.seconds > ARRIVAL_LOG_FREQUENCY:  # be aware that .seconds is capped at 86400
 
