@@ -185,13 +185,6 @@ def getBusRouteGmapsPolylineEncodingAJAX(request):
     return HttpResponse(json.dumps(to_send))
 
 
-def doesBusReachedNextStop(busLocation, busRouteDetails, last_index):
-    for i in range(last_index, len(busRouteDetails)):
-        if busRouteDetails[i].bus_stop.getGeodesicDistanceTo(busLocation).m < BUS_STOP_ARRIVAL_PROXIMITY:
-            return i
-    return None
-
-
 @login_required
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
@@ -236,37 +229,42 @@ def bus_position_ajax(request):
             bus.arrival_log_id = arrivalLog.id
             bus.start_time = datetime_now
             bus.last_eta_logged_time = datetime_now
-            bus.latest_route_stop_index = 0
+            bus.latest_route_stop_index = 0  # assumes bus hasn't first stop yet, allows its arrival to be logged
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
         bus.longitude = bus_lng
-        last_bus_position_update_time = bus.last_eta_logged_time
-
+        last_eta_logged_time = bus.last_eta_logged_time
         bus.save()
 
         # Get BusRouteDetails set
         busRouteDetails_set = bus.getBusRouteDetailsSet()
+
+        """ 
+        The following if-clause is executed at a frequency defined on the frontend (currently every ~2 sec) 
+        """
         if bus.latest_route_stop_index < len(busRouteDetails_set):
             nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set,
                                                     bus.latest_route_stop_index)
 
             # Check if arrived at next stop
-
             if nextBusStopIdx:
                 addArrivalTimeForStop(bus, busRouteDetails_set[nextBusStopIdx].bus_stop.stop_id, datetime_now)
 
                 # Update bus's latest route stop index
-                bus.latest_route_stop_index = busRouteDetails_set[nextBusStopIdx].route_index
+                bus.latest_route_stop_index = nextBusStop.route_index
                 bus.save(update_fields=['latest_route_stop_index'])
 
+        """ 
+        The following inner if-clause is executed at frequency ARRIVAL_LOG_FREQUENCY defined above
+        """
         # must check latest_route_stop_index again because previous if-clause can change it
-        if bus.latest_route_stop_index < len(busRouteDetails_set) and last_bus_position_update_time is not None:
-            delta = datetime_now - last_bus_position_update_time
+        if bus.latest_route_stop_index < len(busRouteDetails_set) and last_eta_logged_time is not None:
+            delta = datetime_now - last_eta_logged_time
 
             if delta.seconds > ARRIVAL_LOG_FREQUENCY:  # be aware that .seconds is capped at 86400
 
-                # Get or create a BusArrivalLog instance
+                # Get the BusArrivalLog instance
                 arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
 
                 # Update the time value only here. So that the interval will be calculated properly
