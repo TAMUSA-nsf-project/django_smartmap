@@ -229,6 +229,7 @@ def bus_position_ajax(request):
             bus.arrival_log_id = arrivalLog.id
             bus.start_time = datetime_now
             bus.last_eta_logged_time = datetime_now
+            bus.latest_route_stop_index = 0  # assumes bus hasn't first stop yet, allows its arrival to be logged
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
@@ -283,7 +284,7 @@ def bus_position_ajax(request):
                 bus.last_eta_logged_time = datetime_now
                 bus.save()
 
-                for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
+                for i in range(bus.latest_route_stop_index, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
                     res = calc_duration(bus.getCoordinates(), busStop.getCoordinates(), datetime_now)
                     estimatedTime = datetime_now + timedelta(seconds=res['value'])

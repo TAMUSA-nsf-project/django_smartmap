@@ -31,7 +31,7 @@ class Bus(models.Model):
     arrival_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
     last_eta_logged_time = models.DateTimeField(default=None, blank=True, null=True)
-    latest_route_stop_index = models.PositiveSmallIntegerField(default=1)
+    latest_route_stop_index = models.PositiveSmallIntegerField(default=1)  # todo default = 0
 
     def getBusColorStaticUrl(self) -> str:
         """
