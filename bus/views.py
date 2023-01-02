@@ -236,6 +236,7 @@ def bus_position_ajax(request):
             bus.arrival_log_id = arrivalLog.id
             bus.start_time = datetime_now
             bus.last_eta_logged_time = datetime_now
+            bus.latest_route_stop_index = 0
 
         # Update the bus coordinates and timekeeping
         bus.latitude = bus_lat
@@ -247,26 +248,13 @@ def bus_position_ajax(request):
         # Get BusRouteDetails set
         busRouteDetails_set = bus.getBusRouteDetailsSet()
         if bus.latest_route_stop_index < len(busRouteDetails_set):
-            nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set, bus.latest_route_stop_index)
+            nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set,
+                                                    bus.latest_route_stop_index)
 
             # Check if arrived at next stop
 
             if nextBusStopIdx:
-                # get next stop
-                nextBusStop = busRouteDetails_set[nextBusStopIdx].bus_stop
-                # Get or create a BusArrivalLog instance
-                arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
-
-                # create ArrivalLogEntry
-                arrivalLogEntry = BusArrivalLogEntry()
-                arrivalLogEntry.bus_arrival_log = arrivalLog
-                arrivalLogEntry.time_stamp = datetime_now
-                arrivalLogEntry.bus_stop_id = nextBusStop.stop_id
-                arrivalLogEntry.latitude = bus.latitude
-                arrivalLogEntry.longitude = bus.longitude
-                # arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
-                arrivalLogEntry.actual_arrival_time = str(datetime_now)
-                arrivalLogEntry.save()
+                addArrivalTimeForStop(bus, busRouteDetails_set[nextBusStopIdx].bus_stop.stop_id, datetime_now)
 
                 # Update bus's latest route stop index
                 bus.latest_route_stop_index = busRouteDetails_set[nextBusStopIdx].route_index
@@ -285,7 +273,7 @@ def bus_position_ajax(request):
                 bus.last_eta_logged_time = datetime_now
                 bus.save()
 
-                for i in range(bus.latest_route_stop_index - 1, len(busRouteDetails_set)):
+                for i in range(bus.latest_route_stop_index, len(busRouteDetails_set)):
                     busStop = busRouteDetails_set[i].bus_stop
                     res = calc_duration(bus.getCoordinates(), busStop.getCoordinates(), datetime_now)
                     estimatedTime = datetime_now + timedelta(seconds=res['value'])
@@ -301,9 +289,29 @@ def bus_position_ajax(request):
                     arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
                     arrivalLogEntry.save()
 
-        return HttpResponse(f"Success")
+        if bus.latest_route_stop_index != 0:
+            lastStopIdx = bus.latest_route_stop_index - 1
+        else:
+            lastStopIdx = bus.latest_route_stop_index
+        return HttpResponse(json.dumps({'status': "Success",
+                                        'last_stop_idx': bus.latest_route_stop_index,
+                                        'last_stop_name': busRouteDetails_set[lastStopIdx].bus_stop.name}))
     else:
-        return HttpResponse("Error: Didn't receive data.")
+        return HttpResponse(json.dumps({'status': "Did not receive data."}))
+
+
+def addArrivalTimeForStop(bus, busStopId, datetime_now):
+    # Get or create a BusArrivalLog instance
+    arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
+    # create ArrivalLogEntry
+    arrivalLogEntry = BusArrivalLogEntry()
+    arrivalLogEntry.bus_arrival_log = arrivalLog
+    arrivalLogEntry.time_stamp = datetime_now
+    arrivalLogEntry.bus_stop_id = busStopId
+    arrivalLogEntry.latitude = bus.latitude
+    arrivalLogEntry.longitude = bus.longitude
+    arrivalLogEntry.actual_arrival_time = str(datetime_now)
+    arrivalLogEntry.save()
 
 
 @login_required
@@ -331,6 +339,22 @@ def updateBusSeatAvailabilityAJAX(request):
     if bus:
         bus.seat_availability = btn_data
         bus.save()
+
+    return HttpResponse("Success")
+
+
+@login_required
+@permission_required('bus.access_busdriver_pages', raise_exception=True)
+def updateLastBusStopManualAJAX(request):
+    data = ast.literal_eval(request.GET.get('data'))
+    btn_data = data.get('choice')
+    bus = Bus.objects.filter(driver=request.user.username).first()
+    if bus:
+        bus.latest_route_stop_index = btn_data
+        bus.save()
+        busStopId = BusRouteDetails.objects.filter(parent_route_id=bus.route_id,
+                                                   route_index=btn_data).first().bus_stop.stop_id
+        addArrivalTimeForStop(bus, busStopId, timezone.now())
 
     return HttpResponse("Success")
 

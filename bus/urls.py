@@ -9,10 +9,13 @@ urlpatterns = [
     path('busposition-ajax/', views.bus_position_ajax, name='busposition-ajax'),
     path('bushasendedbroadcast-ajax/', views.deleteBusHasEndedBroadcastAJAX, name='bushasendedbroadcast-ajax'),
 
+
     # User-requested bus data
     path('busestarrival-ajax/', views.getEstimatedArrivalAJAX, name='busestarrival-ajax'),
     path('activebussesonroute-ajax/', views.getActiveBussesOnRouteAJAX, name='activebussesonroute-ajax'),
     path('busroutepolyline-ajax/', views.getBusRouteGmapsPolylineEncodingAJAX, name='busroutepolyline-ajax'),
+    path('buslaststop-ajax/', views.updateLastBusStopManualAJAX, name='buslaststop-ajax'),
+    path('busroutedetails-ajax/', views.updateLastBusStopManualAJAX, name='busroutedetails-ajax'),
 
 
     # Transit log
