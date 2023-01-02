@@ -185,13 +185,6 @@ def getBusRouteGmapsPolylineEncodingAJAX(request):
     return HttpResponse(json.dumps(to_send))
 
 
-def doesBusReachedNextStop(busLocation, busRouteDetails, last_index):
-    for i in range(last_index, len(busRouteDetails)):
-        if busRouteDetails[i].bus_stop.getGeodesicDistanceTo(busLocation).m < BUS_STOP_ARRIVAL_PROXIMITY:
-            return i
-    return None
-
-
 @login_required
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def bus_position_ajax(request):
@@ -246,7 +239,13 @@ def bus_position_ajax(request):
         # Get BusRouteDetails set
         busRouteDetails_set = bus.getBusRouteDetailsSet()
         if bus.latest_route_stop_index < len(busRouteDetails_set):
-            nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set, bus.latest_route_stop_index)
+
+            # Look for proximity to a bus stop starting at last known
+            nextBusStopIdx = None
+            for i in range(bus.latest_route_stop_index, len(busRouteDetails_set)):
+                if busRouteDetails_set[i].bus_stop.getGeodesicDistanceTo(bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
+                    nextBusStopIdx = i
+                    break
 
             # Check if arrived at next stop
 
