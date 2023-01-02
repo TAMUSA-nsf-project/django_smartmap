@@ -8,6 +8,8 @@ from django.conf import settings
 import googlemaps
 from googlemaps.directions import directions
 
+from geopy.distance import distance as geopy_distance
+
 DEFAULT_COLOR_CODE = "#FF0000"
 
 gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
@@ -25,8 +27,11 @@ class Bus(models.Model):
     route = models.ForeignKey("BusRoute", on_delete=models.DO_NOTHING)
     start_time = models.DateTimeField(default=None, blank=True, null=True)
     end_time = models.DateTimeField(default=None, blank=True, null=True)
-    transit_log_id = models.PositiveIntegerField(default=None)
+    # transit_log_id = models.PositiveIntegerField(default=None)
+    arrival_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
+    last_eta_logged_time = models.DateTimeField(default=None, blank=True, null=True)
+    latest_route_stop_index = models.PositiveSmallIntegerField(default=1)
 
     def getBusColorStaticUrl(self) -> str:
         """
@@ -43,6 +48,9 @@ class Bus(models.Model):
 
     def getCoordinates(self):
         return self.getLatLngTuple()
+
+    def getBusRouteDetailsSet(self):
+        return self.route.busroutedetails_set.all()
 
     class Meta:
         verbose_name_plural = 'buses'  # django automatically capitalizes this in the admin site
@@ -62,6 +70,9 @@ class BusStop(models.Model):
 
     def getCoordinates(self):
         return self.getLatLngTuple()
+
+    def getGeodesicDistanceTo(self, coords):
+        return geopy_distance(coords, self.getCoordinates())
 
     def __str__(self):
         return self.name
@@ -201,3 +212,35 @@ class TransitLogEntry(models.Model):
 
     def __str__(self):
         return f"{self.time_stamp}, Lat: {self.latitude}, Lng: {self.longitude}"
+
+
+# todo: these can be moved to a new app
+class BusArrivalLog(models.Model):
+    driver = models.CharField(max_length=100)  # for now just using name of bus driver
+    route_id = models.PositiveSmallIntegerField(default=None)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Route: {self.route_id}"
+
+    def __repr__(self):
+        self_str = str(self)
+        return self_str if len(self_str) < 50 else self_str[:50] + "..."
+
+
+class BusArrivalLogEntry(models.Model):
+    bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    time_stamp = models.DateTimeField(default=None, blank=True, null=True)
+    bus_stop_id = models.PositiveIntegerField(default=None)
+    # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
+    estimated_arrival_time = models.CharField(max_length=100)
+    actual_arrival_time = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.time_stamp.strftime("%H:%M:%S")}, BusStopID: {self.bus_stop_id}, ETA: {self.estimated_arrival_time}, ATA: {self.actual_arrival_time}'
+
+    def __repr__(self):
+        self_str = str(self)
+        return self_str if len(self_str) < 50 else self_str[:50] + "..."
