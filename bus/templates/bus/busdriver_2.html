@@ -30,8 +30,10 @@
     </style>
 
     <script type="text/javascript" nonce="{{request.csp_nonce}}">
+
     const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
-        function updateLastStop() {
+
+    function updateLastStop() {
         const stopSelect = $('#stopSelect');
         let toSend ={
             'choice' : stopSelect.val()
@@ -49,6 +51,7 @@
                         },
                     });
     }
+
     function getAllStopsForRoute() {
         const routeSelect = $('#routeSelect');
         // Await data from server before continuing
@@ -200,12 +203,12 @@
                 if(data['status'] === "Success")
                 {
                     // Update position data status message on page
-                        latlngMessageDiv.html(`Latitude  :${geolocationCoordinates.latitude}
-                                               Longitude :${geolocationCoordinates.longitude}
-                                               Accuracy  :${geolocationCoordinates.accuracy}
-                                               Speed     :${geolocationCoordinates.speed}
-                                               Rotation  :${geolocationCoordinates.heading}
-                                               <b>Last Stop : ${data['last_stop_idx']} - ${data['last_stop_name']}</b>`)
+                        latlngMessageDiv.html(`<p>lat: ${geolocationCoordinates.latitude},
+                                               lng: ${geolocationCoordinates.longitude},
+                                               accuracy: ${geolocationCoordinates.accuracy},
+                                               speed: ${geolocationCoordinates.speed},
+                                               hdng: ${geolocationCoordinates.heading}</p>
+                                               <p><b>Last Stop: ${data['last_stop_idx']} - ${data['last_stop_name']}<b></p>`)
                 }
                 else
                 {
@@ -216,7 +219,7 @@
 
             function watchPositionSuccess(geolocationPosition) {
 
-                statusMessageDiv.html(`Broadcasting position for:  ${routeSelect.children("option").filter(":selected").text()}`)
+                statusMessageDiv.html(`Broadcasting position for  ${routeSelect.children("option").filter(":selected").text()}`)
 
                     if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
 
@@ -347,15 +350,20 @@
                 </div>
             </div>
 
+            <br>
+
             <div class="mb-3" id="lastStop">
-            <select class="form-select" id="stopSelect">
-                <option selected disabled value="0">Update Last Arrived Stop</option>
-            </select>
-            <button class="btn btn-primary" type="button" id="updateStopBtn">
-            Update Stop
-             </button>
+                <select class="form-select" id="stopSelect">
+                    <option selected disabled value="0">Update Last Arrived Stop</option>
+                </select>
+                <button class="btn btn-primary" type="button" id="updateStopBtn">
+                    Update Stop
+                </button>
+            </div>
         </div>
-        </div>
+
+
+
     </div>
 
 {% endblock %}
