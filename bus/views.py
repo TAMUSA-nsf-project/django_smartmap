@@ -295,10 +295,12 @@ def bus_position_ajax(request):
                     arrivalLogEntry.estimated_arrival_time = estimatedTime.strftime("%H:%M:%S")  # 24-hr format
                     arrivalLogEntry.save()
 
-        if bus.latest_route_stop_index != 0:
-            lastStopIdx = bus.latest_route_stop_index - 1
-        else:
-            lastStopIdx = bus.latest_route_stop_index
+        # Data to pass back to frontend
+        # create indexing var for busRouteDetails_set to get name of last bus stop
+        lastStopIdx = bus.latest_route_stop_index
+        if lastStopIdx > 0:
+            lastStopIdx -= 1  # decrement for zero-based indexing of busRouteDetails_set
+
         return HttpResponse(json.dumps({'status': "Success",
                                         'last_stop_idx': bus.latest_route_stop_index,
                                         'last_stop_name': busRouteDetails_set[lastStopIdx].bus_stop.name}))
