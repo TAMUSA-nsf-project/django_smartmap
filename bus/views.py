@@ -355,9 +355,9 @@ def updateBusSeatAvailabilityAJAX(request):
 @permission_required('bus.access_busdriver_pages', raise_exception=True)
 def updateLastBusStopManualAJAX(request):
     data = ast.literal_eval(request.GET.get('data'))
-    btn_data = data.get('choice')
+    btn_data = int(data.get('choice'))
     bus = Bus.objects.filter(driver=request.user.username).first()
-    if bus:
+    if bus and btn_data > 0:
         bus.latest_route_stop_index = btn_data
         bus.save()
         busStopId = BusRouteDetails.objects.filter(parent_route_id=bus.route_id,
