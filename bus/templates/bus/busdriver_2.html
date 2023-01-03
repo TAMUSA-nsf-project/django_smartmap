@@ -3,11 +3,13 @@
 
 {% block extend_head %}
     <!-- Scripts/links needed for the toggle switch (a custom checkbox) -->
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" nonce="{{request.csp_nonce}}">
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" nonce="{{request.csp_nonce}}"></script>
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+          rel="stylesheet" nonce="{{ request.csp_nonce }}">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"
+            nonce="{{ request.csp_nonce }}"></script>
 
     <!-- CSS for the bus driver buttons -->
-    <style nonce="{{request.csp_nonce}}">
+    <style nonce="{{ request.csp_nonce }}">
 
         .no-seats-btn, .open-seats-btn-group > .btn {
             padding-bottom: 40px;
@@ -18,73 +20,72 @@
         }
 
 
-        .no-seats-btn
-        {
+        .no-seats-btn {
             margin-top: 10px;
             width: 100%;
         }
 
 
-
-
     </style>
 
-    <script type="text/javascript" nonce="{{request.csp_nonce}}">
+    <script type="text/javascript" nonce="{{ request.csp_nonce }}">
 
-    const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
+        const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
+        let previousStopIdx = -1
 
-    function updateLastStop() {
-        const stopSelect = $('#stopSelect');
-        let toSend ={
-            'choice' : stopSelect.val()
-        }
-        jQuery.ajax({
-                        url: "{% url 'bus:buslaststop-ajax' %}",
-                        data: {'data': JSON.stringify(toSend)},
-                        // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
-                        // server-side, hence the object defined here
-                        type: "GET",
-                        //dataType: 'json', // dataType specifies the type of data expected back from the server,
-                        dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
-                        async: false,
-                        success: (data) => {
-                        },
-                    });
-    }
-
-    function getAllStopsForRoute() {
-        const routeSelect = $('#routeSelect');
-        // Await data from server before continuing
-        jQuery.ajax({
-            url: AJAX_URL_ROUTE_DETAILS,
-            data: {'data': JSON.stringify(routeSelect.val())},
-            type: "GET",
-            dataType: 'json',
-            success: (data) => {
-                if (data) {
-                    $('#stopSelect').empty();
-                    $('#stopSelect').append($('<option></option>').val(0).html('Update Last Stop'));
-                    $.each(data.all_stops, function(iterator, busStop) {
-                        $('#stopSelect').append($('<option></option>').val(busStop['BusStopIndex']).html(`${busStop['BusStopIndex']} - ${busStop['BusStopName']}`))
-                    });
-                } else
-                    console.log("No stops found for the given route.")
-            },
-            error: (e) => {
-                console.log(e.message)
+        function updateLastStop() {
+            const stopSelect = $('#stopSelect');
+            let toSend = {
+                'choice': stopSelect.val()
             }
-        });
-    }
+            jQuery.ajax({
+                url: "{% url 'bus:buslaststop-ajax' %}",
+                data: {'data': JSON.stringify(toSend)},
+                // ^the leftmost "data" is a keyword used by ajax and is not a key that is accessible
+                // server-side, hence the object defined here
+                type: "GET",
+                //dataType: 'json', // dataType specifies the type of data expected back from the server,
+                dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py
+                async: false,
+                success: (data) => {
+                },
+            });
+        }
+
+        function getAllStopsForRoute() {
+            const routeSelect = $('#routeSelect');
+            // Await data from server before continuing
+            jQuery.ajax({
+                url: AJAX_URL_ROUTE_DETAILS,
+                data: {'data': JSON.stringify(routeSelect.val())},
+                type: "GET",
+                dataType: 'json',
+                success: (data) => {
+                    if (data) {
+                        $('#stopSelect').empty();
+                        $('#stopSelect').append($('<option></option>').val(0).html('Update Last Stop'));
+                        $.each(data.all_stops, function (iterator, busStop) {
+                            $('#stopSelect').append($('<option></option>').val(busStop['BusStopIndex']).html(`${busStop['BusStopIndex']} - ${busStop['BusStopName']}`))
+                        });
+                         $('#stopSelect').val(0).attr('selected', 'selected');
+                    } else
+                        console.log("No stops found for the given route.")
+                },
+                error: (e) => {
+                    console.log(e.message)
+                }
+            });
+        }
 
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
             /**
              * Class to represent a document element. Contains methods to disable/enable state, etc.
              */
             class Element {
 
-                constructor(element, disabled_opacity=0.5) {
+                constructor(element, disabled_opacity = 0.5) {
                     this.element = element
                     this.disabled_opacity = disabled_opacity
                     this.enabled_opacity = 1
@@ -98,7 +99,7 @@
                  * @param disable_bool
                  * @param opacity
                  */
-                static dfsToggleDisabledState(element, disable_bool, opacity=1) {
+                static dfsToggleDisabledState(element, disable_bool, opacity = 1) {
 
                     function _dfs_disable(element) {
                         element.children().each(function () {
@@ -126,9 +127,10 @@
 
 
             }
-             $('#updateStopBtn').on("click", function () {
-                    updateLastStop();
-                });
+
+            $('#updateStopBtn').on("click", function () {
+                updateLastStop();
+            });
 
 
             // setup button on-click behavior (send data to server via ajax)
@@ -177,8 +179,8 @@
             const broadcastFrequency = 2000;
 
             // Warn driver with popup if they try to leave the page while toggle-switch is activated
-            $(window).bind('beforeunload', function() {
-                if(toggleSwitch.prop('checked')) {
+            $(window).bind('beforeunload', function () {
+                if (toggleSwitch.prop('checked')) {
                     return "a string must be returned";  // As of 2021, for security reasons it's no longer possible to display a custom message
                 }
             });
@@ -197,21 +199,27 @@
             function geolocationPositionError(positionError) {
                 console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
             }
-            function ajaxSuccess(data) {}
 
-            function UpdateDetailsOnUi(data,geolocationCoordinates) {
-                if(data['status'] === "Success")
-                {
+            function ajaxSuccess(data) {
+            }
+
+            function UpdateDetailsOnUi(data, geolocationCoordinates) {
+                if (data['status'] === "Success") {
                     // Update position data status message on page
-                        latlngMessageDiv.html(`<p>lat: ${geolocationCoordinates.latitude},
+                    latlngMessageDiv.html(`<p>lat: ${geolocationCoordinates.latitude},
                                                lng: ${geolocationCoordinates.longitude},
                                                accuracy: ${geolocationCoordinates.accuracy},
                                                speed: ${geolocationCoordinates.speed},
                                                hdng: ${geolocationCoordinates.heading}</p>
                                                <p><b>Last Stop: ${data['last_stop_idx']} - ${data['last_stop_name']}<b></p>`)
-                }
-                else
-                {
+                    // Pre-populate the dropdown to next stop on route for easy update.
+                    if (data['last_stop_idx'] !== previousStopIdx && $('#stopSelect option[value=' + `${data['last_stop_idx'] + 1}` +
+                        ']').length ) {
+                        $('#stopSelect').val(data['last_stop_idx'] + 1).attr('selected', 'selected');
+                        previousStopIdx = data['last_stop_idx']
+                    }
+
+                } else {
                     // Update position data status message on page
                     latlngMessageDiv.html(`${data['status']}`)
                 }
@@ -221,20 +229,20 @@
 
                 statusMessageDiv.html(`Broadcasting position for  ${routeSelect.children("option").filter(":selected").text()}`)
 
-                    if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
+                if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
 
-                        prevTime = geolocationPosition.timestamp
-                        const geolocationCoordinates = geolocationPosition.coords;
+                    prevTime = geolocationPosition.timestamp
+                    const geolocationCoordinates = geolocationPosition.coords;
 
-                        // Send the location information to the server
-                        const posData = {
-                            'selected_route': routeSelect.val(),
-                            'latitude': geolocationCoordinates.latitude,
-                            'longitude': geolocationCoordinates.longitude,
-                            'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy: "",
-                            'speed': geolocationCoordinates.speed != null ? geolocationCoordinates.speed: "",
-                            'heading': geolocationCoordinates.heading != null ? geolocationCoordinates.heading: ""
-                        }
+                    // Send the location information to the server
+                    const posData = {
+                        'selected_route': routeSelect.val(),
+                        'latitude': geolocationCoordinates.latitude,
+                        'longitude': geolocationCoordinates.longitude,
+                        'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy : "",
+                        'speed': geolocationCoordinates.speed != null ? geolocationCoordinates.speed : "",
+                        'heading': geolocationCoordinates.heading != null ? geolocationCoordinates.heading : ""
+                    }
 
                     // Send the watchPosition data to the server
                     jQuery.ajax({
@@ -245,12 +253,12 @@
                         type: "GET",
                         dataType: 'json', // dataType specifies the type of data expected back from the server,
                         {#dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py#}
-                        success: (data) => {UpdateDetailsOnUi(data,geolocationCoordinates)},
+                        success: (data) => {
+                            UpdateDetailsOnUi(data, geolocationCoordinates)
+                        },
                     });
 
-                }
-                else
-                {
+                } else {
                     // We don't want to make frequent commits to server.
                     console.log(geolocationPosition.timestamp - prevTime)
                 }
@@ -263,15 +271,15 @@
 
             // Route selector on-change action
             routeSelect.on('change', function () {
-                if($(this).val() !== '') {
+                if ($(this).val() !== '') {
                     toggleSwitchParent.enableElement()
                 }
             })
 
             // Broadcast toggle-switch on-change action
-            toggleSwitch.change(function() {
+            toggleSwitch.change(function () {
                 // boolean value from toggle switch
-                if( $(this).prop('checked') ) {
+                if ($(this).prop('checked')) {
                     // Immediately disable the route selector
                     routeSelect.prop('disabled', true);
                     seatAvailabilityInterfaceParent.enableElement()
@@ -293,6 +301,7 @@
                     statusMessageDiv.html('');
                     latlngMessageDiv.html('');
                     $('#stopSelect').empty();
+                    previousStopIdx = -1
 
 
                     // temporary dummy data
@@ -332,21 +341,25 @@
             </select>
         </div>
         <div id="toggleSwitchParent" class="mb-3">
-            <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving" data-off="Start Driving" data-onstyle="danger">
+            <input id="toggle-event" type="checkbox" data-toggle="toggle" data-on="Stop Driving"
+                   data-off="Start Driving" data-onstyle="danger">
         </div>
         <div class="mb-3" id="statusMessage"></div>
         <div class="mb-3" id="latlngMessage"></div>
         <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
             <div class="row">
-                <div class="btn-group btn-group-lg open-seats-btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button type="button" class="btn btn-success seat-availability-btn" data-color="green">3+</button>
-                  <button type="button" class="btn btn-warning seat-availability-btn" data-color="yellow"><3</button>
+                <div class="btn-group btn-group-lg open-seats-btn-group" role="group"
+                     aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-success seat-availability-btn" data-color="green">3+</button>
+                    <button type="button" class="btn btn-warning seat-availability-btn" data-color="yellow"><3</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-danger btn-lg no-seats-btn seat-availability-btn" data-color="red">None</button>
+                    <button type="button" class="btn btn-danger btn-lg no-seats-btn seat-availability-btn"
+                            data-color="red">None
+                    </button>
                 </div>
             </div>
 
@@ -357,12 +370,10 @@
                     <option selected disabled value="0">Update Last Arrived Stop</option>
                 </select>
                 <button class="btn btn-primary" type="button" id="updateStopBtn">
-                    Update Stop
+                    Update Actual Arrival Time
                 </button>
             </div>
         </div>
-
-
 
     </div>
 
