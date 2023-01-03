@@ -244,8 +244,14 @@ def bus_position_ajax(request):
         The following if-clause is executed at a frequency defined on the frontend (currently every ~2 sec) 
         """
         if bus.latest_route_stop_index < len(busRouteDetails_set):
-            nextBusStopIdx = doesBusReachedNextStop(bus.getCoordinates(), busRouteDetails_set,
-                                                    bus.latest_route_stop_index)
+
+            # Look for proximity to a bus stop starting at last visited stop (if applicable)
+            nextBusStopIdx = None
+            for i in range(bus.latest_route_stop_index, len(busRouteDetails_set)):
+                if busRouteDetails_set[i].bus_stop.getGeodesicDistanceTo(
+                        bus.getCoordinates()).m < BUS_STOP_ARRIVAL_PROXIMITY:
+                    nextBusStopIdx = i
+                    break
 
             # Check if arrived at next stop
             if nextBusStopIdx is not None:  # None-check required because nextBusStopIdx can be 0
