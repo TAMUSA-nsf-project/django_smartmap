@@ -17,7 +17,7 @@ from .models import TransitLog, BusArrivalLog, BusArrivalLogEntry
 BUS_SCHEDULE_INTERVAL_MINUTES = 40
 
 BUS_STOP_ARRIVAL_PROXIMITY = 10  # meters
-ARRIVAL_LOG_FREQUENCY = 60  # seconds
+ARRIVAL_LOG_FREQUENCY = 30  # seconds
 
 """
 Bus Driver page
