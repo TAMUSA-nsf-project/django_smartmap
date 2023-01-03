@@ -308,14 +308,14 @@ def bus_position_ajax(request):
         return HttpResponse(json.dumps({'status': "Did not receive data."}))
 
 
-def addArrivalTimeForStop(bus, busStopId, datetime_now):
+def addArrivalTimeForStopByID(bus: Bus, bus_stop_id: int, datetime_now):
     # Get or create a BusArrivalLog instance
     arrivalLog = BusArrivalLog.objects.filter(id=bus.arrival_log_id).first()
     # create ArrivalLogEntry
     arrivalLogEntry = BusArrivalLogEntry()
     arrivalLogEntry.bus_arrival_log = arrivalLog
     arrivalLogEntry.time_stamp = datetime_now
-    arrivalLogEntry.bus_stop_id = busStopId
+    arrivalLogEntry.bus_stop_id = bus_stop_id
     arrivalLogEntry.latitude = bus.latitude
     arrivalLogEntry.longitude = bus.longitude
     arrivalLogEntry.actual_arrival_time = str(datetime_now)
@@ -362,7 +362,7 @@ def updateLastBusStopManualAJAX(request):
         bus.save()
         busStopId = BusRouteDetails.objects.filter(parent_route_id=bus.route_id,
                                                    route_index=btn_data).first().bus_stop.stop_id
-        addArrivalTimeForStop(bus, busStopId, timezone.now())
+        addArrivalTimeForStopByID(bus, busStopId, timezone.now())
 
     return HttpResponse("Success")
 
