@@ -248,11 +248,13 @@ def bus_position_ajax(request):
                                                     bus.latest_route_stop_index)
 
             # Check if arrived at next stop
-            if nextBusStopIdx:
-                addArrivalTimeForStop(bus, busRouteDetails_set[nextBusStopIdx].bus_stop.stop_id, datetime_now)
+            if nextBusStopIdx is not None:  # None-check required because nextBusStopIdx can be 0
+                # Get next stop
+                nextBusRouteDetail = busRouteDetails_set[nextBusStopIdx]  # get BusRouteDetails obj at index nextB...
+                addArrivalTimeForStopByID(bus, nextBusRouteDetail.bus_stop.stop_id, datetime_now)
 
                 # Update bus's latest route stop index
-                bus.latest_route_stop_index = nextBusStop.route_index
+                bus.latest_route_stop_index = nextBusRouteDetail.route_index  # route_index starts at 1
                 bus.save(update_fields=['latest_route_stop_index'])
 
         """ 
