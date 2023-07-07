@@ -30,7 +30,7 @@ class Bus(models.Model):
     # transit_log_id = models.PositiveIntegerField(default=None)
     arrival_log_id = models.PositiveIntegerField(default=None)
     seat_availability = models.CharField(default="green", max_length=50)  # todo only values "green", "red", "yellow"
-    last_eta_logged_time = models.DateTimeField(default=None, blank=True, null=True)
+    eta_log_time_counter = models.PositiveIntegerField(default=0)
     latest_route_stop_index = models.PositiveSmallIntegerField(default=1)  # todo default = 0
 
     def getBusColorStaticUrl(self) -> str:
@@ -232,10 +232,12 @@ class BusArrivalLogEntry(models.Model):
     bus_arrival_log = models.ForeignKey("BusArrivalLog", on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    time_stamp = models.DateTimeField(default=None, blank=True, null=True)
+    time_stamp = models.CharField(max_length=100, blank=True, null=True)
     bus_stop_id = models.PositiveIntegerField(default=None)
     # scheduled_arrival_time = models.DateTimeField(default=None)  # todo
     estimated_arrival_time = models.CharField(max_length=100)
+    api_response_value = models.CharField(max_length=100, blank=True, null=True)
+    stop_skipped_time = models.CharField(max_length=100, blank=True, null=True)
     actual_arrival_time = models.CharField(max_length=100)
 
     def __str__(self):

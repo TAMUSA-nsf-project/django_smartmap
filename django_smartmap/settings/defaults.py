@@ -54,7 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
+    # Disabling csp for the duration of field test 3/13/2023 Anoop
+    # 'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'django_smartmap.urls'
@@ -97,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Central'
 
 USE_I18N = True
 
@@ -157,7 +158,7 @@ CSP_IMG_SRC = (
     cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js',
       '''
 CSP_INCLUDE_NONCE_IN = (
-    'script-src', 'connect-src', 'style-src', 'font-src', 'img-src')  # for inline javascript and style csss
+    'script-src', 'connect-src', 'style-src', 'font-src', 'img-src')  # for inline javascript and style css
 
 CSP_FRAME_ANCESTORS = ("'none'")
 CSP_PREFETCH_SRC = ("'none'")
@@ -169,3 +170,4 @@ CSP_MEDIA_SRC = ("'self'")
 
 
 SYNC_BUS_SCHEDULES = False
+LOG_ETA = False

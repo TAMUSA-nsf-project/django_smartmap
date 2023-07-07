@@ -5,6 +5,7 @@ import  google.auth
 from urllib.parse import urlparse
 
 DEBUG = os.getenv("DEBUG", default="False") == "True"
+LOG_ETA = os.getenv("LOG_ETA", default="False") == "True"
 
 # Attempt to load the Project ID into the environment, safely failing on error.
 try:

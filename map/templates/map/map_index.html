@@ -5,22 +5,25 @@
     <title>Add Map</title>
     {#   I don't think the following script is needed. Map still loads.   #}
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default" nonce="{{ request.csp_nonce }}"></script>
-   <link rel="stylesheet" nonce="{{ request.csp_nonce }}" href="{% static 'map/css/mapstyles.css' %}" />
-     <style nonce="{{request.csp_nonce}}">
+    <link rel="stylesheet" nonce="{{ request.csp_nonce }}" href="{% static 'map/css/mapstyles.css' %}"/>
+    <style nonce="{{ request.csp_nonce }}">
         /* Always set the mapindex height explicitly to define the size of the div
          * element that contains the mapindex. */
         #map {
             height: 100vh; /* Google's suggested height of 100% may prevent map from displaying */
             width: 100vw;
         }
+
         #routeMenu {
             max-height: 100vh;
             overflow: auto;
         }
+
         #routeMenuBody {
             scrollbar-width: thin;
             padding: 0; /* .offcanvas-body has initial padding, but this removes it. */
         }
+
         #loadingScreen {
             position: fixed;
             width: 100%;
@@ -28,10 +31,12 @@
             top: 0;
             z-index: 11;
         }
+
         #loadingScreenContent {
             text-align: center;
             padding: 50vh 0;
         }
+
         .btn.btn-map-left {
             position: absolute;
             z-index: 10;
@@ -42,16 +47,19 @@
             #loadingScreen {
                 background-color: white;
             }
+
             #loadingScreenContent {
                 color: black;
                 /* Spinner color is automatically handled cause Bootstrap is pretty cool like that */
             }
         }
+
         /* Dark mode */
         @media (prefers-color-scheme: dark) {
             #loadingScreen {
                 background-color: black;
             }
+
             #loadingScreenContent {
                 color: white;
             }
@@ -71,8 +79,10 @@
 
     <!-- Front-end stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" nonce="{{ request.csp_nonce }}" href="{% static 'map/css/offcanvas.css' %}" />
+    <script type="text/javascript" nonce="{{ request.csp_nonce }}"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" nonce="{{ request.csp_nonce }}" href="{% static 'map/css/offcanvas.css' %}"/>
+
 
 {% endblock %}
 
@@ -80,11 +90,12 @@
 {% block content %}
 
     <!--The div element for the mapindex -->
-{#    <div id="map"></div>#}
+    {#    <div id="map"></div>#}
     <div id="selectRoutesButtonDiv">
-        <button class="btn btn-primary btn-map-left" type="button" data-bs-toggle="offcanvas" data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
-      Select Route
-    </button>
+        <button class="btn btn-primary btn-map-left" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#routeMenu" aria-controls="offcanvasRoutes">
+            Select Route
+        </button>
     </div>
     <div id="legend">
         <a class="btn btn-info" data-bs-toggle="collapse" href="#legendContent" role="button" aria-expanded="true"
@@ -97,29 +108,32 @@
 
     <div class="d-flex">
 
-    <div class="d-shrink offcanvas-lg offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="routeMenu" aria-labelledby="Bus Route Menu">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="routeMenuTitle">Routes</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#routeMenu" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body" id="routeMenuBody">
-        <div id="routeMenuContent">
-
-            <div class="accordion accordion-flush" id="routeMenuAccordion">
-                <script type="text/javascript" src={% static "map/js/offcanvas.js" %}> </script>
+        <div class="d-shrink offcanvas-lg offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+             id="routeMenu" aria-labelledby="Bus Route Menu">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="routeMenuTitle">Routes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#routeMenu"
+                        aria-label="Close"></button>
             </div>
+            <div class="offcanvas-body" id="routeMenuBody">
+                <div id="routeMenuContent">
 
+                    <div class="accordion accordion-flush" id="routeMenuAccordion">
+                        <script type="text/javascript" nonce="{{ request.csp_nonce }}"
+                                src={% static 'map/js/offcanvas.js' %}></script>
+                    </div>
+
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!--The div element for the mapindex -->
-    <div id="map" class="d-grow"></div>
+        <!--The div element for the mapindex -->
+        <div id="map" class="d-grow"></div>
 
     </div>
 
     <div id="loadingScreen">
-        <div id="loadingScreenContent" style="margin: auto">
+        <div id="loadingScreenContent">
             <div class="spinner-border" role="status"></div>
             <h3>Loading bus map...</h3>
         </div>

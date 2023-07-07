@@ -1,0 +1,368 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extend_head %}
+    <!-- Scripts/links needed for the toggle switch (a custom checkbox) -->
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+          rel="stylesheet" nonce="{{ request.csp_nonce }}">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"
+            nonce="{{ request.csp_nonce }}"></script>
+
+    <!-- CSS for the bus driver buttons -->
+    <style nonce="{{ request.csp_nonce }}">
+
+        #all_routes_page_map {
+            height: 100vh; /* Google's suggested height of 100% may prevent map from displaying */
+            width: 100vw;
+        }
+    </style>
+
+    <script type="text/javascript" nonce="{{ request.csp_nonce }}">
+
+        const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}";
+        const AJAX_URL_ROUTE_POLYLINE_ENCODING = "{% url 'bus:busroutepolyline-ajax' %}"
+        const AJAX_URL_ALL_ACTIVE_BUSES = "{% url 'bus:all-active-buses-ajax' %}"
+
+        let admin_view_page_map_obj;
+        let allRoutesMarkers = {};
+        let activeMarkerInfoWindow = null;
+        let selectedRoutes = [];
+        let busMarkers = [];
+
+        function initMap() {
+            let startLocation = {lat: 29.4190, lng: -98.4836}
+            admin_view_page_map_obj = new google.maps.Map(document.getElementById('all_routes_page_map'), {
+                zoom: 15,
+                center: startLocation,
+                gestureHandling: "greedy",
+                clickableIcons: true,
+                disableDefaultUI: true,
+            });
+
+            activeMarkerInfoWindow = new google.maps.InfoWindow();
+        }
+
+        window.initMap = initMap;
+
+        function getPolyLineObject(map_obj, color, line_path) {
+            // Initialize polyline object
+            return new google.maps.Polyline({
+                path: line_path,
+                geodesic: true,
+                strokeColor: color,
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map_obj,
+            });
+        }
+
+        function initializeBusStopMarkers(all_stops, map_obj, icon_color) {
+            const svgMarker = {
+                path: "M17.98,10.1c0,6.51-8.74,17.44-8.74,17.44,0,0-8.74-11.49-8.74-17.44C.5,4.8,4.41,.5,9.24,.5s8.74,4.3,8.74,9.6Z",
+                fillColor: icon_color,
+                fillOpacity: 1,
+                scale: 1.5,
+                labelOrigin: new google.maps.Point(10, 10),
+                // Size of the SVG image
+                size: new google.maps.Size(18.48, 28.35),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+
+                anchor: new google.maps.Point(10, 29),
+            };
+
+            all_markers = [];
+
+            // Iterate over the all_stops array and create a marker for each stop
+            for (let i = 0; i < all_stops.length; i++) {
+                let stop = all_stops[i];
+                let bus_route_name = stop['BusRouteName'];
+                let bus_route_id = stop['BusRouteId'];
+                let stop_lat = stop['BusStopLatitude'];
+                let stop_lng = stop['BusStopLongitude'];
+                let stop_location = new google.maps.LatLng(stop_lat, stop_lng);
+                let stop_name = stop['BusStopName'];
+                let stop_id = stop['BusStopNumber'];
+                let stop_index = stop['BusStopIndex'];
+                let stop_marker = new google.maps.Marker({
+                    position: stop_location,
+                    map: map_obj,
+                    title: stop_name,
+                    label: {
+                        text: `${stop_index}`,
+                        color: "black",
+                        fontWeight: "bold"
+                    },
+                    icon: svgMarker,
+                    animation: null,
+                    optimized: false
+                });
+
+                // Add a click listener to the marker
+                stop_marker.addListener('click', function () {
+                    // Close the active info window if there is one
+                    if (activeMarkerInfoWindow) {
+                        activeMarkerInfoWindow.close();
+                    }
+
+                    // Create the content for the info window
+                    let content = `<div class="container">
+                    <div class="row">
+                        <strong><b>${stop_name}</b></strong>
+                    </div>
+                    <div class="row">
+                        <div>Stop #: ${stop_id}</div>
+                    </div>
+                    <div class="row">
+                        <div>Route: ${bus_route_name}</div>
+                    </div>
+                </div>`;
+
+                    // Create the info window
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: content
+                    });
+
+                    // Open the info window
+                    infoWindow.open(map_obj, stop_marker);
+
+                    // Set the active info window
+                    activeMarkerInfoWindow = infoWindow;
+                });
+
+                // highlight the route when the mouse is over the marker
+                stop_marker.addListener('mouseover', function () {
+                    allRoutesMarkers[bus_route_id]['polyline'].setOptions({strokeWeight: 6});
+                });
+
+                // unhighlight the route when the mouse leaves the marker
+                stop_marker.addListener('mouseout', function () {
+                    allRoutesMarkers[bus_route_id]['polyline'].setOptions({strokeWeight: 2});
+                });
+
+
+                all_markers.push(stop_marker);
+            }
+
+            return all_markers;
+        }
+
+        function processRouteDetails(data) {
+
+            let all_stops = data['all_stops'];
+            let route_id = all_stops[0]['BusRouteId'].toString();
+            let route_color = all_stops[0]['LocationPinColor'];
+            allRoutesMarkers[route_id] = {};
+
+            // get the poline and bounds for the route
+            const toSend = {'route': +route_id}
+            jQuery.ajax({
+                url: AJAX_URL_ROUTE_POLYLINE_ENCODING,
+                type: "GET",
+                data: {'data': JSON.stringify(toSend)},
+                dataType: "json",
+                success: function (data) {
+                    {#console.log(data);#}
+                    let decoded_polyline = google.maps.geometry.encoding.decodePath(data.polyline_encoding);
+                    allRoutesMarkers[route_id]['polyline'] = getPolyLineObject(admin_view_page_map_obj, route_color, decoded_polyline);
+
+                    let bounds = new google.maps.LatLngBounds()
+                    let polyline_bounds = data.polyline_bounds;
+                    bounds.extend(new google.maps.LatLng(polyline_bounds.northeast))
+                    bounds.extend(new google.maps.LatLng(polyline_bounds.southwest))
+                    allRoutesMarkers[route_id]['bounds'] = bounds;
+
+                    allRoutesMarkers[route_id]['stops'] = initializeBusStopMarkers(all_stops, admin_view_page_map_obj, route_color);
+                    admin_view_page_map_obj.fitBounds(bounds);
+
+                }
+            });
+        }
+
+        function markActiveBusesOnMap(data) {
+            // clear the previous markers
+            for (let i = 0; i < busMarkers.length; i++) {
+                busMarkers[i].setMap(null);
+            }
+            busMarkers = [];
+
+            for (const route_id in data) {
+                // show the bus icons only for the selected routes
+                if (!selectedRoutes.includes(+route_id)) {
+                    continue;
+                }
+
+                const busData = data[route_id]
+                busData.forEach(function (bus) {
+
+                    const busLatLng = new google.maps.LatLng(bus.bus_lat, bus.bus_lng);
+
+                    const iconWidth = 100  // pixels
+
+                    const busIcon = {
+                        url: bus.bus_color,
+                        scaledSize: new google.maps.Size(iconWidth, iconWidth),
+                        // rotationAngle: 0
+                    };
+
+                    let sidMarker = new google.maps.Marker({
+                        position: busLatLng,
+                        map: admin_view_page_map_obj,
+                        title: bus.title,
+                        icon: busIcon,
+                        optimized: false,
+                        zIndex: 99999999
+                    })
+
+                    busMarkers.push(sidMarker);
+
+                });
+            }
+        }
+
+        // when the user clicks on a checkbox, get the details for that route and mark it on the map
+        function getAllActiveBuses() {
+            // check selectedRoutes to see if it is empty
+            if (selectedRoutes.length === 0) {
+                markActiveBusesOnMap({});
+                return;
+            } else {
+                // GET details about the active buses from server
+                jQuery.ajax({
+                    url: AJAX_URL_ALL_ACTIVE_BUSES,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        {#console.log(data);#}
+                        // Mark the active buses on the map
+                        markActiveBusesOnMap(data);
+                    }
+                });
+
+            }
+
+        }
+
+
+        // hide the details when unchecked
+        $(document).ready(function () {
+
+            function toggleCheckBoxes(text, route_id) {
+                // extract the first two words from the text as the route name
+                let currentCheckboxText = text.split(" ").slice(0, 2).join(" ");
+                let currentCheckboxValue = route_id;
+                let allCheckboxes = $('input[type="checkbox"]');
+                allCheckboxes.each(function () {
+                    let checkboxText = $(this).parent().text().trim();
+                    let checkboxValue = +$(this).val();
+                    if (checkboxText.startsWith(currentCheckboxText) && checkboxValue !== currentCheckboxValue) {
+                        // disable the parent li element and add the disabled class
+                        $(this).parent().toggleClass('disabled');
+                    }
+                });
+            }
+
+            // checkbox change event
+            $('input[type="checkbox"]').click(function () {
+                {#console.log("checkbox clicked");#}
+
+                if ($(this).prop("checked") === true) {
+
+                    // add the route to the selected routes
+                    selectedRoutes.push(+$(this).val());
+
+                    // disable all other checkboxes whose text starts with the same text as the current checkbox
+                    toggleCheckBoxes($(this).parent().text().trim(),+$(this).val())
+
+
+                    if ($(this).val() in allRoutesMarkers) {
+                        console.log("route already exists in memory");
+                        // just show the markers if it already exists in memory
+                        allRoutesMarkers[$(this).val()]['stops'].forEach(function (marker) {
+                            marker.setMap(admin_view_page_map_obj);
+                        });
+
+                        // now show the route polyline
+                        allRoutesMarkers[$(this).val()]['polyline'].setMap(admin_view_page_map_obj);
+
+                        return;
+                    }
+
+                    console.log("route does not exist in memory");
+
+                    let route_id = $(this).val();
+                    jQuery.ajax({
+                        url: AJAX_URL_ROUTE_DETAILS,
+                        type: "GET",
+                        data: {'data': JSON.stringify(route_id)},
+                        dataType: "json",
+                        success: function (data) {
+                            processRouteDetails(data);
+
+                        }
+                    });
+                } else if ($(this).prop("checked") === false) {
+
+                    let route_id = $(this).val();
+                    // remove the route from the selected routes
+                    selectedRoutes = selectedRoutes.filter(function (value, index, arr) {
+                        return value !== Number(route_id);
+                    });
+
+                    toggleCheckBoxes($(this).parent().text().trim(),+$(this).val())
+
+                    {#console.log("checkbox unchecked");#}
+                    if (route_id in allRoutesMarkers) {
+                        // disable the markers if it already exists in memory
+                        allRoutesMarkers[route_id]['stops'].forEach(function (marker) {
+                            marker.setMap(null);
+                        });
+
+                        // now show the route polyline
+                        allRoutesMarkers[route_id]['polyline'].setMap(null);
+                    }
+                }
+            });
+
+            // function to update the buses location for the selected routes
+            setInterval(function () {
+                getAllActiveBuses();
+            }, 3000)
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="d-flex">
+        {#        <div class="row ">#}
+        <div data-bs-scroll="true">
+            <ul class="list-group">
+                {% for route_id, route_text in allRoutes.items %}
+
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" name="{{ checkBoxName }}" type="checkbox" value="{{ route_id }}">
+                        <b>{{ route_text }}</b>
+                    </li>
+                {% endfor %}
+            </ul>
+            {#            <br>#}
+            {#            <button type="button" class="btn btn-primary btn-lg btn-block" style="width: 100%" onclick="loadSelectedRoutes()">Load Selected Routes</button>#}
+        </div>
+
+        <div class="d-grow" id="all_routes_page_map">
+        </div>
+        {#        </div>#}
+    </div>
+
+    <script
+            src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key={{ google_api_key|safe }}&callback=initMap&v=weekly"
+            defer
+            nonce="{{ request.csp_nonce }}">
+    </script>
+
+{% endblock %}
+

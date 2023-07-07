@@ -23,4 +23,7 @@ urlpatterns = [
     # Seats
     path('seatavailability-ajax/', views.updateBusSeatAvailabilityAJAX, name='seatavailability-ajax'),
 
+    # Bus route
+    path('admin-view/', views.admin_view, name='admin-view'),
+    path('all-active-buses-ajax/', views.getAllActiveBussesAJAX, name='all-active-buses-ajax'),
 ]

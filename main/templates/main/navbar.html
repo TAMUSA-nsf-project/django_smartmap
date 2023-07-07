@@ -16,6 +16,7 @@
                     <a class="nav-link" href="{% url 'bus:busdriver-page' %}">Bus</a>
                 {% endif %}
                 {% if user.is_superuser %}
+                    <a class="nav-link" href="{% url 'bus:admin-view' %}">All Routes View</a>
                     <a class="nav-link" href="{% url 'bus:transitlogs' %}">Transit-Logs</a>
                 {% endif %}
 

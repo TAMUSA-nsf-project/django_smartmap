@@ -298,10 +298,11 @@ class BusStop {
             },
             icon: svgMarker,
             animation: null,
+            optimized: false
         })
 
         // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
-        marker.addListener("click", () => {
+        marker.addListener("mousedown", () => {
             activeMarkerInfoWindow.close();  // closes any currently open info window
             activeMarkerInfoWindow.setContent(this.getInfoWindowContent())
             activeMarkerInfoWindow.open(marker.getMap(), marker)
@@ -390,7 +391,7 @@ function initMap() {
         type: "GET",
         dataType: 'json',  // in this example HTML data is sent back via HttpResponse in views.py
         success: (data) => {
-            console.log(data)
+            // console.log(data)
 
             var legend = document.getElementById('legendContent');
             data.forEach((item) => {

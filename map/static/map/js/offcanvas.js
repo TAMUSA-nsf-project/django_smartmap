@@ -22,7 +22,7 @@ const ESTIMATED_ARRIVAL_TIME_LABEL = "Next estimated arrival:"
 
 const ESTIMATED_ARRIVAL_TIME_UPDATE_INTERVAL_MILLISECONDS = 30000
 
-// ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
+    // ALL_ACTIVE_ROUTES is from 'map_index.html', which provides an array of routes.
 for( let key in ALL_ACTIVE_ROUTES )
 {
     // Generate placeholder bars while async
@@ -54,6 +54,7 @@ for( let key in ALL_ACTIVE_ROUTES )
     }
 
 }
+
 
 // Estimated arrival updater
 setInterval(function()

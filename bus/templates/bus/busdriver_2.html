@@ -11,6 +11,16 @@
     <!-- CSS for the bus driver buttons -->
     <style nonce="{{ request.csp_nonce }}">
 
+        #driver_page_map {
+            height: 60vh; /* Google's suggested height of 100% may prevent map from displaying */
+            overflow-y: scroll;
+            margin-top: 10px;
+        }
+
+        #btnArrived, #btnSkipped {
+            margin-top: 5px;
+        }
+
         .no-seats-btn, .open-seats-btn-group > .btn {
             padding-bottom: 40px;
             padding-top: 40px;
@@ -20,18 +30,54 @@
         }
 
 
-        .no-seats-btn {
-            margin-top: 10px;
-            width: 100%;
-        }
-
-
     </style>
 
     <script type="text/javascript" nonce="{{ request.csp_nonce }}">
 
-        const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}"
-        let previousStopIdx = -1
+        const AJAX_URL_ROUTE_DETAILS = "{% url 'map:routedetails-ajax' %}";
+        const AJAX_URL_UPDATE_LAST_STOP = "{% url 'bus:buslaststop-ajax' %}";
+        let previousStopIdx = -1;
+        let driver_page_map_obj;
+        let activeMarkerInfoWindow = null;
+        let activeStop = null;
+        let locationMarker = null;
+        let all_stops;
+        let changeViewCounter = 0
+        let active_bus_id = -1;
+
+        function getMarker(latLng) {
+            return new google.maps.Marker({
+                position: new google.maps.LatLng(latLng),
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10,
+                    fillOpacity: 1,
+                    strokeWeight: 2,
+                    fillColor: '#5384ED',
+                    strokeColor: '#ffffff',
+                },
+                map: driver_page_map_obj,
+            });
+        }
+
+        function initMap() {
+            let startLocation = {lat: 29.4190, lng: -98.4836}
+            driver_page_map_obj = new google.maps.Map(document.getElementById('driver_page_map'), {
+                zoom: 15,
+                center: startLocation,
+                gestureHandling: "greedy",
+                clickableIcons: true,
+                disableDefaultUI: true,
+            });
+
+            locationMarker = getMarker(startLocation)
+
+            // Initialize InfoWindow instance for the markers (all markers will use this instance)
+            activeMarkerInfoWindow = new google.maps.InfoWindow();
+
+        }
+
+        window.initMap = initMap;
 
         function updateLastStop() {
             const stopSelect = $('#stopSelect');
@@ -52,6 +98,129 @@
             });
         }
 
+        function addBusStopMarker(busStop) {
+            const svgMarker = {
+                path: "M17.98,10.1c0,6.51-8.74,17.44-8.74,17.44,0,0-8.74-11.49-8.74-17.44C.5,4.8,4.41,.5,9.24,.5s8.74,4.3,8.74,9.6Z",
+                fillColor: busStop.LocationPinColor,
+                fillOpacity: 1,
+                scale: 1.5,
+                labelOrigin: new google.maps.Point(10, 10),
+                // Size of the SVG image
+                size: new google.maps.Size(18.48, 28.35),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+
+                anchor: new google.maps.Point(10, 29),
+            };
+
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(busStop.BusStopLatitude, busStop.BusStopLongitude),
+                map: null,
+                title: busStop.BusStopName,
+                label: {
+                    text: `${busStop.BusStopIndex}`,
+                    color: "black",
+                    fontWeight: "bold"
+                },
+                icon: svgMarker,
+                animation: null,
+            })
+
+
+            // NOTE: PyCharm says addListener is deprecated, but it still works and the suggested method addEventListener doesn't work
+            marker.addListener("click", () => {
+                let infowindowContent = `<div class="container">
+                                            <div class="row">
+                                                <strong><b>${marker.title}</b></strong>
+                                            </div>
+                                             <div class="row">
+                                                <button type="button" class="btn btn-primary btn-sm" id="btnArrived" >Arrived</button>
+                                                <button type="button" class="btn btn-secondary btn-sm" id="btnSkipped" >Skipped</button>
+                                             </div>
+
+                                        </div>`
+
+                activeMarkerInfoWindow.close();  // closes any currently open info window
+                activeMarkerInfoWindow.setContent(infowindowContent);
+                activeMarkerInfoWindow.title = marker.title;
+                activeMarkerInfoWindow.open(marker.getMap(), marker);
+                activeStop = parseInt(marker.label.text, 10);
+
+                google.maps.event.addListenerOnce(activeMarkerInfoWindow, 'domready', function () {
+                    let btn1 = $("#btnArrived");
+                    if (btn1 != null) {
+                        $('#btnArrived').on("click", function () {
+                            updateActualArrivalTime();
+                            activeMarkerInfoWindow.close()
+                            activeStop = null
+                        });
+                    }
+                    ;
+
+                    var btn2 = $("#btnSkipped");
+                    if (btn2 != null) {
+                        $('#btnSkipped').on("click", function () {
+                            updateBusStopSkip();
+                            activeMarkerInfoWindow.close()
+                            activeStop = null
+                        });
+                    }
+                    ;
+                });
+            });
+            return marker;
+
+        }
+
+        function proceedToNextStop(nextStop) {
+
+        }
+
+        function updateActualArrivalTime() {
+            console.log("AAT Loged");
+            data = {
+                'bus_stop': all_stops[activeStop - 1].BusStopNumber,
+                'bus_stop_index': all_stops[activeStop - 1].BusStopIndex,
+                'is_arrived': 1
+            }
+            // Log to server
+            jQuery.ajax({
+                url: AJAX_URL_UPDATE_LAST_STOP,
+                data: {'data': JSON.stringify(data)},
+                type: "GET",
+                dataType: 'json',
+                success: (data) => {
+                    //
+                },
+                error: (e) => {
+                    //
+                }
+            });
+        }
+
+        function updateBusStopSkip() {
+            console.log("Skip Loged")
+            data = {
+                'bus_stop': all_stops[activeStop - 1].BusStopNumber,
+                'bus_stop_index': all_stops[activeStop - 1].BusStopIndex,
+                'is_arrived': 0
+            }
+
+            {#Log to server#}
+            jQuery.ajax({
+                url: AJAX_URL_UPDATE_LAST_STOP,
+                data: {'data': JSON.stringify(data)},
+                type: "GET",
+                dataType: 'json',
+                success: (data) => {
+                    //
+                },
+                error: (e) => {
+                    //
+                }
+            });
+        }
+
         function getAllStopsForRoute() {
             const routeSelect = $('#routeSelect');
             // Await data from server before continuing
@@ -62,12 +231,16 @@
                 dataType: 'json',
                 success: (data) => {
                     if (data) {
-                        $('#stopSelect').empty();
-                        $('#stopSelect').append($('<option></option>').val(0).html('Update Last Stop'));
-                        $.each(data.all_stops, function (iterator, busStop) {
-                            $('#stopSelect').append($('<option></option>').val(busStop['BusStopIndex']).html(`${busStop['BusStopIndex']} - ${busStop['BusStopName']}`))
+                        //console.log(data)
+                        driver_page_map_obj.clear;
+                        {#Load the bus stop markers.#}
+                        all_stops = data.all_stops;
+                        all_stops.forEach((busStop) => {
+                            stopMarker = addBusStopMarker(busStop);
+                            stopMarker.setMap(driver_page_map_obj)
                         });
-                         $('#stopSelect').val(0).attr('selected', 'selected');
+                        busStop = data.all_stops[0];
+                        driver_page_map_obj.setCenter(new google.maps.LatLng(busStop.BusStopLatitude, busStop.BusStopLongitude));
                     } else
                         console.log("No stops found for the given route.")
                 },
@@ -203,40 +376,30 @@
             function ajaxSuccess(data) {
             }
 
-            function UpdateDetailsOnUi(data, geolocationCoordinates) {
-                if (data['status'] === "Success") {
-                    // Update position data status message on page
-                    latlngMessageDiv.html(`<p>lat: ${geolocationCoordinates.latitude},
-                                               lng: ${geolocationCoordinates.longitude},
-                                               accuracy: ${geolocationCoordinates.accuracy},
-                                               speed: ${geolocationCoordinates.speed},
-                                               hdng: ${geolocationCoordinates.heading}</p>
-                                               <p><b>Last Stop: ${data['last_stop_idx']} - ${data['last_stop_name']}<b></p>`)
-                    // Pre-populate the dropdown to next stop on route for easy update.
-                    if (data['last_stop_idx'] !== previousStopIdx && $('#stopSelect option[value=' + `${data['last_stop_idx'] + 1}` +
-                        ']').length ) {
-                        $('#stopSelect').val(data['last_stop_idx'] + 1).attr('selected', 'selected');
-                        previousStopIdx = data['last_stop_idx']
-                    }
-
-                } else {
-                    // Update position data status message on page
-                    latlngMessageDiv.html(`${data['status']}`)
-                }
-            }
-
             function watchPositionSuccess(geolocationPosition) {
 
-                statusMessageDiv.html(`Broadcasting position for  ${routeSelect.children("option").filter(":selected").text()}`)
+                let pos = new google.maps.LatLng(geolocationPosition.coords.latitude, geolocationPosition.coords.longitude);
+
+                locationMarker.setMap(null)
+                locationMarker = getMarker(pos)
 
                 if (geolocationPosition.timestamp - prevTime > broadcastFrequency) {
-
+                    if(changeViewCounter === 5)
+                    {
+                        changeViewCounter = 0;
+                        driver_page_map_obj.setCenter(pos);
+                    }
+                    else
+                    {
+                        changeViewCounter += 1;
+                    }
                     prevTime = geolocationPosition.timestamp
                     const geolocationCoordinates = geolocationPosition.coords;
 
                     // Send the location information to the server
                     const posData = {
                         'selected_route': routeSelect.val(),
+                        'active_bus_id': active_bus_id,
                         'latitude': geolocationCoordinates.latitude,
                         'longitude': geolocationCoordinates.longitude,
                         'accuracy': geolocationCoordinates.accuracy != null ? geolocationCoordinates.accuracy : "",
@@ -254,7 +417,18 @@
                         dataType: 'json', // dataType specifies the type of data expected back from the server,
                         {#dataType: 'html',  // in this example HTML data is sent back via HttpResponse in views.py#}
                         success: (data) => {
-                            UpdateDetailsOnUi(data, geolocationCoordinates)
+                            if (data['status'] === "Success") {
+                                active_bus_id = data['active_bus_id']
+                                // Update position data status message on page
+                                if (data['last_stop_idx'] !== 0) {
+                                    statusMessageDiv.html(`<p> Bus Passed / Arrived stop : ${data['last_stop_idx']} - ${all_stops[data['last_stop_idx']-1].BusStopName} </p>`)
+                                }
+
+                            } else {
+                                active_bus_id = -1
+                                // Update position data status message on page
+                                statusMessageDiv.html(`${data['status']}`)
+                            }
                         },
                     });
 
@@ -287,6 +461,7 @@
                     // Execute watchPosition callback, store its handle in the global script var
                     watchPositionID = navigator.geolocation.watchPosition(watchPositionSuccess, geolocationPositionError, watchPositionOptions)
                     getAllStopsForRoute();
+                    initMap();
 
                 } else {
                     // Clear watchPosition using handle
@@ -345,36 +520,43 @@
                    data-off="Start Driving" data-onstyle="danger">
         </div>
         <div class="mb-3" id="statusMessage"></div>
-        <div class="mb-3" id="latlngMessage"></div>
         <div id="seatAvailabilityInterfaceParent" class="mb-3">
             <h5>Open Seats</h5>
             <div class="row">
-                <div class="btn-group btn-group-lg open-seats-btn-group" role="group"
-                     aria-label="Basic mixed styles example">
+                <div class="btn-group btn-group-lg open-seats-btn-group">
                     <button type="button" class="btn btn-success seat-availability-btn" data-color="green">3+</button>
                     <button type="button" class="btn btn-warning seat-availability-btn" data-color="yellow"><3</button>
+                    <button type="button" class="btn btn-danger no-seats-btn seat-availability-btn" data-color="red"> None</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <button type="button" class="btn btn-danger btn-lg no-seats-btn seat-availability-btn"
-                            data-color="red">None
-                    </button>
-                </div>
-            </div>
+{#            <div class="row">#}
+{#                <div class="col">#}
+{#                    <button type="button" class="btn btn-danger btn-lg no-seats-btn seat-availability-btn"#}
+{#                            data-color="red">None#}
+{#                    </button>#}
+{#                </div>#}
+{#            </div>#}
 
-            <br>
+            <!--The div element for the mapindex -->
+            <div id="driver_page_map" class="d-grow"></div>
 
-            <div class="mb-3" id="lastStop">
-                <select class="form-select" id="stopSelect">
-                    <option selected disabled value="0">Update Last Arrived Stop</option>
-                </select>
-                <button class="btn btn-primary" type="button" id="updateStopBtn">
-                    Update Actual Arrival Time
-                </button>
-            </div>
         </div>
-
     </div>
 
+    </div>
+    <!--
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+
+     DO NOT use the `async` attribute that is shown in some example html in Google's tutorials, the map may not
+     load.
+    -->
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key|safe }}&callback=initMap&v=weekly" defer
+            nonce="{{ request.csp_nonce }}">
+    </script>
+
 {% endblock %}
+

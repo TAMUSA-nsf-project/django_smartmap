@@ -6,6 +6,8 @@ import time
 
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 
+from bus.models import Bus, BusRoute
+
 
 def timeit(func):
     """Decorator function used to time the execution of functions."""
@@ -24,52 +26,52 @@ def timeit(func):
 gmaps = googlemaps.Client(key=settings.GOOGLE_PYTHON_API_KEY)
 
 
-def calc_duration(origin, dest, timenow):
+def calc_duration(origin, dest):
     """
-    Calculates transit duration between origin and dest. Meant for only one origin, one dest.
+    Calculates transit duration between origin and dest. Meant for only one origin, one dest. Departure time default to current time.
     """
-    res = distance_matrix(gmaps, origins=origin, destinations=dest,
-                          transit_mode="bus",
-                          departure_time=timenow)
-    return res['rows'][0]['elements'][0]['duration']
+    response = distance_matrix(gmaps, origins=origin, destinations=dest,
+                          transit_mode="bus", departure_time=datetime.now())
+    # res['rows'][0]['elements'][0]['duration']
+    return response
 
 
 # @timeit
-def calc_est_arrival_times(socket_data, json_data):
+def calc_est_arrival_times(bus_route,bus_latitude,bus_longitude, current_stop_index):
     """
-    This method calculates the estimated arrival time from a bus's current position to every bus stop on its route.
+    This method calculates the estimated arrival time from a bus's current position to every bus stop on its route from the last stop.
     Bypasses Distance Matrix API usage limit of 25 destinations by using multithreading.
     """
-    # data format: {'selected_route': str, 'bus_lat': float, 'bus_lng': float }
+    origin = (bus_latitude, bus_longitude)
 
-    bus_route = socket_data["selected_route"]
-    origin = (socket_data['bus_lat'], socket_data['bus_lng'])
-    stop_data = json_data[bus_route]
+    stop_data = list(bus_route.busroutedetails_set.all())
+    stop_data = stop_data[current_stop_index:]
+    if len(stop_data) == 0:
+        return
+
+    result = {}
 
     # must preserve original array's indices for parallel computing because threads/processes can finish out of order
-    stops_latlng = {index: (stop["Lat"], stop["Lng"]) for index, stop in enumerate(stop_data)}
+    stops_latlng = {index: (route_details.bus_stop.latitude, route_details.bus_stop.longitude) for index, route_details in enumerate(stop_data)}
 
-    # current time
-    timenow = datetime.now()
-
-    # Note: I observed multithreading to be about 2x as fast as multiprocessing in this case
     with ThreadPoolExecutor() as executor:
         # submit calc_duration to the thread pool
-        futures = {index: executor.submit(calc_duration, origin, stop, timenow) for index, stop in stops_latlng.items()}
+        futures = {index: executor.submit(calc_duration, origin, stop) for index, stop in stops_latlng.items()}
 
         # wait for the threads to complete
         for _ in as_completed(futures.values()):
             pass
 
         # get the results out of the futures
-        res = [futures[key].result() for key in sorted(futures.keys())]
+        responses = [futures[key].result() for key in sorted(futures.keys())]
 
-    # update stop_data dict
+    # update the result object
     for i in range(len(stop_data)):
-        stop_data[i]['est_arrival'] = res[i]['text']
+        response = responses[i]
+        result[stop_data[i].bus_stop.stop_id] = response
 
-    # return the updated dict as value of new dict with the route as the key
-    return {bus_route: stop_data}
+    # return the API call response to the caller as a dictionary. Bus Stop ID is used as the key.
+    return result
 
 
 def main():
